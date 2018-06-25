@@ -8,11 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		0A7B87D420E07E3E00B45D5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */; };
-		0A7B87D620E07E3E00B45D5C /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B87D520E07E3E00B45D5C /* ViewController.swift */; };
+		0A7B87D620E07E3E00B45D5C /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B87D520E07E3E00B45D5C /* EntryViewController.swift */; };
 		0A7B87D920E07E3E00B45D5C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A7B87D720E07E3E00B45D5C /* Main.storyboard */; };
 		0A7B87DB20E07E3E00B45D5C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A7B87DA20E07E3E00B45D5C /* Assets.xcassets */; };
 		0A7B87DE20E07E3E00B45D5C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A7B87DC20E07E3E00B45D5C /* LaunchScreen.storyboard */; };
 		0A7B87E920E07E3E00B45D5C /* NutritionTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B87E820E07E3E00B45D5C /* NutritionTrackerTests.swift */; };
+		0A8F558F20E08A9700B9E793 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8F558E20E08A9700B9E793 /* LoginViewController.swift */; };
+		0A8F559120E08CE600B9E793 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8F559020E08CE600B9E793 /* MainMenuViewController.swift */; };
+		0A8F559320E0912C00B9E793 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8F559220E0912C00B9E793 /* GraphViewController.swift */; };
+		0A8F559520E0947B00B9E793 /* CatalogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8F559420E0947B00B9E793 /* CatalogViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -28,7 +32,7 @@
 /* Begin PBXFileReference section */
 		0A7B87D020E07E3E00B45D5C /* NutritionTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NutritionTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0A7B87D520E07E3E00B45D5C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		0A7B87D520E07E3E00B45D5C /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
 		0A7B87D820E07E3E00B45D5C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		0A7B87DA20E07E3E00B45D5C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0A7B87DD20E07E3E00B45D5C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -36,6 +40,10 @@
 		0A7B87E420E07E3E00B45D5C /* NutritionTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NutritionTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A7B87E820E07E3E00B45D5C /* NutritionTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutritionTrackerTests.swift; sourceTree = "<group>"; };
 		0A7B87EA20E07E3E00B45D5C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0A8F558E20E08A9700B9E793 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		0A8F559020E08CE600B9E793 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
+		0A8F559220E0912C00B9E793 /* GraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
+		0A8F559420E0947B00B9E793 /* CatalogViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,7 +86,7 @@
 			isa = PBXGroup;
 			children = (
 				0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */,
-				0A7B87D520E07E3E00B45D5C /* ViewController.swift */,
+				0A8F558D20E08A6D00B9E793 /* ViewControllers */,
 				0A7B87D720E07E3E00B45D5C /* Main.storyboard */,
 				0A7B87DA20E07E3E00B45D5C /* Assets.xcassets */,
 				0A7B87DC20E07E3E00B45D5C /* LaunchScreen.storyboard */,
@@ -94,6 +102,18 @@
 				0A7B87EA20E07E3E00B45D5C /* Info.plist */,
 			);
 			path = NutritionTrackerTests;
+			sourceTree = "<group>";
+		};
+		0A8F558D20E08A6D00B9E793 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				0A7B87D520E07E3E00B45D5C /* EntryViewController.swift */,
+				0A8F558E20E08A9700B9E793 /* LoginViewController.swift */,
+				0A8F559020E08CE600B9E793 /* MainMenuViewController.swift */,
+				0A8F559220E0912C00B9E793 /* GraphViewController.swift */,
+				0A8F559420E0947B00B9E793 /* CatalogViewController.swift */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -199,7 +219,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0A7B87D620E07E3E00B45D5C /* ViewController.swift in Sources */,
+				0A8F559520E0947B00B9E793 /* CatalogViewController.swift in Sources */,
+				0A8F559120E08CE600B9E793 /* MainMenuViewController.swift in Sources */,
+				0A8F559320E0912C00B9E793 /* GraphViewController.swift in Sources */,
+				0A8F558F20E08A9700B9E793 /* LoginViewController.swift in Sources */,
+				0A7B87D620E07E3E00B45D5C /* EntryViewController.swift in Sources */,
 				0A7B87D420E07E3E00B45D5C /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
