@@ -28,7 +28,7 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aTP-e0-cMw">
                                 <rect key="frame" x="99" y="471" width="176" height="82"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="(debug) proceed to login)"/>
+                                <state key="normal" title="(debug) proceed to login"/>
                                 <connections>
                                     <segue destination="03w-X8-AfG" kind="show" id="dtK-z4-ql4"/>
                                 </connections>
@@ -74,12 +74,12 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Create Account"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tGq-Zg-3LQ">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tGq-Zg-3LQ" userLabel="(debug) Continue Offline">
                                 <rect key="frame" x="118" y="445" width="170" height="35"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title=")debug) Continue Offline"/>
+                                <state key="normal" title="(debug) Continue Offline"/>
                                 <connections>
-                                    <segue destination="jsz-xw-TAO" kind="show" id="Lqr-sp-cf3"/>
+                                    <segue destination="ytb-3f-HJ0" kind="show" id="y4h-Fo-Cbm"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -100,36 +100,36 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="ETn-gK-DPk">
-                                <rect key="frame" x="60" y="70" width="255" height="547"/>
+                                <rect key="frame" x="60" y="114" width="255" height="503"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQl-YM-7aR">
-                                        <rect key="frame" x="0.0" y="0.0" width="255" height="49.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="255" height="42"/>
                                         <state key="normal" title="Graph"/>
                                         <connections>
                                             <segue destination="5Ri-KQ-WsM" kind="show" id="gLe-Uc-5RP"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kyY-zt-m1L">
-                                        <rect key="frame" x="0.0" y="99.5" width="255" height="49.5"/>
+                                        <rect key="frame" x="0.0" y="92" width="255" height="42.5"/>
                                         <state key="normal" title="Catalog"/>
                                         <connections>
                                             <segue destination="QpP-tX-8NS" kind="show" id="WK7-0v-Sxn"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="spY-cD-PT5">
-                                        <rect key="frame" x="0.0" y="199" width="255" height="49.5"/>
+                                        <rect key="frame" x="0.0" y="184.5" width="255" height="42"/>
                                         <state key="normal" title="Food Lists"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T1Y-9N-Ecl">
-                                        <rect key="frame" x="0.0" y="298.5" width="255" height="49.5"/>
+                                        <rect key="frame" x="0.0" y="276.5" width="255" height="42"/>
                                         <state key="normal" title="Front Page"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DUR-Jc-1Vb">
-                                        <rect key="frame" x="0.0" y="398" width="255" height="49.5"/>
+                                        <rect key="frame" x="0.0" y="368.5" width="255" height="42.5"/>
                                         <state key="normal" title="Eat Well Plate"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dVx-vp-y9z">
-                                        <rect key="frame" x="0.0" y="497.5" width="255" height="49.5"/>
+                                        <rect key="frame" x="0.0" y="461" width="255" height="42"/>
                                         <state key="normal" title="Settings"/>
                                     </button>
                                 </subviews>
@@ -148,7 +148,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hzv-RF-h3o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2792.8000000000002" y="35.532233883058474"/>
+            <point key="canvasLocation" x="3132" y="35.532233883058474"/>
         </scene>
         <!--Catalog View Controller-->
         <scene sceneID="9lg-Gd-lKI">
@@ -163,7 +163,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oho-lo-sgj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3721" y="429"/>
+            <point key="canvasLocation" x="4060" y="428.63568215892059"/>
         </scene>
         <!--Graph View Controller-->
         <scene sceneID="1c1-3o-Kky">
@@ -193,28 +193,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PgC-vR-RRW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3721" y="-233"/>
+            <point key="canvasLocation" x="4060" y="-235.23238380809596"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="9on-ht-7Yt">
+        <scene sceneID="GtP-vP-DgR">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ivd-ac-MWn" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="ytb-3f-HJ0" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="mNc-4Q-Nyx">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="mzj-yw-XLf">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="jsz-xw-TAO" kind="relationship" relationship="rootViewController" id="w0D-ca-PTE"/>
+                        <segue destination="jsz-xw-TAO" kind="relationship" relationship="rootViewController" id="X34-q8-zOs"/>
                     </connections>
                 </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="H9R-ns-8UF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XN0-C7-R03" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2793" y="-663"/>
+            <point key="canvasLocation" x="2730" y="-698"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="Lqr-sp-cf3"/>
-    </inferredMetricsTieBreakers>
 </document>
