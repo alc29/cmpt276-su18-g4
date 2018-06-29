@@ -7,12 +7,23 @@
 //
 
 import UIKit
+import RealmSwift
 
 class EntryViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
+		
+		//clear all persistent data from the last test run.
+		clearRealmData()
+	
+	}
+	
+	private func clearRealmData() {
+		let realm = try! Realm()
+		try!realm.write {
+			realm.deleteAll()
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
