@@ -20,7 +20,36 @@ class NutritionTrackerTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+	
+	//MARK: FoodItem
+	func testFoodItemInitTypical() {
+		let foodItem = FoodItem(foodId: 1, name: "Butter")
+		XCTAssert(foodItem.getFoodId() == 1)
+		XCTAssert(foodItem.getName() == "Butter")
+	}
+	
+	func testFoodItemUninitialized() {
+		let foodItem = FoodItem()
+		XCTAssert(foodItem.getFoodId() == -1)
+		XCTAssert(foodItem.getName() == "uninitialized")
+	}
+	
+	func testFoodItemInitNil() {
+		let foodItem = FoodItem(foodId: nil, name: nil)
+		XCTAssert(foodItem.getFoodId() == -1)
+		XCTAssert(foodItem.getName() == "uninitialized")
+
+		let foodItem2 = FoodItem(foodId: nil, name: "Butter")
+		XCTAssert(foodItem2.getFoodId() == -1)
+		XCTAssert(foodItem2.getName() == "Butter")
+		
+		let foodItem3 = FoodItem(foodId: 12345, name: nil)
+		XCTAssert(foodItem3.getFoodId() == 12345)
+		XCTAssert(foodItem3.getName() == "uninitialized")
+	}
+	
+	
+	//MARK: provided
     func testExample() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
