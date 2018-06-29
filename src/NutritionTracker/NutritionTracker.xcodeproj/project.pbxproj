@@ -99,8 +99,8 @@
 		0A7B87D220E07E3E00B45D5C /* NutritionTracker */ = {
 			isa = PBXGroup;
 			children = (
-				0AA0632520E5919900CCE2FD /* Model */,
 				0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */,
+				0AA0632520E5919900CCE2FD /* Model */,
 				0A8F558D20E08A6D00B9E793 /* ViewControllers */,
 				0A7B87D720E07E3E00B45D5C /* Main.storyboard */,
 				0A7B87DA20E07E3E00B45D5C /* Assets.xcassets */,
