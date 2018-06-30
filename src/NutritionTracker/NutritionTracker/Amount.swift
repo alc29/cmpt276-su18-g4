@@ -11,8 +11,8 @@ import RealmSwift
 
 
 class Amount: Object {
-	@objc private var amount: Float = 0.0
-	@objc private var unit = Unit.Miligram.rawValue
+	@objc dynamic private var amount: Float = 0.0
+	@objc dynamic private var unit = Unit.Miligram.rawValue
 
 	convenience init(_ amount: Float? = 0.0, _ unit: Unit? = Unit.Miligram) {
 		self.init()

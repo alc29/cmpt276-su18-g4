@@ -11,8 +11,10 @@ import RealmSwift
 
 class FoodItemList: Object {
 	@objc private dynamic var id = UUID().uuidString
-	//@objc private dynamic var array = [FoodItem]()
+	@objc private dynamic var name = "Untitled List"
 	let list = List<FoodItem>()
+	
+	//TODO getters & setters for name
 	
 	func add(_ foodItem: FoodItem) {
 		list.append(foodItem)

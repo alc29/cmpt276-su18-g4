@@ -12,21 +12,49 @@ import Charts
 
 
 class GraphSettings: Object {
-	//date format
+	//MARK: Properties
+	@objc var selectedDate = Date() //the date the graph should display. should default to current date and time.
+	//@objc var dateFormat = ""
 	//current date
 	//unit
 	//tags
+	
+	//MARK: Getters
+	func getDate() -> Date {
+		return selectedDate
+	}
+	//MARK: Setters
+	//func setDate() {}
+	
+	
 }
 
 /** Controls graph behaviour & data **/
 class GraphViewController: UIViewController {
-	@IBOutlet weak var graph: LineChartView!
-	
-	
-	//TODO add graph settigns - tells graph what to display & how
+	@IBOutlet weak var graph: LineChartView! //ref to view in the storyboard
+	var graphSettings: GraphSettings? //if no settings found, use default settings & save
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		//get settings from realm, if none create new & add to realm.
+		let realm = try! Realm()
+		let results = realm.objects(GraphSettings.self)
+		if (results.count == 0) {
+			//create new settings instance
+			let newSettings = GraphSettings()
+			try! realm.write {
+				realm.add(newSettings)
+			}
+			self.graphSettings = newSettings //save ref to settings
+		} else {
+			self.graphSettings = results.first //load graph settings from realm
+		}
+		assert(self.graphSettings != nil)
+		
+		//TESt print saved Meals
+		let mealResults = realm.objects(Meal.self)
+		print("num meals: \(mealResults.count)")
 		
 		//refresh graph after getting new data or updating settings.
 		updateGraphData()
@@ -34,27 +62,39 @@ class GraphViewController: UIViewController {
 	
 	
 	//update the data that should fill this graph.
-	func updateGraphData() {
+	private func updateGraphData() {
+		//Use graphSettings to determine how & what data should be displayed
+		let date = graphSettings!.getDate()
+		//get meals that fall within the given date (by week or month)
+		
 		
 		//TODO define xy values.
 		var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
+		
+		//
 		var numbers: [Double] = []
-		//here is the for loop
 		for i in 0..<numbers.count {
 			let value = ChartDataEntry(x: Double(i), y: numbers[i]) // here we set the X and Y status in a data chart entry
 			lineChartEntry.append(value) // here we add it to the data set
 		}
 		
-		//TODO add more lines for different nutrients.
+		//TODO define & add more lines for different nutrients.
 		let line1 = LineChartDataSet(values: lineChartEntry, label: "Number") //Here we convert lineChartEntry to a LineChartDataSet
+		
+		
+		//line color
 		line1.colors = [NSUIColor.blue] //Sets the colour to blue
 		
+		
+		//add lines to dataset
 		let data = LineChartData() //This is the object that will be added to the chart
 		data.addDataSet(line1) //Adds the line to the dataSet
 		
-		let date = "TODO DATE STRING" //TODO get date to display (current date, or past date selected by user)
 		
-		reloadGraph(data, date)
+		let dateFormatter = DateFormatter() //default formatter
+		//dateFormatter.setLocalizedDatFormatFromTemplate(graphSettings.dateFormat)
+		let dateStr = dateFormatter.string(from: date)
+		reloadGraph(data, dateStr)
 	}
 	
 	private func reloadGraph(_ data: LineChartData, _ date: String) {
