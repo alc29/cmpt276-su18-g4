@@ -7,3 +7,8 @@
 //
 
 import Foundation
+
+enum Unit: String {
+	case Miligram
+	case Microgram
+}
