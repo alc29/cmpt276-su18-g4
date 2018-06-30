@@ -13,8 +13,16 @@ class MainMenuViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        //print items in the persistent food item list
+		print("viewdidload")
+		printList()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		printList()
+	}
+	
+	func printList() {
+		//print items in the persistent food item list
 		let realm = try! Realm()
 		let results = realm.objects(FoodItemList.self)
 		if (results.count == 0) {
@@ -23,7 +31,6 @@ class MainMenuViewController: UIViewController {
 			let foodItemList: FoodItemList! = results.first
 			print("items in list: \(foodItemList.count())")
 		}
-		
 	}
 
     override func didReceiveMemoryWarning() {

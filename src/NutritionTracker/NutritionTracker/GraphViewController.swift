@@ -10,29 +10,10 @@ import UIKit
 import RealmSwift
 
 class GraphViewController: UIViewController {
-	var foodItemList: FoodItemList?
 	
     override func viewDidLoad() {
         super.viewDidLoad()
 		
-		//Load existing, or create new FoodItemList
-
-		//retrieve food list from realm
-		let realm = try! Realm()
-		let foodItemLists = realm.objects(FoodItemList.self)
-
-		//if no list, make new one
-		if (foodItemLists.count == 0) {
-			try! realm.write {
-				self.foodItemList = FoodItemList()
-				realm.add(foodItemList!)
-			}
-		} else {
-			let foodItemList = FoodItemList()
-			self.foodItemList = foodItemList;
-		}
-
-		assert(foodItemList != nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -53,8 +34,29 @@ class GraphViewController: UIViewController {
 	
 	
 	func receiveTestFoodItem(foodItem: FoodItem) {
+		//Load existing, or create new FoodItemList
+		//retrieve food list from realm
+		let realm = try! Realm()
+		let foodItemLists = realm.objects(FoodItemList.self)
+		
+		var foodItemList: FoodItemList?
+		//if no list, make new one
+		if (foodItemLists.count == 0) {
+			try! realm.write {
+				foodItemList = FoodItemList()
+				realm.add(foodItemList!)
+			}
+		} else {
+			foodItemList = foodItemLists.first
+		}
+		
+		assert(foodItemList != nil)
+		
+		
 		print("added: " + foodItem.getName())
 //		add food to food item list
-		self.foodItemList!.add(foodItem)
+		try! realm.write {
+			foodItemList!.add(foodItem)
+		}
 	}
 }

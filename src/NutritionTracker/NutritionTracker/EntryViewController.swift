@@ -14,7 +14,7 @@ class EntryViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		//clear all persistent data from the last test run.
+		//clear all persistent data from the last run.
 		clearRealmData()
 	}
 	
