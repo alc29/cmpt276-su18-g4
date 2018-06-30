@@ -18,13 +18,6 @@ class FoodItemList: Object {
 		list.append(foodItem)
 	}
 
-//	func remove(_ index: Int) -> FoodItem? {
-//		let count = list.count;
-//		if (count > 0 && index >= 0 && index < count) {
-//			return list.remove(at: index)
-//		}
-//		return nil;
-//	}
 	func remove(_ index: Int) {
 		let count = list.count;
 		if (count > 0 && index >= 0 && index < count) {

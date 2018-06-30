@@ -50,37 +50,55 @@ class NutritionTrackerTests: XCTestCase {
 	
 	// MARK: FoodItemList
 	func testFoodItemList() {
-//		let foodList = FoodItemList()
-//		XCTAssert(foodList.count() == 0)
-//
-//		//add items to list
-//		for i in 0..<5 {
-//			let foodItem = FoodItem(i, "food")
-//			foodList.add(foodItem)
-//			XCTAssert(foodList.count() == i+1)
-//		}
-//
-//		//test list
-//		XCTAssert(foodList.count() == 5)
-//		for i in 0..<5 {
-//			let foodItem = foodList.get(i)
-//			XCTAssert(foodItem!.getFoodId() == i)
-//			XCTAssert(foodItem!.getName() == "food")
-//			XCTAssert(foodList.validIndex(i))
-//			XCTAssert(foodList.count() == 5)
-//		}
-//		XCTAssertNil(foodList.get(5))
-//		XCTAssert(!foodList.validIndex(5))
-//
-//		//remove items from list
-//		for i in 0..<5 {
-//			let foodItem: FoodItem? = foodList.remove(0)
-//			XCTAssertNotNil(foodItem)
-//			XCTAssert(foodItem!.getName() == "food")
-//			XCTAssert(foodItem!.getFoodId() == i)
-//			XCTAssert(foodList.count() == 5-1-i)
-//		}
-//		XCTAssertNil(foodList.remove(0))
+		let foodList = FoodItemList()
+		XCTAssert(foodList.count() == 0)
+
+		//add items to list
+		for i in 0..<5 {
+			let foodItem = FoodItem(i, "food")
+			foodList.add(foodItem)
+			XCTAssert(foodList.count() == i+1)
+		}
+
+		//test list
+		XCTAssert(foodList.count() == 5)
+		for i in 0..<5 {
+			let foodItem = foodList.get(i)
+			XCTAssert(foodItem!.getFoodId() == i)
+			XCTAssert(foodItem!.getName() == "food")
+			XCTAssert(foodList.validIndex(i))
+			XCTAssert(foodList.count() == 5)
+		}
+		XCTAssertNil(foodList.get(5))
+		XCTAssert(!foodList.validIndex(5))
+
+		//remove items from list
+		for i in 0..<5 {
+			foodList.remove(0)
+			XCTAssert(foodList.count() == 5-1-i)
+		}
+		//XCTAssertNil(foodList.remove(0))
+	}
+	
+	//MARK: Amount
+	func testAmountDefault() {
+		let amount = Amount()
+		XCTAssert(amount.getAmount() == 0.0 as Float)
+		XCTAssert(amount.getUnit() == Unit.Miligram)
+	}
+	func testAmountInit() {
+		let amount = Amount(5.0, NutritionTracker.Unit.Microgram)
+		XCTAssert(amount.getAmount() == 5.0 as Float)
+		XCTAssert(amount.getUnit() == NutritionTracker.Unit.Microgram)
+	}
+	func testAmountGetSet() {
+		let amount = Amount()
+		amount.setAmount(-1.0)
+		XCTAssert(amount.getAmount() == 0.0 as Float)
+		amount.setAmount(5.0)
+		amount.setUnit(NutritionTracker.Unit.Microgram)
+		XCTAssert(amount.getAmount() == 5.0 as Float)
+		XCTAssert(amount.getUnit() == NutritionTracker.Unit.Microgram)
 	}
 	
 	
