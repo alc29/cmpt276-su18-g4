@@ -17,7 +17,7 @@ class FoodItem: Object {
 	@objc private dynamic var id = UUID().uuidString
 	@objc private dynamic var foodId = -1
 	@objc private dynamic var name = "uninitialized"
-	@objc private dynamic var amount: Amount? = Amount() //TODO change to
+	@objc private dynamic var amount: Amount? = Amount()
 
 	//optional initializer FoodItem() works, but should be avoided.
 	convenience init(_ foodId: Int?, _ name: String?) {
@@ -29,7 +29,6 @@ class FoodItem: Object {
 		if (name != nil) {
 			self.name = name!
 		}
-
 	}
 	
 	func setAmount(_ amount: Float, unit: Unit = Unit.Microgram) {
@@ -39,7 +38,15 @@ class FoodItem: Object {
 
 	func getFoodId() -> Int { return foodId }
 	func getName() -> String { return name }
+	//get amount of food
 	func getAmount() -> Amount { return amount! }
+	
+	//TODO move method to database
+	//TODO get amount of given nutrient
+	func getAmountOf(_ nutrient: Nutrient) -> Amount {
+		//let amount =  database.getAmountOf(nutrient: nutrient, from: foodId);
+		return Amount()
+	}
 	
 	override static func primaryKey() -> String? {
 		return "id";

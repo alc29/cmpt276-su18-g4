@@ -21,14 +21,16 @@ class EntryViewController: UIViewController {
 		
 	}
 	
-	//Testing
+	//Testing - clear all persistent data
+	//(note: if migration required, must erase all content from device & restart.)
 	private func clearRealmData() {
 		let realm = try! Realm()
 		try! realm.write {
 			realm.deleteAll()
 		}
 	}
-	//Testing
+	
+	//Testing - create test meals to display in graph
 	private func addTestMeals() {
 		let realm = try! Realm()
 		try! realm.write {
@@ -36,7 +38,10 @@ class EntryViewController: UIViewController {
 				let meal = Meal()
 				for j in 0..<2 {
 					let foodItem = FoodItem(j, "food item: \(j)")
+					foodItem.setAmount(Float(arc4random_uniform(5)))
 					meal.add(foodItem)
+					let date = Date()
+					meal.setDate(date)
 				}
 				realm.add(meal)
 			}

@@ -63,33 +63,61 @@ class GraphViewController: UIViewController {
 	
 	//update the data that should fill this graph.
 	private func updateGraphData() {
+		let colors = [NSUIColor.red, NSUIColor.orange, NSUIColor.yellow, NSUIColor.green, NSUIColor.blue, NSUIColor.purple, NSUIColor.gray]
+		var colorCount = 0
 		//Use graphSettings to determine how & what data should be displayed
 		let date = graphSettings!.getDate()
-		//get meals that fall within the given date (by week or month)
+		let data = LineChartData() //This is the object that will be added to the chart
+		
+//		var values: [Double] = [] //day (x-axis)
+//		for i in 0..<days.count {
+//			let value = ChartDataEntry(x: Double(i), y: days[i]) // here we set the X and Y status in a data chart entry
+//			lineChartEntry.append(value) // here we add it to the data set
+//		}
 		
 		
-		//TODO define xy values.
-		var lineChartEntry  = [ChartDataEntry]() //this is the Array that will eventually be displayed on the graph.
+		//get meals within desired timeframe
+		let realm = try! Realm()
+		let meals = realm.objects(Meal.self) //(get all meals for testing)
+		//get tags from graphSettings
+		//var tags = graphSettings.getTags()
 		
-		//
-		var numbers: [Double] = []
-		for i in 0..<numbers.count {
-			let value = ChartDataEntry(x: Double(i), y: numbers[i]) // here we set the X and Y status in a data chart entry
-			lineChartEntry.append(value) // here we add it to the data set
-		}
+		//set data for lines
+		//for each tag
+			var lineEntries = [ChartDataEntry]()
+			//for each meal
+			for meal in meals {
+				for foodItem in meal.getFoodItems() {
+					//print("food name: \(foodItem.getName())")
+					//add point:
+					//x = meal.date
+					//let calendar = NSCalendar.currentCalendar()
+					let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
+					let nutrientAmount = foodItem.getAmount() //TODO use getAmountOf(tag) instead
+					let entry = ChartDataEntry(x: Double(dayOfMonth!), y: Double(nutrientAmount.getAmount()))
+					lineEntries.append(entry)
+				}
+				//print(m.getAmountOf())
+				//print("meal date: \(meal.getDate())")
+			}
+			let line = LineChartDataSet(values: lineEntries, label: "Amount")
+			//line.colors = colors[colorCount]
+			//colorCount += 1
+			//if (colorCount == colors.count) {colorCount = 0 }
+			data.addDataSet(line)
 		
 		//TODO define & add more lines for different nutrients.
-		let line1 = LineChartDataSet(values: lineChartEntry, label: "Number") //Here we convert lineChartEntry to a LineChartDataSet
+		//let line1 = LineChartDataSet(values: lineChartEntry, label: "Number") //Here we convert lineChartEntry to a LineChartDataSet
 		
 		
 		//line color
-		line1.colors = [NSUIColor.blue] //Sets the colour to blue
+		//line1.colors = [NSUIColor.blue] //Sets the colour to blue
 		
 		
 		//add lines to dataset
-		let data = LineChartData() //This is the object that will be added to the chart
-		data.addDataSet(line1) //Adds the line to the dataSet
-		
+//		let data = LineChartData() //This is the object that will be added to the chart
+		//data.addDataSet(line1) //Adds the line to the dataSet
+//		data.addDataSet(line)
 		
 		let dateFormatter = DateFormatter() //default formatter
 		//dateFormatter.setLocalizedDatFormatFromTemplate(graphSettings.dateFormat)

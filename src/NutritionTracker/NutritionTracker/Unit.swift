@@ -8,6 +8,7 @@
 
 import Foundation
 
+//TODO move enum into Amount class
 enum Unit: String {
 	case Miligram
 	case Microgram

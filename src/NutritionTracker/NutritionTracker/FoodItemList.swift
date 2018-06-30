@@ -12,7 +12,7 @@ import RealmSwift
 class FoodItemList: Object {
 	@objc private dynamic var id = UUID().uuidString
 	@objc private dynamic var name = "Untitled List"
-	let list = List<FoodItem>()
+	private let list = List<FoodItem>()
 	
 	//TODO getters & setters for name
 	
@@ -43,33 +43,19 @@ class FoodItemList: Object {
 		return nil;
 	}
 	
-//	func add(_ foodItem: FoodItem) {
-//		array.append(foodItem)
-//	}
-//
-//	func remove(_ index: Int) -> FoodItem? {
-//		let count = array.count;
-//		if (count > 0 && index >= 0 && index < count) {
-//			return array.remove(at: index)
-//		}
-//		return nil;
-//	}
-//
-//	func count() -> Int {
-//		return array.count;
-//	}
-//
-//	func validIndex(_ i: Int) -> Bool {
-//		let count = self.count()
-//		return (count > 0 && i >= 0 && i < count);
-//	}
-//
-//	func get(_ index: Int) -> FoodItem? {
-//		if self.validIndex(index) {
-//			return array[index];
-//		}
-//		return nil;
-//	}
+	func getFoodItems() -> List<FoodItem> {
+		return list
+	}
+	
+	//return total amount of the given nutrient contained in this meal.
+	func getAmountOf(_ nutrient: Nutrient) -> Amount {
+		var sum = 0.0 as Float
+		for foodItem in list {
+			sum += foodItem.getAmountOf(nutrient).getAmount()
+		}
+		let defaultUnit = Unit.Miligram //TODO use given nutrient's init, or add as arg
+		return Amount(sum, defaultUnit)
+	}
 	
 	override static func primaryKey() -> String? {
 		return "id";
