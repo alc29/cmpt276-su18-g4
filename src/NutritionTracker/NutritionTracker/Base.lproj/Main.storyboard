@@ -106,7 +106,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="255" height="42"/>
                                         <state key="normal" title="Graph"/>
                                         <connections>
-                                            <segue destination="5Ri-KQ-WsM" kind="show" id="gLe-Uc-5RP"/>
+                                            <segue destination="5Ri-KQ-WsM" kind="show" identifier="MainMenuToGraph" id="gLe-Uc-5RP"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kyY-zt-m1L">

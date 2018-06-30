@@ -23,7 +23,7 @@ class NutritionTrackerTests: XCTestCase {
 	
 	//MARK: FoodItem
 	func testFoodItemInitTypical() {
-		let foodItem = FoodItem(foodId: 1, name: "Butter")
+		let foodItem = FoodItem(1, "Butter")
 		XCTAssert(foodItem.getFoodId() == 1)
 		XCTAssert(foodItem.getName() == "Butter")
 	}
@@ -35,18 +35,54 @@ class NutritionTrackerTests: XCTestCase {
 	}
 	
 	func testFoodItemInitNil() {
-		let foodItem = FoodItem(foodId: nil, name: nil)
+		let foodItem = FoodItem(nil, nil)
 		XCTAssert(foodItem.getFoodId() == -1)
 		XCTAssert(foodItem.getName() == "uninitialized")
 
-		let foodItem2 = FoodItem(foodId: nil, name: "Butter")
+		let foodItem2 = FoodItem(nil, "Butter")
 		XCTAssert(foodItem2.getFoodId() == -1)
 		XCTAssert(foodItem2.getName() == "Butter")
 		
-		let foodItem3 = FoodItem(foodId: 12345, name: nil)
+		let foodItem3 = FoodItem(12345, nil)
 		XCTAssert(foodItem3.getFoodId() == 12345)
 		XCTAssert(foodItem3.getName() == "uninitialized")
 	}
+	
+	// MARK: FoodItemList
+	func testFoodItemList() {
+//		let foodList = FoodItemList()
+//		XCTAssert(foodList.count() == 0)
+//
+//		//add items to list
+//		for i in 0..<5 {
+//			let foodItem = FoodItem(i, "food")
+//			foodList.add(foodItem)
+//			XCTAssert(foodList.count() == i+1)
+//		}
+//
+//		//test list
+//		XCTAssert(foodList.count() == 5)
+//		for i in 0..<5 {
+//			let foodItem = foodList.get(i)
+//			XCTAssert(foodItem!.getFoodId() == i)
+//			XCTAssert(foodItem!.getName() == "food")
+//			XCTAssert(foodList.validIndex(i))
+//			XCTAssert(foodList.count() == 5)
+//		}
+//		XCTAssertNil(foodList.get(5))
+//		XCTAssert(!foodList.validIndex(5))
+//
+//		//remove items from list
+//		for i in 0..<5 {
+//			let foodItem: FoodItem? = foodList.remove(0)
+//			XCTAssertNotNil(foodItem)
+//			XCTAssert(foodItem!.getName() == "food")
+//			XCTAssert(foodItem!.getFoodId() == i)
+//			XCTAssert(foodList.count() == 5-1-i)
+//		}
+//		XCTAssertNil(foodList.remove(0))
+	}
+	
 	
 	
 	//MARK: provided

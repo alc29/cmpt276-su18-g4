@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  EntryViewController.swift
 //  NutritionTracker
 //
 //  Created by alc29 on 2018-06-24.
@@ -16,12 +16,11 @@ class EntryViewController: UIViewController {
 		
 		//clear all persistent data from the last test run.
 		clearRealmData()
-	
 	}
 	
 	private func clearRealmData() {
 		let realm = try! Realm()
-		try!realm.write {
+		try! realm.write {
 			realm.deleteAll()
 		}
 	}

@@ -14,11 +14,13 @@ import Foundation
 import RealmSwift
 
 class FoodItem: Object {
+	@objc private dynamic var id = UUID().uuidString
 	@objc private dynamic var foodId = -1
 	@objc private dynamic var name = "uninitialized"
+	//TODO add Amount to FoodItems.
 
 	//optional initializer; FoodItem() works, but should be avoided.
-	convenience init(foodId: Int?, name: String?) {
+	convenience init(_ foodId: Int?, _ name: String?) {
 		self.init()
 		
 		if (foodId != nil) {
@@ -31,4 +33,13 @@ class FoodItem: Object {
 
 	func getFoodId() -> Int { return foodId }
 	func getName() -> String { return name }
+	
+	//TODO stub method
+	func getAmount() -> Float {
+		return -1.0;
+	}
+	
+	override static func primaryKey() -> String? {
+		return "id";
+	}
 }
