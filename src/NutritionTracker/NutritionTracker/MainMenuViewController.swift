@@ -49,6 +49,8 @@ class MainMenuViewController: UIViewController {
     }
     */
 	
+	
+	//testing something
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 		print("segue")
 		if (segue.identifier == "MainMenuToGraph") {

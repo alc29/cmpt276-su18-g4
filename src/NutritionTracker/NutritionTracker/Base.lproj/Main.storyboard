@@ -99,37 +99,48 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="ETn-gK-DPk">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="ETn-gK-DPk">
                                 <rect key="frame" x="60" y="114" width="255" height="503"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sQl-YM-7aR">
-                                        <rect key="frame" x="0.0" y="0.0" width="255" height="42"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="255" height="41"/>
                                         <state key="normal" title="Graph"/>
                                         <connections>
                                             <segue destination="5Ri-KQ-WsM" kind="show" identifier="MainMenuToGraph" id="gLe-Uc-5RP"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kyY-zt-m1L">
-                                        <rect key="frame" x="0.0" y="92" width="255" height="42.5"/>
+                                        <rect key="frame" x="0.0" y="66" width="255" height="41"/>
                                         <state key="normal" title="Catalog"/>
                                         <connections>
-                                            <segue destination="QpP-tX-8NS" kind="show" id="WK7-0v-Sxn"/>
+                                            <segue destination="QpP-tX-8NS" kind="show" id="w1K-Aw-hL1"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dh3-m0-LHF">
+                                        <rect key="frame" x="0.0" y="132" width="255" height="41"/>
+                                        <state key="normal" title="FoodSearch"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tqw-nZ-AdT">
+                                        <rect key="frame" x="0.0" y="198" width="255" height="41"/>
+                                        <state key="normal" title="FoodInput"/>
+                                        <connections>
+                                            <segue destination="vx9-ld-HC9" kind="show" id="jS8-zA-vTw"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="spY-cD-PT5">
-                                        <rect key="frame" x="0.0" y="184.5" width="255" height="42"/>
+                                        <rect key="frame" x="0.0" y="264" width="255" height="41"/>
                                         <state key="normal" title="Food Lists"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T1Y-9N-Ecl">
-                                        <rect key="frame" x="0.0" y="276.5" width="255" height="42"/>
+                                        <rect key="frame" x="0.0" y="330" width="255" height="41"/>
                                         <state key="normal" title="Front Page"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DUR-Jc-1Vb">
-                                        <rect key="frame" x="0.0" y="368.5" width="255" height="42.5"/>
+                                        <rect key="frame" x="0.0" y="396" width="255" height="41"/>
                                         <state key="normal" title="Eat Well Plate"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dVx-vp-y9z">
-                                        <rect key="frame" x="0.0" y="461" width="255" height="42"/>
+                                        <rect key="frame" x="0.0" y="462" width="255" height="41"/>
                                         <state key="normal" title="Settings"/>
                                     </button>
                                 </subviews>
@@ -150,6 +161,31 @@
             </objects>
             <point key="canvasLocation" x="3132" y="35.532233883058474"/>
         </scene>
+        <!--Food Input View Controller-->
+        <scene sceneID="P08-aR-PtD">
+            <objects>
+                <viewController id="vx9-ld-HC9" customClass="FoodInputViewController" customModule="NutritionTracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="HAq-2L-ndF">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fTE-Zx-fmy">
+                                <rect key="frame" x="0.0" y="64" width="375" height="56"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="QpP-tX-8NS" id="885-aQ-dKu"/>
+                                </connections>
+                            </searchBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="RcR-LI-CXX"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ROF-Np-Sqg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3023" y="855"/>
+        </scene>
         <!--Catalog View Controller-->
         <scene sceneID="9lg-Gd-lKI">
             <objects>
@@ -157,13 +193,55 @@
                     <view key="view" contentMode="scaleToFill" id="TaJ-TM-W5X">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Catalog" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uks-xQ-GkN">
+                                <rect key="frame" x="96" y="64" width="182" height="33"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="q1H-xG-oSq">
+                                <rect key="frame" x="41" y="146" width="292" height="501"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="1uT-EP-xAq">
+                                    <size key="itemSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="IKC-8i-MKh">
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </view>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Ysr-El-hDj"/>
                     </view>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="1nn-Cy-hat" id="AoE-SR-OIe"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oho-lo-sgj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="1nn-Cy-hat">
+                    <connections>
+                        <outlet property="delegate" destination="QpP-tX-8NS" id="KzM-gJ-0lb"/>
+                        <outlet property="searchBar" destination="fTE-Zx-fmy" id="3NB-lH-5bl"/>
+                        <outlet property="searchContentsController" destination="QpP-tX-8NS" id="VcV-qw-MuG"/>
+                        <outlet property="searchResultsDataSource" destination="QpP-tX-8NS" id="wtl-fw-6An"/>
+                        <outlet property="searchResultsDelegate" destination="QpP-tX-8NS" id="7o1-C9-dZ9"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
-            <point key="canvasLocation" x="4060" y="428.63568215892059"/>
+            <point key="canvasLocation" x="3980" y="796.55172413793105"/>
         </scene>
         <!--Graph View Controller-->
         <scene sceneID="1c1-3o-Kky">
@@ -173,15 +251,27 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Graph" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9f-Qs-eeC">
-                                <rect key="frame" x="96" y="95" width="182" height="37"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Graph" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X9f-Qs-eeC" userLabel="GraphTitle">
+                                <rect key="frame" x="96" y="64" width="182" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kU7-gA-00W" userLabel="GraphView" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="16" y="170" width="343" height="301"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Date" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uP0-n2-T5h">
+                                <rect key="frame" x="124" y="109" width="126" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yvE-3z-geb">
-                                <rect key="frame" x="148" y="547" width="78" height="74"/>
+                                <rect key="frame" x="148" y="536" width="78" height="74"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.71060381030138431" green="0.90319381476683935" blue="0.85216977270983363" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="+ Add Meal"/>
@@ -190,10 +280,55 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="Q8V-Hz-bd6"/>
                     </view>
+                    <connections>
+                        <outlet property="graph" destination="kU7-gA-00W" id="mpZ-0k-PW0"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PgC-vR-RRW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4060" y="-235.23238380809596"/>
+            <point key="canvasLocation" x="3925.5999999999999" y="-79.610194902548727"/>
+        </scene>
+        <!--Food Input View Controller-->
+        <scene sceneID="UeZ-lv-HnZ">
+            <objects>
+                <viewController id="JxZ-yO-UqQ" customClass="FoodInputViewController" customModule="NutritionTracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="mXo-rF-v00">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="sQV-OG-2w8">
+                                <rect key="frame" x="20" y="78" width="335" height="200"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRW-g2-ghx">
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="60"/>
+                                        <state key="normal" title="Search for Food"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r3W-xD-kEB">
+                                        <rect key="frame" x="0.0" y="70" width="335" height="60"/>
+                                        <state key="normal" title="Browse Catalog"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GeG-6u-1g8">
+                                        <rect key="frame" x="0.0" y="140" width="335" height="60"/>
+                                        <state key="normal" title="Identify with Vision"/>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="200" id="fhg-eL-LEb"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="wvq-qX-OQq" firstAttribute="trailing" secondItem="sQV-OG-2w8" secondAttribute="trailing" constant="20" id="CkJ-MJ-p5d"/>
+                            <constraint firstItem="sQV-OG-2w8" firstAttribute="top" secondItem="wvq-qX-OQq" secondAttribute="top" constant="58" id="Y2l-N4-yOy"/>
+                            <constraint firstItem="sQV-OG-2w8" firstAttribute="leading" secondItem="wvq-qX-OQq" secondAttribute="leading" constant="20" id="q1h-tQ-4cx"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="wvq-qX-OQq"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="72Y-RB-JTm" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4773.6000000000004" y="433.13343328335833"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="GtP-vP-DgR">
