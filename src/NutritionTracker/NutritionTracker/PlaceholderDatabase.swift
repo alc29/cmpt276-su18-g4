@@ -21,8 +21,8 @@ class PlaceholderDatabase {
 	
 	//let amount =  PlaceholderDatabase.sharedInstance.getAmountOf(nutrient: nutrient, fromFoodId: foodId);
 	func getAmountOf(nutrient: Nutrient.Name, fromFoodId: Int) -> Amount {
-		//return standard amount of the nutrient that corresponds to the food (foodId)
-		return Amount()
+		//TODO return standard amount of the nutrient that corresponds to the food (foodId)
+		return Amount(Float(arc4random_uniform(10)))
 	}
 	
 	func getNutrients(fromFoodId: Int) -> [Nutrient] {
