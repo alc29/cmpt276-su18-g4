@@ -48,7 +48,7 @@ class FoodItemList: Object {
 	}
 	
 	//return total amount of the given nutrient contained in this meal.
-	func getAmountOf(_ nutrient: Nutrient) -> Amount {
+	func getAmountOf(nutrient: Nutrient.Name) -> Amount {
 		var sum = 0.0 as Float
 		for foodItem in list {
 			sum += foodItem.getAmountOf(nutrient).getAmount()

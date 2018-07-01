@@ -52,11 +52,8 @@ class MainMenuViewController: UIViewController {
 	
 	//testing something
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		print("segue")
 		if (segue.identifier == "MainMenuToGraph") {
-			print("segue detected")
 			let vc:GraphViewController = segue.destination as! GraphViewController
-
 			//test passing a food item to the graph
 			let foodItem = FoodItem(12345, "Noodles")
 			vc.receiveTestFoodItem(foodItem: foodItem)

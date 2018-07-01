@@ -29,9 +29,12 @@ class EntryViewController: UIViewController {
 			realm.deleteAll()
 		}
 	}
+
 	
 	//Testing - create test meals to display in graph
 	private func addTestMeals() {
+		var daysToAdd = 1
+		
 		let realm = try! Realm()
 		try! realm.write {
 			for _ in 0..<5 {
@@ -40,9 +43,10 @@ class EntryViewController: UIViewController {
 					let foodItem = FoodItem(j, "food item: \(j)")
 					foodItem.setAmount(Float(arc4random_uniform(5)))
 					meal.add(foodItem)
-					let date = Date()
-					meal.setDate(date)
 				}
+				let nextDate = Calendar.current.date(byAdding: .day, value: daysToAdd, to: Date())
+				daysToAdd += 1
+				meal.setDate(nextDate)
 				realm.add(meal)
 			}
 			

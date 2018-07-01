@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 
-
+/* Represents the amount of a FoodItem */
 class Amount: Object {
 	@objc dynamic private var amount: Float = 0.0
 	@objc dynamic private var unit = Unit.Miligram.rawValue

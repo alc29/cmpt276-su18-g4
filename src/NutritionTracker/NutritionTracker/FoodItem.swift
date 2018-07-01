@@ -38,14 +38,17 @@ class FoodItem: Object {
 
 	func getFoodId() -> Int { return foodId }
 	func getName() -> String { return name }
-	//get amount of food
 	func getAmount() -> Amount { return amount! }
+//	func getAmount(desiredUnit: Unit) -> Float {
+//		//TODO convert amount of food to desired unit
+//		return 0.0
+//	}
 	
-	//TODO move method to database
-	//TODO get amount of given nutrient
-	func getAmountOf(_ nutrient: Nutrient) -> Amount {
-		//let amount =  database.getAmountOf(nutrient: nutrient, from: foodId);
-		return Amount()
+	//TODO move method to database?
+	//return amount of given nutrient in this food
+	func getAmountOf(_ nutrient: Nutrient.Name) -> Amount {
+		let amount = PlaceholderDatabase.sharedInstance.getAmountOf(nutrient: nutrient, fromFoodId: foodId)
+		return amount
 	}
 	
 	override static func primaryKey() -> String? {
