@@ -172,17 +172,32 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fTE-Zx-fmy">
+                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VjP-Zr-PPW" customClass="FoodSearchBar" customModule="NutritionTracker" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="375" height="56"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="vx9-ld-HC9" id="ePa-Ko-hEz"/>
+                                </connections>
                             </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="RcR-LI-CXX"/>
                     </view>
+                    <connections>
+                        <outlet property="searchDisplayController" destination="X64-WL-7fA" id="uyn-uv-2FG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ROF-Np-Sqg" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <searchDisplayController id="X64-WL-7fA" customClass="FoodSearchDisplayController" customModule="NutritionTracker" customModuleProvider="target">
+                    <connections>
+                        <outlet property="delegate" destination="vx9-ld-HC9" id="CUw-b2-sjI"/>
+                        <outlet property="searchBar" destination="VjP-Zr-PPW" id="a0a-4R-xmp"/>
+                        <outlet property="searchContentsController" destination="vx9-ld-HC9" id="VgV-RK-60E"/>
+                        <outlet property="searchResultsDataSource" destination="vx9-ld-HC9" id="zb2-Gx-2TD"/>
+                        <outlet property="searchResultsDelegate" destination="vx9-ld-HC9" id="mg2-AD-931"/>
+                    </connections>
+                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="2894" y="851"/>
         </scene>
