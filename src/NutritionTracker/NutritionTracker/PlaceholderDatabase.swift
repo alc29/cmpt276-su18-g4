@@ -14,6 +14,7 @@ import RealmSwift
 
 /**
 Fake database for testing, until integration with actual.
+//TODO rename to Database
 */
 class PlaceholderDatabase {
 	static let sharedInstance = PlaceholderDatabase()
