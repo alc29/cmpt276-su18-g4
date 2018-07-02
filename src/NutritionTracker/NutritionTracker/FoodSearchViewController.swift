@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+Controls the search bar & search results displayed in the Search view.
+*/
 class FoodSearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 	//MARK: Properties
 	@IBOutlet weak var tableView: UITableView!
@@ -80,7 +83,6 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		
 		cell.textLabel!.text = foodItem.getName()
 		cell.detailTextLabel!.text = "todo candy.category"
-		print("returning cell")
 		return cell
 	}
 	

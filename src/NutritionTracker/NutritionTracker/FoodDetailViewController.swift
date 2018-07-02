@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Charts
 
 class FoodDetailViewController: UIViewController {
 	@IBOutlet weak var foodName: UILabel!
@@ -28,6 +29,8 @@ class FoodDetailViewController: UIViewController {
 				title = "TODO Food Item Detail Title"
 			}
 		}
+		
+		//TODO display graph of foodItem's nutrients
 	}
 	
 
