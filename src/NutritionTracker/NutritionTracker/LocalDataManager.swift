@@ -9,14 +9,10 @@
 import Foundation
 import RealmSwift
 
-//TODO only 1 instance should exist at a time.
 class LocalDataManager {
-//	@objc private dynamic var userRealm?
+	static let sharedInstance = LocalDataManager()
+	private init() {}
 	
-//	init() {
-//		//TODO load userRealm
-//	}
-//
 //	func saveMeal(newMeal: String) { //TODO Meal Class
 //		let realm = try! Realm()
 //		try!realm.write {

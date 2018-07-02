@@ -25,6 +25,15 @@ class PlaceholderDatabase {
 		return Amount(Float(arc4random_uniform(10)))
 	}
 	
+//	func search(searchTerms: String) -> [FoodItem] {
+//
+//	}
+	
+//	func search(category: ) {
+//
+//	}
+	
+	//return the nutrients in the given food
 	func getNutrients(fromFoodId: Int) -> [Nutrient] {
 		//return an array of nutrients corresponding to the given foodId
 		var nutrients = [Nutrient]()

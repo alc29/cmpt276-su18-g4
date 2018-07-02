@@ -13,7 +13,7 @@ import Charts
 
 class GraphSettings: Object {
 	//MARK: Properties
-	@objc var selectedDate = Date() //the date the graph should display. should default to current date and time.
+	@objc var selectedDate = Date() //the date the graph should display when first loading.
 	//@objc var dateFormat = ""
 	//current date
 	//unit
@@ -35,6 +35,7 @@ class GraphViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		initGraphAppearanceSettings()
 		
 		//get settings from realm, if none create new & add to realm.
 		let realm = try! Realm()
@@ -51,26 +52,17 @@ class GraphViewController: UIViewController {
 		}
 		assert(self.graphSettings != nil)
 		
-		//TESt print saved Meals
-		let mealResults = realm.objects(Meal.self)
-		print("num meals: \(mealResults.count)")
-		
 		//refresh graph after getting new data or updating settings.
 		updateGraphData()
     }
 	
 	//update the data that should fill this graph.
 	private func updateGraphData() {
-		//TODO use different colors for each tag
-//		let colors = [NSUIColor.red, NSUIColor.orange, NSUIColor.yellow, NSUIColor.green, NSUIColor.blue, NSUIColor.purple, NSUIColor.gray]
-//		var colorCount = 0
-		
-		//Use graphSettings to determine how & what data should be displayed
-		let date = graphSettings!.getDate()
 		let data = LineChartData() //This is the object that will be added to the chart
 		
 		//get meals within desired timeframe
 		let realm = try! Realm()
+		let date = graphSettings!.getDate() //use date to determine which meals to 
 		let meals = realm.objects(Meal.self) //(get all meals for testing)
 		let tags = [Nutrient.Name.TestBitterNutrientA, Nutrient.Name.TestBitterNutrientB] //TODO load tags from user settings
 		
@@ -78,21 +70,13 @@ class GraphViewController: UIViewController {
 		for tag in tags { //for each tag
 			var lineEntries = [ChartDataEntry]()
 			for meal in meals { //for each meal
-//				for foodItem in meal.getFoodItems() {
-//					let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
-					//let foodAmount = foodItem.getAmount() //TODO use getAmountOf(tag) instead
-					//let nutrientAmount = foodItem.getAmountOf(nutrient: tag, fromFoodId: foodItem.getFoodId())
-					//nutrientAmount += foodItem.getAmountOf(nutrient: tag, fromFoodId: foodItem.getFoodId())
-//				}
 				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
 				let nutrientAmount = meal.getAmountOf(nutrient: tag)
 				let entry = ChartDataEntry(x: Double(dayOfMonth!), y: Double(nutrientAmount.getAmount()))
 				lineEntries.append(entry)
 			}
 			let line = LineChartDataSet(values: lineEntries, label: "\(tag)")
-			//line.colors = colors[colorCount]
-			//colorCount += 1
-			//if (colorCount == colors.count) {colorCount = 0 }
+			//TODO set random line color
 			data.addDataSet(line)
 		}
 		
@@ -105,6 +89,7 @@ class GraphViewController: UIViewController {
 	
 	private func reloadGraph(_ data: LineChartData, _ date: String) {
 		graph.data = data
+		graph.notifyDataSetChanged()
 		graph.chartDescription?.text = date
 	}
 
@@ -113,6 +98,20 @@ class GraphViewController: UIViewController {
 	func updateGraphSettings() {
 		//refresh graph for new settings
 		updateGraphData()
+	}
+	
+	//AKN: https://stackoverflow.com/questions/25050309/swift-random-float-between-0-and-1
+	func randColor() -> UIColor {
+		let r = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+		let g = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+		let b = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
+		return UIColor(red: r, green: g, blue: b, alpha: 1.0)
+	}
+	
+	
+	func initGraphAppearanceSettings() {
+		
+
 	}
 
     override func didReceiveMemoryWarning() {

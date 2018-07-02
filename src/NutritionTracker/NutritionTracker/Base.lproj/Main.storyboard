@@ -162,7 +162,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hzv-RF-h3o" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3132" y="35.532233883058474"/>
+            <point key="canvasLocation" x="3094" y="36"/>
         </scene>
         <!--Food Input View Controller-->
         <scene sceneID="P08-aR-PtD">
@@ -184,7 +184,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ROF-Np-Sqg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3023" y="855"/>
+            <point key="canvasLocation" x="2894" y="851"/>
         </scene>
         <!--Category Table View Controller-->
         <scene sceneID="go1-SL-dvW">
@@ -221,7 +221,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vdm-Kj-XfS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3893.5999999999999" y="853.22338830584715"/>
+            <point key="canvasLocation" x="3689" y="851"/>
         </scene>
         <!--Graph View Controller-->
         <scene sceneID="1c1-3o-Kky">
@@ -266,7 +266,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PgC-vR-RRW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3925.5999999999999" y="-79.610194902548727"/>
+            <point key="canvasLocation" x="3929" y="36"/>
         </scene>
         <!--Food Input View Controller-->
         <scene sceneID="UeZ-lv-HnZ">
