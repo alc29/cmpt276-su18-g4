@@ -39,13 +39,8 @@ class FoodItem: Object {
 	func getFoodId() -> Int { return foodId }
 	func getName() -> String { return name }
 	func getAmount() -> Amount { return amount! }
-//	func getAmount(desiredUnit: Unit) -> Float {
-//		//TODO convert amount of food to desired unit
-//		return 0.0
-//	}
 	
-	//TODO move method to database?
-	//return amount of given nutrient in this food
+	//return how much of the given nutrient this food contains.
 	func getAmountOf(_ nutrient: Nutrient) -> Amount {
 		let amount = PlaceholderDatabase.sharedInstance.getAmountOf(nutrient: nutrient, fromFoodId: foodId)
 		return amount
