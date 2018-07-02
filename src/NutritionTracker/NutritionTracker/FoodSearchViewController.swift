@@ -40,25 +40,24 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		for i in 0..<10 {
 			results.append(FoodItem(i, "Food item \(i)"))
 		}
+		print("results: \(results.count)")
 		
-//		if let splitViewController = splitViewController {
-//			let controllers = splitViewController.viewControllers
+//		if let navigationController = navigationController {
+//			let controllers = navigationController.viewControllers
 //			foodDetailController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? FoodDetailViewController
 //		}
     }
 
 	override func viewWillAppear(_ animated: Bool) {
-//		if splitViewController!.isCollapsed {
-//			if let selectionIndexPath = tableView.indexPathForSelectedRow {
-//				tableView.deselectRow(at: selectionIndexPath, animated: animated)
-//			}
-//		}
+		if let selectionIndexPath = tableView.indexPathForSelectedRow {
+			tableView.deselectRow(at: selectionIndexPath, animated: animated)
+		}
 		super.viewWillAppear(animated)
 	}
 	
 	// MARK: = Table View
 	func numberOfSections(in tableView: UITableView) -> Int {
-		return 1
+		return 3
 	}
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		if isFiltering() {
@@ -70,28 +69,52 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+		let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell!
 		let foodItem: FoodItem
-		if isFiltering() {
-			foodItem = filteredResults[indexPath.row]
-		} else {
-			foodItem = results[indexPath.row]
-		}
+//		if isFiltering() {
+//			foodItem = filteredResults[indexPath.row]
+//		} else {
+//			foodItem = results[indexPath.row]
+//		}
+		foodItem = results[indexPath.row]
+		
 		cell.textLabel!.text = foodItem.getName()
 		cell.detailTextLabel!.text = "todo candy.category"
+		print("returning cell")
 		return cell
 	}
 	
 	//MARK: - Segues
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//		if segue.identifier == "showDetail" {
+//			if let indexPath = tableView.indexPathForSelectedRow {
+//				let foodItem: FoodItem
+//				if isFiltering() {
+//					foodItem = filteredResults[indexPath.row]
+//				} else {
+//					foodItem = results[indexPath.row]
+//				}
+//				//let controller = (segue.destination as! UINavigationController).topViewController as! FoodDetailViewController
+//				let controller = (segue.destination as! UINavigationController).show as! FoodDetailViewController
+//				controller.foodItem = foodItem
+////				controller.navigationItem.leftBarButtonItem =
+//				controller.navigationItem.leftItemsSupplementBackButton = true
+//			}
+//		}
+		//get destination view controller
+		//assign food item
+	}
 	
+	//Mark: - private instance methods
 	func filterContentForSearchText(_ searchText: String, scope: String = "All") {
 		filteredResults = results.filter({(foodItem: FoodItem) -> Bool in
-			let doesCategoryMatch = (scope == "All") || (true) //|| (candy.category == scope)
-			if searchBarIsEmpty() {
-				return doesCategoryMatch
-			} else {
-				return doesCategoryMatch && foodItem.getName().lowercased().contains(searchText.lowercased())
-			}
+//			let doesCategoryMatch = (scope == "All") || (true) //|| (candy.category == scope)
+//			if searchBarIsEmpty() {
+//				return doesCategoryMatch
+//			} else {
+//				return doesCategoryMatch && foodItem.getName().lowercased().contains(searchText.lowercased())
+//			}
+			return true
 		})
 		tableView.reloadData()
 	}
@@ -99,15 +122,16 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		return searchController.searchBar.text?.isEmpty ?? true
 	}
 	func isFiltering() -> Bool {
-		let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
-		return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+//		let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+//		return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+		return false
 	}
 	
 }
 
 extension FoodSearchViewController: UISearchBarDelegate {
 	//MARK: - UISearchBar Delegate
-	func searchBar(_ searchBar: UISearchBar, selectedScopeButotnIndexDidChange selectedScope: Int) {
+	func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
 		filterContentForSearchText(searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
 	}
 }
