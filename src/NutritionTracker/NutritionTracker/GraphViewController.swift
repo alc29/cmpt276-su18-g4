@@ -75,7 +75,7 @@ class GraphViewController: UIViewController {
 				let entry = ChartDataEntry(x: Double(dayOfMonth!), y: Double(nutrientAmount.getAmount()))
 				lineEntries.append(entry)
 			}
-			let line = LineChartDataSet(values: lineEntries, label: "\(tag)")
+			let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
 			//TODO set random line color
 			data.addDataSet(line)
 		}

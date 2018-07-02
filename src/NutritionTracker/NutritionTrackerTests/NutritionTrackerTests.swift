@@ -80,7 +80,7 @@ class NutritionTrackerTests: XCTestCase {
 		//XCTAssertNil(foodList.remove(0))
 	}
 	
-	//MARK: Amount
+	//MARK: Amount class
 	func testAmountDefault() {
 		let amount = Amount()
 		XCTAssert(amount.getAmount() == 0.0 as Float)
@@ -103,12 +103,7 @@ class NutritionTrackerTests: XCTestCase {
 	
 	
 	
-	//MARK: provided
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
+	//MARK: Performance
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {

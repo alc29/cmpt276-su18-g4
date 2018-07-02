@@ -13,4 +13,6 @@ enum Unit: String {
 	case Miligram
 	case Microgram
 	case IU //international unit
+	case KJ
+	case KCAL
 }
