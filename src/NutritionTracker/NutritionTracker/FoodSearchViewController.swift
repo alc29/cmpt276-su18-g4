@@ -108,6 +108,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	//Mark: - private instance methods
 	func filterContentForSearchText(_ searchText: String, scope: String = "All") {
 		filteredResults = results.filter({(foodItem: FoodItem) -> Bool in
+			//TODO implement if we want to filter results by a category (FoodGroup)
 //			let doesCategoryMatch = (scope == "All") || (true) //|| (candy.category == scope)
 //			if searchBarIsEmpty() {
 //				return doesCategoryMatch
