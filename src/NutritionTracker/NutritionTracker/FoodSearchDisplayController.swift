@@ -8,6 +8,6 @@
 
 import UIKit
 
-class FoodSearch: UISearchDisplayController {
+class FoodSearchDisplayController: UISearchDisplayController {
 
 }
