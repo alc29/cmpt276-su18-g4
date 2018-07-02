@@ -28,6 +28,11 @@ class FoodDetailViewController: UIViewController {
 				foodDescription.text = "TODO descripe food nutrients"
 				title = "TODO Food Item Detail Title"
 			}
+		} else {
+			foodItem = FoodItem(12345, "Else Food item")
+			foodName.text = foodItem!.getName()
+			foodDescription.text = "TODO descripe food nutrients"
+			title = "TODO Food Item Detail Title"
 		}
 		
 		//TODO display graph of foodItem's nutrients

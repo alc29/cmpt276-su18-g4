@@ -9,7 +9,8 @@
 import UIKit
 
 /**
-Controls the search bar & search results displayed in the Search view.
+	Controls the search bar & search results displayed in the Search view.
+	Passes a selected food to the FoodDetailViewController.
 */
 class FoodSearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 	//MARK: Properties
@@ -88,24 +89,18 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	
 	//MARK: - Segues
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//		if segue.identifier == "showDetail" {
-//			if let indexPath = tableView.indexPathForSelectedRow {
-//				let foodItem: FoodItem
-//				if isFiltering() {
-//					foodItem = filteredResults[indexPath.row]
-//				} else {
-//					foodItem = results[indexPath.row]
-//				}
-//				//let controller = (segue.destination as! UINavigationController).topViewController as! FoodDetailViewController
-//				let controller = (segue.destination as! UINavigationController).show as! FoodDetailViewController
-//				controller.foodItem = foodItem
-////				controller.navigationItem.leftBarButtonItem =
-//				controller.navigationItem.leftItemsSupplementBackButton = true
-//			}
-//		}
-		//get destination view controller
-		//assign food item
+
+		//Pass selected FoodItem to FoodDetailViweController
+		if (segue.identifier == "selectFoodItem") {
+			let foodDetailController: FoodDetailViewController = segue.destination as! FoodDetailViewController
+			let foodItem: FoodItem
+			if let indexPath = tableView.indexPathForSelectedRow {
+				foodItem = results[indexPath.row]
+				foodDetailController.foodItem = foodItem
+			}
+		}
 	}
+		
 	
 	//Mark: - private instance methods
 	func filterContentForSearchText(_ searchText: String, scope: String = "All") {

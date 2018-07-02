@@ -253,7 +253,7 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                         <connections>
-                                            <segue destination="HI8-ch-49d" kind="show" identifier="showDetail" id="GsG-9f-fxF"/>
+                                            <segue destination="HI8-ch-49d" kind="show" identifier="selectFoodItem" id="GsG-9f-fxF"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
