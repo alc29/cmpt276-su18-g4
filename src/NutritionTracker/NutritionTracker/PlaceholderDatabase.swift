@@ -20,28 +20,26 @@ class PlaceholderDatabase {
 	private init() {}
 	
 	//let amount =  PlaceholderDatabase.sharedInstance.getAmountOf(nutrient: nutrient, fromFoodId: foodId);
-	func getAmountOf(nutrient: Nutrient.Name, fromFoodId: Int) -> Amount {
+	func getAmountOf(nutrient: Nutrient, fromFoodId: Int) -> Amount {
 		//TODO return standard amount of the nutrient that corresponds to the food (foodId)
 		return Amount(Float(arc4random_uniform(10)))
 	}
 	
 //	func search(searchTerms: String) -> [FoodItem] {
-//
 //	}
 	
 //	func search(category: ) {
-//
 //	}
 	
 	//return the nutrients in the given food
-	func getNutrients(fromFoodId: Int) -> [Nutrient] {
+	func getNutrients(fromFoodId: Int) -> [FoodItemNutrient] {
 		//return an array of nutrients corresponding to the given foodId
-		var nutrients = [Nutrient]()
+		var nutrients = [FoodItemNutrient]()
 		//TODO get food from database, and create list of nutrients.
 		
 		//TEST - for now return a fake list of nutrients.
-		nutrients.append(Nutrient(Nutrient.Name.TestBitterNutrientA, AmountPer()))
-		nutrients.append(Nutrient(Nutrient.Name.TestBitterNutrientB, AmountPer()))
+		nutrients.append(FoodItemNutrient(Nutrient.TestBitterNutrientA, AmountPer()))
+		nutrients.append(FoodItemNutrient(Nutrient.TestBitterNutrientB, AmountPer()))
 		return nutrients
 	}
 }

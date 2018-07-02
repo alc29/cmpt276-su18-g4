@@ -64,7 +64,7 @@ class GraphViewController: UIViewController {
 		let realm = try! Realm()
 		let date = graphSettings!.getDate() //use date to determine which meals to 
 		let meals = realm.objects(Meal.self) //(get all meals for testing)
-		let tags = [Nutrient.Name.TestBitterNutrientA, Nutrient.Name.TestBitterNutrientB] //TODO load tags from user settings
+		let tags = [Nutrient.TestBitterNutrientA, Nutrient.TestBitterNutrientB] //TODO load tags from user settings
 		
 		//construct graph data
 		for tag in tags { //for each tag

@@ -26,6 +26,7 @@
 		0AB4DBC920E8073C00BD052F /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB4DBC820E8073C00BD052F /* CategoryTableViewController.swift */; };
 		0AB4DBCB20E8075700BD052F /* CategoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB4DBCA20E8075700BD052F /* CategoryTableViewCell.swift */; };
 		0AB4DBCD20E8090800BD052F /* FoodSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB4DBCC20E8090800BD052F /* FoodSearchViewController.swift */; };
+		0AC0717B20E9ED6800FD9657 /* FoodItemNutrient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC0717A20E9ED6800FD9657 /* FoodItemNutrient.swift */; };
 		0AC9B18F20E8176100334127 /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC9B18E20E8176100334127 /* Meal.swift */; };
 		0AC9B19320E8514A00334127 /* PlaceholderDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC9B19220E8514A00334127 /* PlaceholderDatabase.swift */; };
 		0AC9B19520E8667100334127 /* Nutrient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC9B19420E8667100334127 /* Nutrient.swift */; };
@@ -68,6 +69,7 @@
 		0AB4DBC820E8073C00BD052F /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 		0AB4DBCA20E8075700BD052F /* CategoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewCell.swift; sourceTree = "<group>"; };
 		0AB4DBCC20E8090800BD052F /* FoodSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodSearchViewController.swift; sourceTree = "<group>"; };
+		0AC0717A20E9ED6800FD9657 /* FoodItemNutrient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemNutrient.swift; sourceTree = "<group>"; };
 		0AC9B18E20E8176100334127 /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
 		0AC9B19220E8514A00334127 /* PlaceholderDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceholderDatabase.swift; sourceTree = "<group>"; };
 		0AC9B19420E8667100334127 /* Nutrient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nutrient.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 				0AC9B19420E8667100334127 /* Nutrient.swift */,
 				0AC9B19620E86EC800334127 /* AmountPer.swift */,
 				0AA0632620E591A900CCE2FD /* FoodItem.swift */,
+				0AC0717A20E9ED6800FD9657 /* FoodItemNutrient.swift */,
 				0A6D420020E6F38600C3430A /* FoodItemList.swift */,
 				0AC9B18E20E8176100334127 /* Meal.swift */,
 				0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */,
@@ -383,6 +386,7 @@
 				0AC9B19720E86EC800334127 /* AmountPer.swift in Sources */,
 				0A6D41FD20E5C06100C3430A /* LocalDataManager.swift in Sources */,
 				0AB4DBC620E7F9BB00BD052F /* FoodInputViewController.swift in Sources */,
+				0AC0717B20E9ED6800FD9657 /* FoodItemNutrient.swift in Sources */,
 				0AC9B19320E8514A00334127 /* PlaceholderDatabase.swift in Sources */,
 				0AC9B18F20E8176100334127 /* Meal.swift in Sources */,
 				0A8F559520E0947B00B9E793 /* CatalogViewController.swift in Sources */,

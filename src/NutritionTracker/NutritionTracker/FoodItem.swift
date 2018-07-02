@@ -46,7 +46,7 @@ class FoodItem: Object {
 	
 	//TODO move method to database?
 	//return amount of given nutrient in this food
-	func getAmountOf(_ nutrient: Nutrient.Name) -> Amount {
+	func getAmountOf(_ nutrient: Nutrient) -> Amount {
 		let amount = PlaceholderDatabase.sharedInstance.getAmountOf(nutrient: nutrient, fromFoodId: foodId)
 		return amount
 	}

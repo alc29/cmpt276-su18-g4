@@ -8,26 +8,21 @@
 
 import Foundation
 
-//Used by FoodItem class, represents a specific nutrient, and its amount per some other amount.
+//Represents a specific nutrient
 class Nutrient {
-	
-	
-	//map a nutrient name (key) to it's nutriend_id in the database.
-	enum Name: Int {
-		//TODO add nutrients
-		case TestBitterNutrientA = 276
-		case TestBitterNutrientB = 277
-		case Calcium
-	}
-	
-	private var name: Name
-	private var amountPer: AmountPer
+	static let Glucose = Nutrient(211, "Glucose", Unit.Miligram)
 
-	init(_ name: Name, _ amountPer: AmountPer) {
-		self.name = name;
-		self.amountPer = amountPer;
-	}
-	func getName() -> Nutrient.Name { return name; }
-	func getAmountPer() -> AmountPer { return amountPer}
+	static let TestBitterNutrientA = Nutrient(276, "TestBitterNutrientA", Unit.Miligram)
+	static let TestBitterNutrientB = Nutrient(277, "TestBitterNutrientB", Unit.Miligram)
 	
+	
+	let nutrientId: Int
+	let name: String
+	let unit: Unit
+
+	init(_ nutrientId: Int, _ name: String, _ unit: Unit) {
+		self.nutrientId = nutrientId
+		self.name = name
+		self.unit = unit
+	}
 }
