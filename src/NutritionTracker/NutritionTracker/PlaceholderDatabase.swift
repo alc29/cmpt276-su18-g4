@@ -31,8 +31,17 @@ class PlaceholderDatabase {
 		return AmountPer() //TODO replace placeholder
 	}
 	
-//	func search(searchTerms: String) -> [FoodItem] {
-//	}
+	func search(_ searchTerms: String) -> [FoodItem] {
+		return testSearch()
+	}
+	
+	private func testSearch() -> [FoodItem] {
+		var items = [FoodItem]()
+		for i in 0...12 {
+			items.append(FoodItem(1000+i, "Searched food item \(i)"))
+		}
+		return items
+	}
 	
 //	func search(category: ) {
 //	}
