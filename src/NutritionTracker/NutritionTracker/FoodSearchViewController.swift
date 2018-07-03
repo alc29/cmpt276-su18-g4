@@ -71,7 +71,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		//if isFiltering() {
 		//	searchFooter.setIsFilteringToShow(filteredItemCount: filteredResults.count, of: results.count)
 		//	return filteredResults.count
-		//}
+		//} 
 		//searchFooter.setNotFiltering()
 		//return results.count
 		return searchResults.count

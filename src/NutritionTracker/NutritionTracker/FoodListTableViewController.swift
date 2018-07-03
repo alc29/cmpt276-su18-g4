@@ -42,6 +42,17 @@ class FoodListTableViewController: UITableViewController {
         // #warning Incomplete implementation, return the number of rows
         return 0
     }
+	
+	//called when a cell is tapped. present FoodDetailView when a FoodItem cell is tapped
+	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		print("cell selected")
+		//TODO present FoodDetailView
+		//TODO add instance properties
+		//let foodDetailView = FoodDetailViewController()
+		//foodDetailView.foodItem = foodItems[indexPath.row]
+		//self.navigationController!.pushViewController(foodDetailView, animated: false)
+	}
+
 
     /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

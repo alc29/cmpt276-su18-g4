@@ -48,19 +48,15 @@ class CategoryTableViewController: UITableViewController {
         return foodGroups.count
     }
 	
-	//called when a cell is tapped.
+	//called when a cell is tapped. dipslay a list of foods corresponding to the food group that was tapped.
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		print("cell selected")
-		//TODO present FoodDetailView
+		//TODO LEFT OFF HERE 
 	}
 
-	
+	//Display each cell as a FoodGroup
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-		
 		cell.textLabel!.text = foodGroups[indexPath.row].name
-        // Configure the cell...
-
         return cell
     }
 	

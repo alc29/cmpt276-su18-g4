@@ -42,8 +42,8 @@ class FoodItem: Object {
 	
 	//return how much of the given nutrient this food contains.
 	func getAmountOf(_ nutrient: Nutrient) -> Amount {
-		let amount = PlaceholderDatabase.sharedInstance.getAmountOf(nutrient: nutrient, fromFoodId: foodId)
-		return amount
+		let amount = PlaceholderDatabase.sharedInstance.getAmountPerOf(nutrient: nutrient, foodId: foodId)
+		return amount.getAmount()
 	}
 	
 	override static func primaryKey() -> String? {
