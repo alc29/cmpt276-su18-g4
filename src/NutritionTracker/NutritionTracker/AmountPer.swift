@@ -16,4 +16,10 @@ class AmountPer {
 		self.amount = amount
 		self.per = per
 	}
+	func getAmount() -> Amount {
+		return amount
+	}
+	func getPer() -> Amount {
+		return per
+	}
 }
