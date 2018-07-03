@@ -13,7 +13,6 @@ class MainMenuViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		print("viewdidload")
 		printList()
 	}
 	
@@ -26,10 +25,9 @@ class MainMenuViewController: UIViewController {
 		let realm = try! Realm()
 		let results = realm.objects(FoodItemList.self)
 		if (results.count == 0) {
-			print("no list yet")
 		} else {
 			let foodItemList: FoodItemList! = results.first
-			print("items in list: \(foodItemList.count())")
+			//print("items in list: \(foodItemList.count())")
 		}
 	}
 

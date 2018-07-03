@@ -151,7 +151,7 @@ class GraphViewController: UIViewController {
 		
 		assert(foodItemList != nil)
 		
-		print("added: " + foodItem.getName())
+		//print("added: " + foodItem.getName())
 //		add food to food item list
 		try! realm.write {
 			foodItemList!.add(foodItem)

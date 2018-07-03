@@ -44,7 +44,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		for i in 0..<10 {
 			results.append(FoodItem(i, "Food item \(i)"))
 		}
-		print("results: \(results.count)")
+		//print("results: \(results.count)")
 		
 //		if let navigationController = navigationController {
 //			let controllers = navigationController.viewControllers

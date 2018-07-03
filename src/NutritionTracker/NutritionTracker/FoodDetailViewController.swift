@@ -36,6 +36,7 @@ class FoodDetailViewController: UIViewController {
 		}
 		
 		//TODO display graph of foodItem's nutrients
+		
 	}
 	
 
