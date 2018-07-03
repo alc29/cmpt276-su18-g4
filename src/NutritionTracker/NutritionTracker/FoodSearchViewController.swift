@@ -93,7 +93,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		//Pass selected FoodItem to FoodDetailViweController
 		if (segue.identifier == "selectFoodItem") {
 			let foodDetailController: FoodDetailViewController = segue.destination as! FoodDetailViewController
-			let foodItem: FoodItem
+			let foodItem: FoodItem!
 			if let indexPath = tableView.indexPathForSelectedRow {
 				foodItem = results[indexPath.row]
 				foodDetailController.foodItem = foodItem

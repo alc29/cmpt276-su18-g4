@@ -26,6 +26,11 @@ class PlaceholderDatabase {
 		return Amount(Float(arc4random_uniform(10)))
 	}
 	
+	func getAmountPerOf(nutrient: Nutrient, fromFoodId: Int) -> AmountPer {
+		//TODO return the proper AmountPer
+		return AmountPer() //TODO replace placeholder
+	}
+	
 //	func search(searchTerms: String) -> [FoodItem] {
 //	}
 	

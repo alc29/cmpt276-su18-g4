@@ -9,35 +9,63 @@
 import UIKit
 import Charts
 
+/**
+Display a bar chart of what nutrients are in a given FoodItem.
+x-axis: a nutrient
+y-axis: some AmountPer
+
+The specific nutrients to display can be set by the user.
+*/
 class FoodDetailViewController: UIViewController {
 	@IBOutlet weak var foodName: UILabel!
-	@IBOutlet weak var foodDescription: UILabel!
+	@IBOutlet weak var barGraph: BarChartView!
+	var nutrientsToDisplay = [Nutrient]()
+	
 	var foodItem: FoodItem? {
 		didSet { configureView() }
 	}
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		//TODO load from settings, the desired nutrients to display
+		nutrientsToDisplay.append(Nutrient.TestBitterNutrientA)
+		nutrientsToDisplay.append(Nutrient.TestBitterNutrientB)
+		
 		configureView()
     }
 
 	func configureView() {
 		if let foodItem = foodItem {
-			if let foodName = foodName, let foodDescription = foodDescription {
+			if let foodName = foodName {
 				foodName.text = foodItem.getName()
-				foodDescription.text = "TODO descripe food nutrients"
-				title = "TODO Food Item Detail Title"
+				title = "Food Nutrient Information"
+				
+				//display bar graph of foodItem's nutrients
+				loadGraph()
 			}
 		} else {
-			foodItem = FoodItem(12345, "Else Food item")
-			foodName.text = foodItem!.getName()
-			foodDescription.text = "TODO descripe food nutrients"
-			title = "TODO Food Item Detail Title"
+			foodName.text = "Error: no food item was selected."
+			title = "Error"
 		}
-		
-		//TODO display graph of foodItem's nutrients
-		
 	}
 	
+	func loadGraph() {
+		var count = 1
+		var entries = [BarChartDataEntry]()
+		for nut in nutrientsToDisplay {
+			
+			let amountPer = PlaceholderDatabase.sharedInstance.getAmountPerOf(nutrient: nut, fromFoodId: foodItem!.getFoodId())
+			let amount = amountPer.getAmount().getAmount()
+			let entry = BarChartDataEntry(x: Double(count), y: Double(amount))
+			entries.append(entry)
+			count += 1
+			
+		}
+		let dataSet = BarChartDataSet(values: entries, label: "TODO label")
+		let data = BarChartData(dataSet: dataSet)
+		barGraph.data = data
+		
+	}
 
 }
