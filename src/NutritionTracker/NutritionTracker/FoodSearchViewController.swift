@@ -27,8 +27,9 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // setup search controller
-		searchController.searchResultsUpdater = self
+        // Setup search controller
+		// uncomment to update search results on any change in the search bar.
+		//searchController.searchResultsUpdater = self
 		searchController.obscuresBackgroundDuringPresentation = false
 		searchController.searchBar.placeholder = "Search Foods"
 		navigationItem.searchController = searchController
@@ -146,7 +147,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 
 extension FoodSearchViewController: UISearchBarDelegate {
 	//MARK: - UISearchBar Delegate
-	func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 	//func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
 		//filterContentForSearchText(searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
 		searchAndUpdateResults(searchBar.text!)
@@ -154,12 +155,14 @@ extension FoodSearchViewController: UISearchBarDelegate {
 	
 }
 
-extension FoodSearchViewController: UISearchResultsUpdating {
-	// MARK: - UISearchResultsUpdating Delegate
-	func updateSearchResults(for searchController: UISearchController) {
-		//let searchBar = searchController.searchBar
-		//let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
-		//filterContentForSearchText(searchController.searchBar.text!, scope: scope)
-		searchAndUpdateResults(searchController.searchBar.text!)
-	}
-}
+//uncomment to update search results on any change in the search bar.
+//extension FoodSearchViewController: UISearchResultsUpdating {
+//	// MARK: - UISearchResultsUpdating Delegate
+//	func updateSearchResults(for searchController: UISearchController) {
+//		//let searchBar = searchController.searchBar
+//		//let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+//		//filterContentForSearchText(searchController.searchBar.text!, scope: scope)
+//		searchAndUpdateResults(searchController.searchBar.text!)
+//	}
+//}
+
