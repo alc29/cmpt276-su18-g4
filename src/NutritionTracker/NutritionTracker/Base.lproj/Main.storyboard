@@ -120,7 +120,7 @@
                                         <rect key="frame" x="0.0" y="132" width="255" height="41"/>
                                         <state key="normal" title="FoodSearch"/>
                                         <connections>
-                                            <segue destination="PiD-Zx-ggk" kind="show" id="Azn-lP-Wn8"/>
+                                            <segue destination="It3-dy-aB4" kind="show" id="HWs-kC-2o2"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tqw-nZ-AdT">
@@ -199,22 +199,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8EA-1M-eXP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2729" y="1789"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="2na-ve-32S">
-            <objects>
-                <navigationController id="PiD-Zx-ggk" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ci9-RO-U0e">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="It3-dy-aB4" kind="relationship" relationship="rootViewController" id="2bp-ZR-nHh"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="d0h-EU-mmQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1870" y="1050"/>
         </scene>
         <!--Food Search View Controller-->
         <scene sceneID="1iX-au-uVa">
