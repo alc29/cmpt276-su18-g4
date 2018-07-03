@@ -20,6 +20,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	var foodDetailController: FoodDetailViewController? = nil
 	var results = [FoodItem]()
 	var filteredResults = [FoodItem]()
+	var searchResults = [FoodItem]()
 	let searchController = UISearchController(searchResultsController: nil)
 	
 	//MARK: - View Setup
@@ -32,6 +33,13 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		searchController.searchBar.placeholder = "Search Foods"
 		navigationItem.searchController = searchController
 		definesPresentationContext = true
+		//make sure search bar isn't hidden
+		if #available(iOS 11.0, *) {
+			self.navigationItem.searchController = self.searchController
+			self.navigationItem.hidesSearchBarWhenScrolling = false
+		} else {
+			tableView.tableHeaderView = searchController.searchBar
+		}
 		
 		//setup the scope bar
 		searchController.searchBar.scopeButtonTitles = ["All", "Meat", "Vegges"]
@@ -44,12 +52,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		for i in 0..<10 {
 			results.append(FoodItem(i, "Food item \(i)"))
 		}
-		//print("results: \(results.count)")
 		
-//		if let navigationController = navigationController {
-//			let controllers = navigationController.viewControllers
-//			foodDetailController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? FoodDetailViewController
-//		}
     }
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -59,17 +62,18 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		super.viewWillAppear(animated)
 	}
 	
-	// MARK: = Table View
+	// MARK: = Table View Delegate
 	func numberOfSections(in tableView: UITableView) -> Int {
-		return 3
+		return 1
 	}
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		if isFiltering() {
-			searchFooter.setIsFilteringToShow(filteredItemCount: filteredResults.count, of: results.count)
-			return filteredResults.count
-		}
-		searchFooter.setNotFiltering()
-		return results.count
+		//if isFiltering() {
+		//	searchFooter.setIsFilteringToShow(filteredItemCount: filteredResults.count, of: results.count)
+		//	return filteredResults.count
+		//}
+		//searchFooter.setNotFiltering()
+		//return results.count
+		return searchResults.count
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -80,12 +84,15 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 //		} else {
 //			foodItem = results[indexPath.row]
 //		}
-		foodItem = results[indexPath.row]
+		
+		foodItem = searchResults[indexPath.row]
 		
 		cell.textLabel!.text = foodItem.getName()
-		cell.detailTextLabel!.text = "todo candy.category"
+		cell.detailTextLabel!.text = "todo FoodItem.getFoodGroup()"
 		return cell
 	}
+	
+
 	
 	//MARK: - Segues
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -112,33 +119,47 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 //			} else {
 //				return doesCategoryMatch && foodItem.getName().lowercased().contains(searchText.lowercased())
 //			}
-			return true
+			return false
 		})
 		tableView.reloadData()
 	}
+	
 	func searchBarIsEmpty() -> Bool {
 		return searchController.searchBar.text?.isEmpty ?? true
 	}
 	func isFiltering() -> Bool {
-//		let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
-//		return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+		//let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+		//return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
 		return false
 	}
 	
-}
+	//MARK: - Search
+	func searchAndUpdateResults(_ searchTerm: String) {
+		searchResults.removeAll()
+		searchResults = PlaceholderDatabase.sharedInstance.search(searchTerm)
+		tableView.reloadData()
+	}
+
+	
+} //end of main class
+
 
 extension FoodSearchViewController: UISearchBarDelegate {
 	//MARK: - UISearchBar Delegate
 	func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-		filterContentForSearchText(searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
+	//func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+		//filterContentForSearchText(searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
+		searchAndUpdateResults(searchBar.text!)
 	}
+	
 }
 
 extension FoodSearchViewController: UISearchResultsUpdating {
 	// MARK: - UISearchResultsUpdating Delegate
 	func updateSearchResults(for searchController: UISearchController) {
-		let searchBar = searchController.searchBar
-		let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
-		filterContentForSearchText(searchController.searchBar.text!, scope: scope)
+		//let searchBar = searchController.searchBar
+		//let scope = searchBar.scopeButtonTitles![searchBar.selectedScopeButtonIndex]
+		//filterContentForSearchText(searchController.searchBar.text!, scope: scope)
+		searchAndUpdateResults(searchController.searchBar.text!)
 	}
 }
