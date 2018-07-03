@@ -26,7 +26,7 @@ class MainMenuViewController: UIViewController {
 		let results = realm.objects(FoodItemList.self)
 		if (results.count == 0) {
 		} else {
-			let foodItemList: FoodItemList! = results.first
+			//let foodItemList: FoodItemList! = results.first
 			//print("items in list: \(foodItemList.count())")
 		}
 	}

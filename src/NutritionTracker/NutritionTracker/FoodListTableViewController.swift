@@ -1,69 +1,58 @@
 //
-//  CategoryTableViewController.swift
+//  FoodListTableViewController.swift
 //  NutritionTracker
 //
-//  Created by alc29 on 2018-06-30.
+//  Created by alc29 on 2018-07-02.
 //  Copyright © 2018 alc29. All rights reserved.
 //
+
 /**
-Display Predetermined food groups
-when a cell is selected, fetch or search the food items associated with the food group
-and display them as a new table view.
+Display the supplied list of FoodItems.
+Allow for the selection of a FoodItem from the table.
 */
 
 import UIKit
 
-class CategoryTableViewController: UITableViewController {
-	private let defaultFoodGroups = [FoodGroup.Dairy_and_Egg_Products,
-									 FoodGroup.Snacks,
-									 FoodGroup.Beverages,
-									 FoodGroup.Vegetables]
-	var foodGroups = [FoodGroup]()
+class FoodListTableViewController: UITableViewController {
+	var foodItemList = FoodItemList()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		print("catelog view did load")
-		foodGroups = defaultFoodGroups
-		
+
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
-	
-	
-	
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
+
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        // #warning Incomplete implementation, return the number of sections
+        return 0
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return foodGroups.count
+        // #warning Incomplete implementation, return the number of rows
+        return 0
     }
-	
-	//called when a cell is tapped.
-	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		print("cell selected")
-		//TODO present FoodDetailView
-	}
 
-	
+    /*
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-		
-		cell.textLabel!.text = foodGroups[indexPath.row].name
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+
         // Configure the cell...
 
         return cell
     }
-	
+    */
+
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

@@ -33,7 +33,9 @@ struct FoodGroup {
 	static let Soups_Sauces_and_Gravies = FoodGroup(6, "Soups_Sauces_and_Gravies")
 	static let Spices_and_Herbs = FoodGroup(2, "Spices_and_Herbs")
 	static let Sweets = FoodGroup(19, "Sweets")
-	static let Vegetables_and_Vegetable_Products = FoodGroup(11, "Vegetables_and_Vegetable_Products")
+	//static let Vegetables_and_Vegetable_Products = FoodGroup(11, "Vegetables_and_Vegetable_Products")
+	static let Vegetables = FoodGroup(11, "Vegetables")
+	
 	
 	let id: Int
 	let name: String

@@ -2,4 +2,69 @@
 <Bucket
    type = "0"
    version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "NutritionTracker/FoodGroup.swift"
+            timestampString = "552286468.7898639"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "23"
+            endingLineNumber = "23"
+            landmarkName = "FoodGroup"
+            landmarkType = "14">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "globalinit_018_96FB93FA2F82F83F6E13C8CFD8079CF49_func11"
+                  moduleName = "NutritionTracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/decay/Documents/alc29/cmpt276-su18-g4/src/NutritionTracker/NutritionTracker/FoodGroup.swift"
+                  timestampString = "552286468.966262"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "NutritionTracker.FoodGroup.Fruits_and_Fruit_Juices.unsafeMutableAddressor : NutritionTracker.FoodGroup"
+                  moduleName = "NutritionTracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/decay/Documents/alc29/cmpt276-su18-g4/src/NutritionTracker/NutritionTracker/FoodGroup.swift"
+                  timestampString = "552286468.975818"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "4">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static NutritionTracker.FoodGroup.Fruits_and_Fruit_Juices.getter : NutritionTracker.FoodGroup"
+                  moduleName = "NutritionTracker"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/decay/Documents/alc29/cmpt276-su18-g4/src/NutritionTracker/NutritionTracker/FoodGroup.swift"
+                  timestampString = "552286468.9843661"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "23"
+                  endingLineNumber = "23"
+                  offsetFromSymbolStart = "52">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
 </Bucket>

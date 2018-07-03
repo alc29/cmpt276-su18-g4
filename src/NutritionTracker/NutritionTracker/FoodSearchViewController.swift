@@ -93,8 +93,6 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		return cell
 	}
 	
-
-	
 	//MARK: - Segues
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
 
