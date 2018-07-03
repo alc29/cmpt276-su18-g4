@@ -50,7 +50,7 @@ class CategoryTableViewController: UITableViewController {
 	
 	//called when a cell is tapped. dipslay a list of foods corresponding to the food group that was tapped.
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		//TODO LEFT OFF HERE 
+		//TODO LEFT OFF HERE
 	}
 
 	//Display each cell as a FoodGroup

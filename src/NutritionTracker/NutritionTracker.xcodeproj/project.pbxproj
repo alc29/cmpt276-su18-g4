@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0A1471F820EB331400731F8D /* FoodListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1471F720EB331400731F8D /* FoodListTableViewController.swift */; };
+		0A1471FA20EB600A00731F8D /* DatabaseWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1471F920EB600900731F8D /* DatabaseWrapper.swift */; };
 		0A219E8D20E72F64005965A9 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A219E8C20E72F64005965A9 /* Amount.swift */; };
 		0A219E8F20E73832005965A9 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A219E8E20E73832005965A9 /* Unit.swift */; };
 		0A6D41FD20E5C06100C3430A /* LocalDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */; };
@@ -49,6 +50,7 @@
 
 /* Begin PBXFileReference section */
 		0A1471F720EB331400731F8D /* FoodListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodListTableViewController.swift; sourceTree = "<group>"; };
+		0A1471F920EB600900731F8D /* DatabaseWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseWrapper.swift; sourceTree = "<group>"; };
 		0A219E8C20E72F64005965A9 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		0A219E8E20E73832005965A9 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManager.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				0AC9B18E20E8176100334127 /* Meal.swift */,
 				0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */,
 				0AC9B19220E8514A00334127 /* PlaceholderDatabase.swift */,
+				0A1471F920EB600900731F8D /* DatabaseWrapper.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -417,6 +420,7 @@
 				0A7B87D420E07E3E00B45D5C /* AppDelegate.swift in Sources */,
 				0AB4DBC920E8073C00BD052F /* CategoryTableViewController.swift in Sources */,
 				0A1471F820EB331400731F8D /* FoodListTableViewController.swift in Sources */,
+				0A1471FA20EB600A00731F8D /* DatabaseWrapper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
