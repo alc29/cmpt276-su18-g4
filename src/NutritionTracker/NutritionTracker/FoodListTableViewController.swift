@@ -36,47 +36,50 @@ class FoodListTableViewController: UITableViewController {
 
 
     // MARK: - Table view data source
-
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+        return 1
     }
 
+	// Return the number of cells to display
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
-        return 0
+        return foodItems.count
+		//return 0
     }
 	
-	//called when a cell is tapped. present FoodDetailView when a FoodItem cell is tapped
+	// Called when a cell is tapped. present FoodDetailView when a FoodItem cell is tapped
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		print("cell selected")
-		//TODO LEFT OFF HERE
-		//TODO present FoodDetailView
-		//TODO add instance properties
-		let foodDetailView = FoodDetailViewController()
-		foodDetailView.foodItem = foodItems[indexPath.row]
-		self.navigationController!.pushViewController(foodDetailView, animated: false)
-		
-		if let selectionIndexPath = tableView.indexPathForSelectedRow {
-			tableView.deselectRow(at: selectionIndexPath, animated: false)
-		}
+
+//		let foodDetailView = FoodDetailViewController()
+//		foodDetailView.foodItem = foodItems[indexPath.row]
+//		self.navigationController!.pushViewController(foodDetailView, animated: false)
+//
+//		if let selectionIndexPath = tableView.indexPathForSelectedRow {
+//			tableView.deselectRow(at: selectionIndexPath, animated: false)
+//		}
 
 	}
 
-
-	
+	// Setup the cells
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+//		var cellToUse: UITableViewCell?
+//		cellToUse = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+//		if cellToUse == nil {
+//			let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "Cell")
+//			cellToUse = cell
+//		}
 
-		let foodItem = foodItems[indexPath.row]
+		let cellToUse = UITableViewCell()
 		
-		cell.textLabel!.text = foodItem.getName()
-		//cell.detailTextLabel!.text = "todo FoodItem.getFoodGroup()"
-		return cell
-
+		let foodItem = foodItems[indexPath.row]
+		cellToUse.textLabel!.text = foodItem.getName()
+		//cellToUse.detailTextLabel!.text = "todo FoodItem.getFoodGroup()"
+		return cellToUse
     }
 	
 
+	
+	// MARK: Provided template methods
+	
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
