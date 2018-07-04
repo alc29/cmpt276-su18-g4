@@ -48,28 +48,20 @@ class FoodListTableViewController: UITableViewController {
 	
 	// Called when a cell is tapped. present FoodDetailView when a FoodItem cell is tapped
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-//		let foodDetailView = FoodDetailViewController()
-//		foodDetailView.foodItem = foodItems[indexPath.row]
-//		self.navigationController!.pushViewController(foodDetailView, animated: false)
-//
-//		if let selectionIndexPath = tableView.indexPathForSelectedRow {
-//			tableView.deselectRow(at: selectionIndexPath, animated: false)
-//		}
-
+		print("item selected")
+		
+		if let indexPath = tableView.indexPathForSelectedRow {
+			let foodDetailView = FoodDetailViewController()
+			let foodItem = foodItems[indexPath.row]
+			foodDetailView.foodItem = foodItem
+			self.navigationController!.pushViewController(foodDetailView, animated: true)
+		}
+		
 	}
 
 	// Setup the cells
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//		var cellToUse: UITableViewCell?
-//		cellToUse = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-//		if cellToUse == nil {
-//			let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "Cell")
-//			cellToUse = cell
-//		}
-
 		let cellToUse = UITableViewCell()
-		
 		let foodItem = foodItems[indexPath.row]
 		cellToUse.textLabel!.text = foodItem.getName()
 		//cellToUse.detailTextLabel!.text = "todo FoodItem.getFoodGroup()"

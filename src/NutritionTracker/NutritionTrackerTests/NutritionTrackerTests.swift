@@ -101,7 +101,28 @@ class NutritionTrackerTests: XCTestCase {
 		XCTAssert(amount.getUnit() == NutritionTracker.Unit.Microgram)
 	}
 	
+	//MARK: - Test FoodGroup class
+	func testFoodGroup_getIdStr() {
+		let dairy = FoodGroup.Dairy_and_Egg_Products
+		let nativeFoods = FoodGroup.American_Indian_Alaska_Native_Foods
+		XCTAssert(dairy.getIdStr() == "0100")
+		XCTAssert(nativeFoods.getIdStr() == "2400")
+	}
 	
+	//MARK: - Database Tests
+	func testGetNutrients() {
+//		let foodId = 01009 //Cheese, cheddar...
+//		var nutrients = [Nutrient]()
+//		nutrients.append(Nutrient.Water)
+//		let returnedNutrients = DatabaseWrapper.sharedInstance.getNutrients(foodId, nutrients)
+//		print("num returned nutrients: \(returnedNutrients.count)")
+		
+		DatabaseWrapper.sharedInstance.getNutrientsAsync("haHAAAAAA", NutritionTrackerTests.printString)
+	}
+	
+	private static func printString(_ str: String) {
+		print(str)
+	}
 	
 	//MARK: Performance
     func testPerformanceExample() {

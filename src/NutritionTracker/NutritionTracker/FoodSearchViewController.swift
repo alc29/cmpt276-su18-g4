@@ -19,7 +19,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	
 	var foodDetailController: FoodDetailViewController? = nil
 	var results = [FoodItem]()
-	var filteredResults = [FoodItem]()
+	//var filteredResults = [FoodItem]()
 	var searchResults = [FoodItem]()
 	let searchController = UISearchController(searchResultsController: nil)
 	
@@ -110,7 +110,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	
 	//Mark: - private instance methods
 	func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-		filteredResults = results.filter({(foodItem: FoodItem) -> Bool in
+//		filteredResults = results.filter({(foodItem: FoodItem) -> Bool in
 			//TODO implement if we want to filter results by a category (FoodGroup)
 //			let doesCategoryMatch = (scope == "All") || (true) //|| (candy.category == scope)
 //			if searchBarIsEmpty() {
@@ -118,9 +118,9 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 //			} else {
 //				return doesCategoryMatch && foodItem.getName().lowercased().contains(searchText.lowercased())
 //			}
-			return false
-		})
-		tableView.reloadData()
+//			return false
+//		})
+//		tableView.reloadData()
 	}
 	
 	func searchBarIsEmpty() -> Bool {
@@ -133,12 +133,31 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	}
 	
 	//MARK: - Search
-	func searchAndUpdateResults(_ searchTerm: String) {
+	func searchAndUpdateResults(_ searchTerm: String) { //query
+//		searchResults.removeAll()
+//		//TODO uncomment when DatabaseWrapper is ready
+//		searchResults = PlaceholderDatabase.sharedInstance.search(searchTerm)
+//		//searchResults = DatabaseWrapper.sharedInstance.search(searchTerm)
+//		tableView.reloadData()
+		
+		DatabaseWrapper.sharedInstance.search(searchTerm, queryCompletion)
+	}
+	
+	func queryCompletion(_ data: Data?) {
+		print("wuery completed")
+		
 		searchResults.removeAll()
-		//TODO uncomment when DatabaseWrapper is ready
-		searchResults = PlaceholderDatabase.sharedInstance.search(searchTerm)
-		//searchResults = DatabaseWrapper.sharedInstance.search(searchTerm)
-		tableView.reloadData()
+		// parse json
+		
+		if (data != nil) {
+			searchResults = DatabaseWrapper.sharedInstance.jsonToFoodItems(data!)
+			
+			DispatchQueue.main.async {
+				self.tableView.reloadData()
+			}
+			
+		}
+		
 	}
 
 	

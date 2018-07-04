@@ -44,7 +44,7 @@ class CategoryTableViewController: UITableViewController {
 	// Called when a cell is tapped. dipslay a table view of the list of foods
 	// corresponding to the food group that was tapped.
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let foodGroupId = foodGroups[indexPath.row].id
+		let foodGroupId = foodGroups[indexPath.row].getIdStr()
 		var foodItems = DatabaseWrapper.sharedInstance.getFoodItemsFrom(foodGroupId: foodGroupId)
 		
 		// TODO Testing = add sample item
@@ -55,6 +55,7 @@ class CategoryTableViewController: UITableViewController {
 		
 		self.navigationController!.pushViewController(vc, animated: true)
 	}
+	
 
 	//Display each cell as a FoodGroup
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
