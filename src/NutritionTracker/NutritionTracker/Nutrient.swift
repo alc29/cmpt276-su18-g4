@@ -129,6 +129,6 @@ struct Nutrient {
 	static let Theobromine = Nutrient(263, "Theobromine", Unit.Miligram)
 	
 	// Test nutrients
-	static let TestBitterNutrientA = Nutrient(276, "TestBitterNutrientA", Unit.Miligram)
-	static let TestBitterNutrientB = Nutrient(277, "TestBitterNutrientB", Unit.Miligram)
+//	static let TestBitterNutrientA = Nutrient(276, "TestBitterNutrientA", Unit.Miligram)
+//	static let TestBitterNutrientB = Nutrient(277, "TestBitterNutrientB", Unit.Miligram)
 }

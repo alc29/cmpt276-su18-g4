@@ -12,7 +12,6 @@
 		0A1471FC20EC98AC00731F8D /* Database2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1471FB20EC98AC00731F8D /* Database2.swift */; };
 		0A14720020ECBF5400731F8D /* Database3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A1471FF20ECBF5400731F8D /* Database3.swift */; };
 		0A14720220ECCB1700731F8D /* Database4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A14720120ECCB1700731F8D /* Database4.swift */; };
-		0A14720420ECCE6200731F8D /* Database5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A14720320ECCE6200731F8D /* Database5.swift */; };
 		0A219E8D20E72F64005965A9 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A219E8C20E72F64005965A9 /* Amount.swift */; };
 		0A219E8F20E73832005965A9 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A219E8E20E73832005965A9 /* Unit.swift */; };
 		0A6D41FD20E5C06100C3430A /* LocalDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */; };
@@ -58,7 +57,6 @@
 		0A1471FB20EC98AC00731F8D /* Database2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database2.swift; sourceTree = "<group>"; };
 		0A1471FF20ECBF5400731F8D /* Database3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database3.swift; sourceTree = "<group>"; };
 		0A14720120ECCB1700731F8D /* Database4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database4.swift; sourceTree = "<group>"; };
-		0A14720320ECCE6200731F8D /* Database5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database5.swift; sourceTree = "<group>"; };
 		0A219E8C20E72F64005965A9 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		0A219E8E20E73832005965A9 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManager.swift; sourceTree = "<group>"; };
@@ -191,7 +189,6 @@
 				0A1471FB20EC98AC00731F8D /* Database2.swift */,
 				0A1471FF20ECBF5400731F8D /* Database3.swift */,
 				0A14720120ECCB1700731F8D /* Database4.swift */,
-				0A14720320ECCE6200731F8D /* Database5.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -418,7 +415,6 @@
 				0A6D41FD20E5C06100C3430A /* LocalDataManager.swift in Sources */,
 				0AB4DBC620E7F9BB00BD052F /* FoodInputViewController.swift in Sources */,
 				0AC0717B20E9ED6800FD9657 /* FoodItemNutrient.swift in Sources */,
-				0A14720420ECCE6200731F8D /* Database5.swift in Sources */,
 				0AC9B19320E8514A00334127 /* PlaceholderDatabase.swift in Sources */,
 				0ABBED7A20EA0AD700D7BD6A /* FoodGroup.swift in Sources */,
 				0ABBED7E20EAB4A600D7BD6A /* FoodDetailViewController.swift in Sources */,

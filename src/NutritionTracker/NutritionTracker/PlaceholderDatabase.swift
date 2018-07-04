@@ -38,8 +38,8 @@ class PlaceholderDatabase {
 		var nutrients = [FoodItemNutrient]()
 
 		//TEST - for now return a fake list of nutrients.
-		nutrients.append(FoodItemNutrient(Nutrient.TestBitterNutrientA, AmountPer()))
-		nutrients.append(FoodItemNutrient(Nutrient.TestBitterNutrientB, AmountPer()))
+		nutrients.append(FoodItemNutrient(Nutrient.Calcium, AmountPer()))
+		nutrients.append(FoodItemNutrient(Nutrient.Sodium, AmountPer()))
 		return nutrients
 	}
 }

@@ -29,8 +29,8 @@ class FoodDetailViewController: UIViewController {
         super.viewDidLoad()
 
 		//TODO load from settings, the desired nutrients to display
-		nutrientsToDisplay.append(Nutrient.TestBitterNutrientA)
-		nutrientsToDisplay.append(Nutrient.TestBitterNutrientB)
+		nutrientsToDisplay.append(Nutrient.Calcium)
+		nutrientsToDisplay.append(Nutrient.Sodium)
 
 		configureView()
     }

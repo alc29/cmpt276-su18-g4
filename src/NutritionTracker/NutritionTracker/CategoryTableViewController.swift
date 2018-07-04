@@ -45,15 +45,19 @@ class CategoryTableViewController: UITableViewController {
 	// corresponding to the food group that was tapped.
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let foodGroupId = foodGroups[indexPath.row].getIdStr()
-		var foodItems = DatabaseWrapper.sharedInstance.getFoodItemsFrom(foodGroupId: foodGroupId)
-		
-		// TODO Testing = add sample item
-		let testFoodItem = FoodItem(12345, "Sample Food item of X Category")
-		foodItems.append(testFoodItem)
-		let vc = FoodListTableViewController()
-		vc.foodItems = foodItems
-		
-		self.navigationController!.pushViewController(vc, animated: true)
+		DatabaseWrapper.sharedInstance.getFoodItemsFrom(foodGroupId, handleFoodGroupItemsQuery)
+	}
+	
+	func handleFoodGroupItemsQuery(_ data: Data?) {
+		if (data != nil) {
+			let foodItemResults = DatabaseWrapper.sharedInstance.jsonToFoodItems(data!)
+			let vc = FoodListTableViewController()
+			vc.foodItems = foodItemResults
+			self.navigationController!.pushViewController(vc, animated: true)
+			DispatchQueue.main.async {
+				self.tableView.reloadData()
+			}
+		}
 	}
 	
 

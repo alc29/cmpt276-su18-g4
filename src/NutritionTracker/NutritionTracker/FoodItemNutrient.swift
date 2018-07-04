@@ -19,6 +19,14 @@ class FoodItemNutrient {
 		self.amountPer = amountPer
 	}
 	
+	// MARK: Setters
+	func setNutrient(_ nutrient: Nutrient) {
+		self.nutrient = nutrient
+	}
+	func setBaseAmount(_ amount: Float) {
+		amountPer.setBaseAmount(amount)
+	}
+	
 	// MARK: Getters
 	func getNutrient() -> Nutrient { return nutrient }
 	func getName() -> String { return nutrient.name; }

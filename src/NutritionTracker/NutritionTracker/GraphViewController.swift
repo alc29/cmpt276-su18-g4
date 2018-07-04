@@ -17,6 +17,9 @@ import Charts
 class GraphViewController: UIViewController {
 	@IBOutlet weak var graph: LineChartView! //ref to view in the storyboard
 	var graphSettings: GraphSettings? //if no settings found, use default settings & save
+	let semaphore = DispatchSemaphore(value: 0)
+	var sharedNutrientAmount = Float(0.0)
+	var sharedFoodItemNutrient = FoodItemNutrient(Nutrient.Ash, AmountPer())
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +52,7 @@ class GraphViewController: UIViewController {
 		let realm = try! Realm()
 		let date = graphSettings!.getDate() //use date to determine which meals to 
 		let meals = realm.objects(Meal.self) //(get all meals for testing)
-		let tags = [Nutrient.TestBitterNutrientA, Nutrient.TestBitterNutrientB] //TODO load tags from user settings
+		let tags = [Nutrient.Caffeine, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from user settings
 		
 		//construct graph data from saved meals, filtered by tags.
 		for tag in tags { //for each tag
@@ -58,7 +61,8 @@ class GraphViewController: UIViewController {
 				//determine date of meal
 				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
 				//determine the amount of the nutrient
-				let nutrientAmount = meal.getAmountOf(nutrient: tag)
+				//let nutrientAmount = meal.getAmountOf(nutrient: tag)
+				let nutrientAmount = getAmountOfNutrientInMeal(tag, meal)
 				//create point on the graph & add to array
 				let entry = ChartDataEntry(x: Double(dayOfMonth!), y: Double(nutrientAmount.getAmount()))
 				lineEntries.append(entry)
@@ -77,6 +81,30 @@ class GraphViewController: UIViewController {
 		
 		reloadGraph(data, dateStr)
 	}
+	
+	func getAmountOfNutrientInMeal(_ nutrient: Nutrient, _ meal: Meal) -> Amount {
+		var sum = Float(0.0)
+		sharedFoodItemNutrient.setNutrient(nutrient)
+		for foodItem in meal.getFoodItems() {
+			DatabaseWrapper.sharedInstance.getAmountPerOf(nutrient, foodItem.getFoodId(), signalSemaphore)
+			semaphore.wait()
+			sum += sharedNutrientAmount
+			
+
+		}
+		return Amount(Float(sum))
+	}
+	func signalSemaphore(data: Data?) {
+		sharedNutrientAmount = 0.0
+		sharedFoodItemNutrient.setBaseAmount(sharedNutrientAmount)
+		if (data != nil) {
+			print(data!)
+			let amountPer = DatabaseWrapper.sharedInstance.jsonToAmountPer(data!, sharedFoodItemNutrient.getNutrient())
+			sharedNutrientAmount += Float(amountPer.getAmount().getAmount())
+		}
+		semaphore.signal()
+	}
+	
 	
 	// Refresh the grpah
 	private func reloadGraph(_ data: LineChartData, _ date: String) {

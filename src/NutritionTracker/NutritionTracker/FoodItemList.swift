@@ -58,14 +58,33 @@ class FoodItemList: Object {
 	}
 	
 	//return total amount of the given nutrient contained in this meal.
-	func getAmountOf(nutrient: Nutrient) -> Amount {
-		var sum = 0.0 as Float
-		for foodItem in list {
-			sum += foodItem.getAmountOf(nutrient).getAmount()
-		}
-		let defaultUnit = Unit.Miligram //TODO use given nutrient's init, or add as arg
-		return Amount(sum, defaultUnit)
-	}
+//	func getAmountOf(nutrient: Nutrient) -> Amount {
+//		var sum = 0.0 as Float
+//		for foodItem in list {
+//			//sum += foodItem.getAmountOf(nutrient).getAmount()
+//		}
+//		let defaultUnit = Unit.Miligram //TODO use given nutrient's init, or add as arg
+//		return Amount(sum, defaultUnit)
+//	}
+//	
+//	
+//	// Return how much of the specified nutrient this food contains.
+//	func getAmountOf(_ nutrient: Nutrient) -> Amount {
+//		
+//		//TODO: uncomment when database is ready.
+//		//if let amount = DatabaseWrapper.sharedInstance.getAmountPerOf(nutrient, foodId) {
+//		//	return amount.getAmount()
+//		//}
+//
+//		DatabaseWrapper.sharedInstance.getAmountPerOf(nutrient, foodId, queryCompletion)
+//	}
+//	private func queryCompletion(_ data: Data?) {
+//		if (data != nil) {
+//			amount = DatabaseWrapper.sharedInstance.jsonToAmountPer(data, )
+//		}
+//	}
+	
+	
 	
 	// return the primery id key
 	override static func primaryKey() -> String? {

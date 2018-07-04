@@ -20,6 +20,11 @@ class AmountPer {
 		self.per = per
 	}
 	
+	//MARK: Setters
+	func setBaseAmount(_ amount: Float) {
+		self.amount.setAmount(amount)
+	}
+	
 	// MARK: Getters
 	func getAmount() -> Amount {
 		return amount

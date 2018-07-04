@@ -5,6 +5,7 @@
 //  Created by alc29 on 2018-06-30.
 //  Copyright � 2018 alc29. All rights reserved.
 //
+
 /**
 Fake database for testing, until integration with actual.
 //TODO rename to Database
@@ -27,7 +28,7 @@ class DatabaseWrapper {
 
 	
 	func emptyCompletionHandler(_ data: Data) {
-		print("empty")
+		print("empty completion handl")
 	}
 
 	typealias DataCompletion = (_ data: Data) -> Void
@@ -35,81 +36,59 @@ class DatabaseWrapper {
 	// MARK: Public functions
 	//return a list of search results as FoodItem's
 	public func search(_ searchTerms: String, _ completion: @escaping DataCompletion) {
-		// variables
-		let foodItems = [FoodItem]()
 		let q = searchTerms
-		//TODO finish query url for general search term.
 		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&q=\(q)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
 		let jsonData = makeQuery(queryURL, completion)
-//		if jsonData != nil {
-//			return jsonToFoodItems(jsonData!)
-//		}
+
 	}
 
 	//Return a list of FoodItem's corresponding to the given FoodGroup.
-	public func getFoodItemsFrom(foodGroupId: String) -> [FoodItem] {
-		// varaibles
+	public func getFoodItemsFrom(_ foodGroupId: String, _ completion: @escaping DataCompletion) { //-> [FoodItem]()
 		let fg = foodGroupId
-		//TODO finish query url for getting foods in a FoodGroup (using the food group id)
+		// query url for getting foods in a FoodGroup (using the food group id)
 		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&fg=\(fg)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
-		let jsonData = makeQuery(queryURL, emptyCompletionHandler)
-		if jsonData != nil {
-			return jsonToFoodItems(jsonData!)
-		}
-
-		return [FoodItem]() //return empty array if unsuccessful.
+		makeQuery(queryURL, completion)
 	}
 
 	//return the amount of a specific nutrient in a specific food.
-	public func getAmountPerOf(_ nutrient: Nutrient, foodId: Int) -> AmountPer? {
-		// varaibles
+	public func getAmountPerOf(_ nutrient: Nutrient, _ foodId: Int, _ completion: @escaping DataCompletion) {
 		let ndbno = foodId
-		//TODO finish query url for getting the amount of a specific nutrient in the food.
+		//query url for getting the amount of a specific nutrient in the food.
 		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&ndbno=\(ndbno)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
-		let jsonData = makeQuery(queryURL, emptyCompletionHandler)
-		if jsonData != nil {
-			return jsonToAmountPer(jsonData!, nutrient: nutrient)
-		}
-		return nil
+		makeQuery(queryURL, completion)
 	}
 
 	//Return a list containing the amount of nutrients in a given food.
-	public func getNutrients(foodId: Int) -> [FoodItemNutrient] {
-		var nutrients = [FoodItemNutrient]()
-		// variables
+	public func getNutrients(foodId: Int) { //-> [FoodItemNutrient]
+		//var nutrients = [FoodItemNutrient]()
 		let ndbno = foodId
-		//TODO finish query url for getting nutrients in a food
+		// query url for getting nutrients in a food
+		//TODO query needs to be a "report", not a "search"
 		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&ndbno=\(ndbno)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
-		let jsonData = makeQuery(queryURL, emptyCompletionHandler)
-		if jsonData != nil {
-			return jsonToNutrients(jsonData!)
-		}
-		return nutrients
+		makeQuery(queryURL, emptyCompletionHandler)
 	}
 
 
 	// MARK: URL Queries
 	//Submits a query request to the database, and returns the json Data
-	func makeQuery(_ queryURL: String, _ completion: @escaping DataCompletion) -> Data? {
+	func makeQuery(_ queryURL: String, _ completion: @escaping DataCompletion) {
 		print("query received")
-		var returnJsonData: Data?
-		guard let requestUrl = URL(string: queryURL) else {return nil}
+		guard let requestUrl = URL(string: queryURL) else {return}
 		let request = URLRequest(url:requestUrl)
 		let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-			guard let data = data else { return }
-				
+			guard let data = data else {
+				print("makeQuery: error loading data")
+				return
+			}
 			completion(data)
 		}
 		task.resume()
-
-		return nil
 	}
 
 	// MARK: JSON Conversion
 	//Takes json Data, and returns an array of Nutrient's.
 	func jsonToNutrients(_ jsonData: Data) -> [FoodItemNutrient] {
 
-		//TODO figure out proper structs:
 		struct Database: Decodable {
 			let foods: [Food]?
 		}
@@ -126,8 +105,6 @@ class DatabaseWrapper {
 			let value: Float?
 		}
 
-		// variables
-//		var unit = unit()
 		var nutrients = [FoodItemNutrient]()
 		do {
 			//TODO parse json:
@@ -149,7 +126,7 @@ class DatabaseWrapper {
 
 
 	//Takes json Data, and returns an AmountPer (amount of a specific nutrient contained in a specific food.)
-	func jsonToAmountPer(_ jsonData: Data, nutrient: Nutrient) -> AmountPer {
+	func jsonToAmountPer(_ jsonData: Data, _ nutrient: Nutrient) -> AmountPer {
 		//TODO add necessary structs here
 		struct Database: Decodable {
 			let foods: [Food]?
@@ -175,6 +152,7 @@ class DatabaseWrapper {
 			//TODO parse json:
 			let data = try JSONDecoder().decode(Database.self, from: jsonData)
 
+			
 			for i in data.foods!.first!.food!.nutrients! {
 				if (i.name == nutrient.name) {
 					value = i.value!
@@ -188,7 +166,6 @@ class DatabaseWrapper {
 
 		return nutrientVal //TODO remove placeholder
 	}
-
 
 
 	//Takes json data, and returns an array of FoodItem's (search results)
@@ -221,7 +198,6 @@ class DatabaseWrapper {
 		} catch let jsonErr {
 			print("Error serializing Json:", jsonErr)
 		}
-
 
 		return foodItems
 	}
