@@ -26,7 +26,7 @@
                                     <segue destination="03w-X8-AfG" kind="show" id="dtK-z4-ql4"/>
                                 </connections>
                             </button>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Nutrition Tracker" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="6do-XH-eIl">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Nutrition Tracker" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6do-XH-eIl">
                                 <rect key="frame" x="67" y="269" width="240" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
