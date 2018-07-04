@@ -6,7 +6,7 @@
 //  Copyright © 2018 alc29. All rights reserved.
 //
 //	View controller for the Category page.
-//	The user can browse the catelog, and select foods based on food group, or other category.
+//	The user can browse the catelog, and select foods based on a food group or other category.
 //	When a category is selected, the view will display a list of foods within that category.
 //	When a food item is selected, the View will present a detail page, for displaying information about the chosen item.
 
@@ -36,25 +36,22 @@ class CategoryTableViewController: UITableViewController {
         return 1
     }
 
+	// Return the number of cells to display
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return foodGroups.count
     }
 	
-	//called when a cell is tapped. dipslay a list of foods corresponding to the food group that was tapped.
+	// Called when a cell is tapped. dipslay a table view of the list of foods
+	// corresponding to the food group that was tapped.
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		let foodGroupId = foodGroups[indexPath.row].id
-		
-		//get search results/cached results of foods corresponding to the food group.
-		//create list of FoodItems
-		//pass list to new viewe
-		let vc = FoodListTableViewController()
-		
 		var foodItems = DatabaseWrapper.sharedInstance.getFoodItemsFrom(foodGroupId: foodGroupId)
-		vc.foodItems = foodItems
 		
-		//for testing: if list empy, add sample item
+		// TODO Testing = add sample item
 		let testFoodItem = FoodItem(12345, "Sample Food item of X Category")
 		foodItems.append(testFoodItem)
+		let vc = FoodListTableViewController()
+		vc.foodItems = foodItems
 		
 		self.navigationController!.pushViewController(vc, animated: true)
 	}
@@ -66,6 +63,10 @@ class CategoryTableViewController: UITableViewController {
         return cell
     }
 	
+	
+	
+	
+	// MARK: Provided template methods
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
