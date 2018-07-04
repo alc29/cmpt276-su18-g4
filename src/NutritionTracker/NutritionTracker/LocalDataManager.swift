@@ -5,6 +5,7 @@
 //  Created by alc29 on 2018-06-28.
 //  Copyright © 2018 alc29. All rights reserved.
 //
+//	A class that manages the local data saved on the device.
 
 import Foundation
 import RealmSwift
@@ -20,8 +21,7 @@ class LocalDataManager {
 //			//realm.add(newMeal)
 //		}
 //	}
-//
-//	func getMeals() {
-//
-//	}
+
+//	func getMeals() {}
+
 }

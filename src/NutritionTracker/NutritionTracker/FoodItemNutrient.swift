@@ -5,12 +5,13 @@
 //  Created by alc29 on 2018-07-01.
 //  Copyright © 2018 alc29. All rights reserved.
 //
+//	Represents the amount of a specific nutrient within a specific food.
 
 import Foundation
 
-//Amount of a specific nutrient in a food
 class FoodItemNutrient {
-	var nutrient: Nutrient
+	// MARK: Properties
+	private var nutrient: Nutrient
 	private var amountPer: AmountPer
 	
 	init(_ nutrient: Nutrient, _ amountPer: AmountPer) {
@@ -18,6 +19,7 @@ class FoodItemNutrient {
 		self.amountPer = amountPer
 	}
 	
+	// MARK: Getters
 	func getNutrient() -> Nutrient { return nutrient }
 	func getName() -> String { return nutrient.name; }
 	func getAmountPer() -> AmountPer { return amountPer}

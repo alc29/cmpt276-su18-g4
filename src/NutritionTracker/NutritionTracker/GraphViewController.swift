@@ -5,28 +5,13 @@
 //  Created by alc29 on 2018-06-24.
 //  Copyright © 2018 alc29. All rights reserved.
 //
+// 	ViewController for the Graph. Displays a grpah of the user's saved meals.
+//	(TODO) The user may choose which nutrients they wish to have displayed in the grpah.
+//
 
 import UIKit
 import RealmSwift
 import Charts
-
-
-class GraphSettings: Object {
-	//MARK: Properties
-	@objc var selectedDate = Date() //the date the graph should display when first loading.
-	//@objc var dateFormat = ""
-	//current date
-	//unit
-	//tags
-	//MARK: Getters
-	func getDate() -> Date {
-		return selectedDate
-	}
-	//MARK: Setters
-	//func setDate() {}
-	
-	
-}
 
 /** Controls graph behaviour & data **/
 class GraphViewController: UIViewController {
@@ -66,33 +51,39 @@ class GraphViewController: UIViewController {
 		let meals = realm.objects(Meal.self) //(get all meals for testing)
 		let tags = [Nutrient.TestBitterNutrientA, Nutrient.TestBitterNutrientB] //TODO load tags from user settings
 		
-		//construct graph data
+		//construct graph data from saved meals, filtered by tags.
 		for tag in tags { //for each tag
-			var lineEntries = [ChartDataEntry]()
+			var lineEntries = [ChartDataEntry]() //array for saving data to be plotted on a line.
 			for meal in meals { //for each meal
+				//determine date of meal
 				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
+				//determine the amount of the nutrient
 				let nutrientAmount = meal.getAmountOf(nutrient: tag)
+				//create point on the graph & add to array
 				let entry = ChartDataEntry(x: Double(dayOfMonth!), y: Double(nutrientAmount.getAmount()))
 				lineEntries.append(entry)
 			}
+			//create new line plot
 			let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
+			
 			//TODO set random line color
 			data.addDataSet(line)
 		}
 		
-		
+		// Set the date of the graph
 		let dateFormatter = DateFormatter()
-		//dateFormatter.setLocalizedDatFormatFromTemplate(graphSettings.dateFormat)
+		//TODO dateFormatter.setLocalizedDatFormatFromTemplate(graphSettings.dateFormat)
 		let dateStr = dateFormatter.string(from: date)
+		
 		reloadGraph(data, dateStr)
 	}
 	
+	// Refresh the grpah
 	private func reloadGraph(_ data: LineChartData, _ date: String) {
 		graph.data = data
 		graph.notifyDataSetChanged()
 		graph.chartDescription?.text = date
 	}
-
 	
 	//update a setting
 	func updateGraphSettings() {
@@ -108,21 +99,19 @@ class GraphViewController: UIViewController {
 		return UIColor(red: r, green: g, blue: b, alpha: 1.0)
 	}
 	
-	
+	// Modify the graph's appearance.
 	func initGraphAppearanceSettings() {
-		
-
+		//TODO
 	}
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
+	
 
     /*
     // MARK: - Navigation
-
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
@@ -130,8 +119,8 @@ class GraphViewController: UIViewController {
     }
     */
 	
-	//TODO remove
-	//for testing something - Amanda L
+	//TODO remove when finished
+	//Testing - receive a food item from the previous MainMenu view.
 	func receiveTestFoodItem(foodItem: FoodItem) {
 		//Load existing, or create new FoodItemList
 		//retrieve food list from realm
@@ -152,9 +141,27 @@ class GraphViewController: UIViewController {
 		assert(foodItemList != nil)
 		
 		//print("added: " + foodItem.getName())
-//		add food to food item list
+		//add food to food item list
 		try! realm.write {
 			foodItemList!.add(foodItem)
 		}
 	}
 }
+
+/** A class used for saving graph-related settings. */
+class GraphSettings: Object {
+	//MARK: Properties
+	@objc var selectedDate = Date() //the date the graph should display when first loading.
+	//@objc var dateFormat:
+	//var unit = Unit.Micrograms // The unit that the graph should be displayed in.
+	
+	//MARK: Getters
+	func getDate() -> Date {
+		return selectedDate
+	}
+	
+	//MARK: Setters
+	//TODO func setDate() {}
+	
+}
+

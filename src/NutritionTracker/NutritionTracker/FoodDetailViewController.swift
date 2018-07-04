@@ -55,11 +55,14 @@ class FoodDetailViewController: UIViewController {
 		var entries = [BarChartDataEntry]()
 		for nut in nutrientsToDisplay {
 			
-			let amountPer = PlaceholderDatabase.sharedInstance.getAmountPerOf(nutrient: nut, foodId: foodItem!.getFoodId())
-			let amount = amountPer.getAmount().getAmount()
-			let entry = BarChartDataEntry(x: Double(count), y: Double(amount))
-			entries.append(entry)
-			count += 1
+			//let amountPer = PlaceholderDatabase.sharedInstance.getAmountPerOf(nutrient: nut, foodId: foodItem!.getFoodId())
+			if let amountPer = DatabaseWrapper.sharedInstance.getAmountPerOf(nut, foodItem!.getFoodId()) {
+				let amount = amountPer.getAmount().getAmount()
+				let entry = BarChartDataEntry(x: Double(count), y: Double(amount))
+				entries.append(entry)
+				count += 1
+			}
+			
 			
 		}
 		let dataSet = BarChartDataSet(values: entries, label: "TODO label")

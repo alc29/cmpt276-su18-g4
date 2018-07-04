@@ -135,7 +135,9 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	//MARK: - Search
 	func searchAndUpdateResults(_ searchTerm: String) {
 		searchResults.removeAll()
+		//TODO uncomment when DatabaseWrapper is ready
 		searchResults = PlaceholderDatabase.sharedInstance.search(searchTerm)
+		//searchResults = DatabaseWrapper.sharedInstance.search(searchTerm)
 		tableView.reloadData()
 	}
 

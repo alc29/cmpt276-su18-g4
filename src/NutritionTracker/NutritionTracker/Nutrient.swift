@@ -5,11 +5,13 @@
 //  Created by alc29 on 2018-06-30.
 //  Copyright © 2018 alc29. All rights reserved.
 //
+// A Struct for representing a nutrient.
+// Contains static instances of all possible nutrients.
 
 import Foundation
 
-//Represents a specific nutrient
 struct Nutrient {
+	// MARK: Properties
 	let nutrientId: Int
 	let name: String
 	let unit: Unit
@@ -126,10 +128,7 @@ struct Nutrient {
 	static let Caffeine = Nutrient(262, "Caffeine", Unit.Miligram)
 	static let Theobromine = Nutrient(263, "Theobromine", Unit.Miligram)
 	
-	
+	// Test nutrients
 	static let TestBitterNutrientA = Nutrient(276, "TestBitterNutrientA", Unit.Miligram)
 	static let TestBitterNutrientB = Nutrient(277, "TestBitterNutrientB", Unit.Miligram)
-	
-	
-	
 }

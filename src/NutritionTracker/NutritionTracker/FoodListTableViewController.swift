@@ -14,7 +14,8 @@ Allow for the selection of a FoodItem from the table.
 import UIKit
 
 class FoodListTableViewController: UITableViewController {
-	var foodItemList = FoodItemList()
+	//var foodItemList = FoodItemList()
+	var foodItems = [FoodItem]()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,11 +26,14 @@ class FoodListTableViewController: UITableViewController {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
+	
+	override func viewWillAppear(_ animated: Bool) {
+		if let selectionIndexPath = tableView.indexPathForSelectedRow {
+			tableView.deselectRow(at: selectionIndexPath, animated: animated)
+		}
+		super.viewWillAppear(animated)
+	}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 
     // MARK: - Table view data source
 
@@ -46,23 +50,32 @@ class FoodListTableViewController: UITableViewController {
 	//called when a cell is tapped. present FoodDetailView when a FoodItem cell is tapped
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		print("cell selected")
+		//TODO LEFT OFF HERE
 		//TODO present FoodDetailView
 		//TODO add instance properties
-		//let foodDetailView = FoodDetailViewController()
-		//foodDetailView.foodItem = foodItems[indexPath.row]
-		//self.navigationController!.pushViewController(foodDetailView, animated: false)
+		let foodDetailView = FoodDetailViewController()
+		foodDetailView.foodItem = foodItems[indexPath.row]
+		self.navigationController!.pushViewController(foodDetailView, animated: false)
+		
+		if let selectionIndexPath = tableView.indexPathForSelectedRow {
+			tableView.deselectRow(at: selectionIndexPath, animated: false)
+		}
+
 	}
 
 
-    /*
+	
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
 
-        // Configure the cell...
+		let foodItem = foodItems[indexPath.row]
+		
+		cell.textLabel!.text = foodItem.getName()
+		//cell.detailTextLabel!.text = "todo FoodItem.getFoodGroup()"
+		return cell
 
-        return cell
     }
-    */
+	
 
     /*
     // Override to support conditional editing of the table view.
