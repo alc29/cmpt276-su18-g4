@@ -29,6 +29,10 @@ class FoodNutrientReport {
 		return nutrients
 	}
 	
+	func count() -> Int {
+		return nutrients.count
+	}
+	
 	func testPrint() {
 		print("poggers")
 	}
