@@ -17,9 +17,9 @@ import Charts
 class GraphViewController: UIViewController {
 	@IBOutlet weak var graph: LineChartView! //ref to view in the storyboard
 	var graphSettings: GraphSettings? //if no settings found, use default settings & save
-	let semaphore = DispatchSemaphore(value: 0)
-	var sharedNutrientAmount = Float(0.0)
-	var sharedFoodItemNutrient = FoodItemNutrient(Nutrient.Ash, AmountPer())
+
+	//var sharedNutrientAmount = Float(0.0)
+	//var sharedFoodItemNutrient = FoodItemNutrient(Nutrient.Ash, AmountPer())
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,28 +82,34 @@ class GraphViewController: UIViewController {
 		reloadGraph(data, dateStr)
 	}
 	
+	func getAmountOfNutrientInFood(_ foodId: Int) -> Amount {
+		return Amount()
+	}
+	
 	func getAmountOfNutrientInMeal(_ nutrient: Nutrient, _ meal: Meal) -> Amount {
-		var sum = Float(0.0)
-		sharedFoodItemNutrient.setNutrient(nutrient)
+//		var sum = Float(0.0)
+//		sharedFoodItemNutrient.setNutrient(nutrient)
+//		for foodItem in meal.getFoodItems() {
+//			DatabaseWrapper.sharedInstance.getAmountPerOf(nutrient, foodItem.getFoodId(), completion)
+//
+//			sum += sharedNutrientAmount
+//		}
+//		return Amount(Float(sum))
+		
+		//for each food item
+		
 		for foodItem in meal.getFoodItems() {
-			DatabaseWrapper.sharedInstance.getAmountPerOf(nutrient, foodItem.getFoodId(), signalSemaphore)
-			semaphore.wait()
-			sum += sharedNutrientAmount
 			
+		}
+		//get amount of specified nutrient
+		
+		return Amount(0.0)
+	}
 
-		}
-		return Amount(Float(sum))
+	func completion(_ data: Data) {
+	
 	}
-	func signalSemaphore(data: Data?) {
-		sharedNutrientAmount = 0.0
-		sharedFoodItemNutrient.setBaseAmount(sharedNutrientAmount)
-		if (data != nil) {
-			print(data!)
-			let amountPer = DatabaseWrapper.sharedInstance.jsonToAmountPer(data!, sharedFoodItemNutrient.getNutrient())
-			sharedNutrientAmount += Float(amountPer.getAmount().getAmount())
-		}
-		semaphore.signal()
-	}
+	
 	
 	
 	// Refresh the grpah

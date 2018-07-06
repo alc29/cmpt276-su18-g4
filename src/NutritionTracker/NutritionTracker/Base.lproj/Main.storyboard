@@ -168,7 +168,7 @@
         <scene sceneID="5Ec-uy-saT">
             <objects>
                 <viewController id="HI8-ch-49d" customClass="FoodDetailViewController" customModule="NutritionTracker" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="JBJ-l0-h4Q" customClass="deta">
+                    <view key="view" contentMode="scaleToFill" id="JBJ-l0-h4Q">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>

@@ -16,6 +16,8 @@
 		0A219E8F20E73832005965A9 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A219E8E20E73832005965A9 /* Unit.swift */; };
 		0A6D41FD20E5C06100C3430A /* LocalDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */; };
 		0A6D420120E6F38600C3430A /* FoodItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D420020E6F38600C3430A /* FoodItemList.swift */; };
+		0A72CB7620EF24F500DB9DAC /* Database5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72CB7520EF24F500DB9DAC /* Database5.swift */; };
+		0A72CB7820EF281200DB9DAC /* FoodNutrientReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72CB7720EF281200DB9DAC /* FoodNutrientReport.swift */; };
 		0A7B87D420E07E3E00B45D5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */; };
 		0A7B87D620E07E3E00B45D5C /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B87D520E07E3E00B45D5C /* EntryViewController.swift */; };
 		0A7B87D920E07E3E00B45D5C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A7B87D720E07E3E00B45D5C /* Main.storyboard */; };
@@ -61,6 +63,8 @@
 		0A219E8E20E73832005965A9 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManager.swift; sourceTree = "<group>"; };
 		0A6D420020E6F38600C3430A /* FoodItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemList.swift; sourceTree = "<group>"; };
+		0A72CB7520EF24F500DB9DAC /* Database5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database5.swift; sourceTree = "<group>"; };
+		0A72CB7720EF281200DB9DAC /* FoodNutrientReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutrientReport.swift; sourceTree = "<group>"; };
 		0A7B87D020E07E3E00B45D5C /* NutritionTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NutritionTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A7B87D520E07E3E00B45D5C /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
@@ -189,6 +193,8 @@
 				0A1471FB20EC98AC00731F8D /* Database2.swift */,
 				0A1471FF20ECBF5400731F8D /* Database3.swift */,
 				0A14720120ECCB1700731F8D /* Database4.swift */,
+				0A72CB7520EF24F500DB9DAC /* Database5.swift */,
+				0A72CB7720EF281200DB9DAC /* FoodNutrientReport.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -407,6 +413,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A72CB7820EF281200DB9DAC /* FoodNutrientReport.swift in Sources */,
 				0A6D420120E6F38600C3430A /* FoodItemList.swift in Sources */,
 				0A1471FC20EC98AC00731F8D /* Database2.swift in Sources */,
 				0AA0632720E591A900CCE2FD /* FoodItem.swift in Sources */,
@@ -415,6 +422,7 @@
 				0A6D41FD20E5C06100C3430A /* LocalDataManager.swift in Sources */,
 				0AB4DBC620E7F9BB00BD052F /* FoodInputViewController.swift in Sources */,
 				0AC0717B20E9ED6800FD9657 /* FoodItemNutrient.swift in Sources */,
+				0A72CB7620EF24F500DB9DAC /* Database5.swift in Sources */,
 				0AC9B19320E8514A00334127 /* PlaceholderDatabase.swift in Sources */,
 				0ABBED7A20EA0AD700D7BD6A /* FoodGroup.swift in Sources */,
 				0ABBED7E20EAB4A600D7BD6A /* FoodDetailViewController.swift in Sources */,

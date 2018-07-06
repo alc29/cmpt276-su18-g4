@@ -110,19 +110,38 @@ class NutritionTrackerTests: XCTestCase {
 	}
 	
 	//MARK: - Database Tests
-	func testGetNutrients() {
-//		let foodId = 01009 //Cheese, cheddar...
-//		var nutrients = [Nutrient]()
-//		nutrients.append(Nutrient.Water)
-//		let returnedNutrients = DatabaseWrapper.sharedInstance.getNutrients(foodId, nutrients)
-//		print("num returned nutrients: \(returnedNutrients.count)")
-		
-		DatabaseWrapper.sharedInstance.getNutrientsAsync("haHAAAAAA", NutritionTrackerTests.printString)
-	}
+//	func testGetNutrients() {
+////		let foodId = 01009 //Cheese, cheddar...
+////		var nutrients = [Nutrient]()
+////		nutrients.append(Nutrient.Water)
+////		let returnedNutrients = DatabaseWrapper.sharedInstance.getNutrients(foodId, nutrients)
+////		print("num returned nutrients: \(returnedNutrients.count)")
+//
+//		DatabaseWrapper.sharedInstance.getNutrientsAsync("haHAAAAAA", NutritionTrackerTests.printString)
+//	}
 	
 	private static func printString(_ str: String) {
 		print(str)
 	}
+	
+	// MARK: - Database5 Tests
+	func testNutrientReport() {
+		let testFoodIds = [15117, 11090] //raw bluefin tuna, raw broccoli
+		let tunaFoodId = 15117
+		let nutrientIds = [Nutrient.Calcium, Nutrient.Protein]
+		let expectation = XCTestExpectation(description: "Test Nutrient Report")
+		
+		var printTestNutrientReport: (FoodNutrientReport) -> Void = { (report: FoodNutrientReport) -> Void in
+			report.testPrint()
+			expectation.fulfill()
+		}
+		g
+		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrientIds, printTestNutrientReport)
+		
+	}
+//	func printTestNutrientReport(_ report: FoodNutrientReport) {
+//		report.testPrint()
+//	}
 	
 	//MARK: Performance
     func testPerformanceExample() {

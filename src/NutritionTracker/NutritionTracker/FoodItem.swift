@@ -22,7 +22,8 @@ class FoodItem: Object {
 	@objc private dynamic var foodId = -1
 	@objc private dynamic var name = "uninitialized"
 	@objc private dynamic var amount: Amount? = Amount()
-
+	
+	
 	//Note: optional initializer FoodItem() works, but should be avoided.
 	convenience init(_ foodId: Int?, _ name: String?) {
 		self.init()

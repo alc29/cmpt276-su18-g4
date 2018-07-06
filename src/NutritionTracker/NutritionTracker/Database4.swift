@@ -105,23 +105,28 @@ class DatabaseWrapper {
 			let value: Float?
 		}
 
-		var nutrients = [FoodItemNutrient]()
+		var nutrientsToReturn = [FoodItemNutrient]()
 		do {
 			//TODO parse json:
 			let data = try JSONDecoder().decode(Database.self, from: jsonData)
 			//populate or assign nutrients array
-			for i in data.foods!.first!.food!.nutrients! {
+			//guard let data = data else { return nutrients }
+			guard let foods = data.foods else { return nutrientsToReturn }
+			guard let first = foods.first else { return nutrientsToReturn }
+			guard let food = first.food else { return nutrientsToReturn }
+			guard let nutrients = food.nutrients else { return nutrientsToReturn }
+			for n in nutrients {
 				let grams = Unit.Gram
-				let tempNutrient = Nutrient(i.nutrient_id!, i.name!, grams)
-				let tempAmount = AmountPer(amount: Amount(i.value, Unit.Gram), per: Amount(100, Unit.Gram))
-				let tempFoodItemNutrient = FoodItemNutrient(tempNutrient,tempAmount)
-				nutrients.append(tempFoodItemNutrient)
+				let tempNutrient = Nutrient(n.nutrient_id!, n.name!, grams)
+				let tempAmount = AmountPer(amount: Amount(n.value, Unit.Gram), per: Amount(100, Unit.Gram))
+				let tempFoodItemNutrient = FoodItemNutrient(tempNutrient, tempAmount)
+				nutrientsToReturn.append(tempFoodItemNutrient)
 			}
 
 		} catch let jsonErr {
 			print("Error serializing Json:", jsonErr)
 		}
-		return nutrients
+		return nutrientsToReturn
 	}
 
 

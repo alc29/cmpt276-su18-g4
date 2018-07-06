@@ -108,10 +108,10 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	}
 		
 	
-	//Mark: - private instance methods
-	func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+//	//Mark: - private instance methods
+//	func filterContentForSearchText(_ searchText: String, scope: String = "All") {
 //		filteredResults = results.filter({(foodItem: FoodItem) -> Bool in
-			//TODO implement if we want to filter results by a category (FoodGroup)
+//			//TODO implement if we want to filter results by a category (FoodGroup)
 //			let doesCategoryMatch = (scope == "All") || (true) //|| (candy.category == scope)
 //			if searchBarIsEmpty() {
 //				return doesCategoryMatch
@@ -121,7 +121,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 //			return false
 //		})
 //		tableView.reloadData()
-	}
+//	}
 	
 	func searchBarIsEmpty() -> Bool {
 		return searchController.searchBar.text?.isEmpty ?? true
@@ -138,12 +138,14 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	}
 	
 	func queryCompletion(_ data: Data?) {
-		searchResults.removeAll()
+		
 		if (data != nil) {
+			searchResults.removeAll()
 			searchResults = DatabaseWrapper.sharedInstance.jsonToFoodItems(data!)
-			DispatchQueue.main.async {
-				self.tableView.reloadData()
-			}
+			
+		}
+		DispatchQueue.main.async {
+			self.tableView.reloadData()
 		}
 	}
 

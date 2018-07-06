@@ -22,6 +22,8 @@ struct Nutrient {
 		self.unit = unit
 	}
 	
+	func getId() -> Int {return nutrientId}
+	
 	//Static predefined Nutrients
 	static let Water = Nutrient(255, "Water", Unit.Gram)
 	static let Energy_KCAL = Nutrient(208, "Energy", Unit.KCAL)
@@ -127,6 +129,8 @@ struct Nutrient {
 	static let Alcohol_ethyl = Nutrient(221, "Alcohol_ethyl", Unit.Gram)
 	static let Caffeine = Nutrient(262, "Caffeine", Unit.Miligram)
 	static let Theobromine = Nutrient(263, "Theobromine", Unit.Miligram)
+	
+	static let Test = Nutrient(-1, "Test Nutrient", Unit.IU)
 	
 	// Test nutrients
 //	static let TestBitterNutrientA = Nutrient(276, "TestBitterNutrientA", Unit.Miligram)
