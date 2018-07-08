@@ -127,17 +127,17 @@ class NutritionTrackerTests: XCTestCase {
 	// MARK: - Database5 Tests
 	func testNutrientReport() {
 		let tunaFoodId = 15117
-		let nutrientIds = [Nutrient.Calcium, Nutrient.Protein]
+		let nutrients = [Nutrient.Calcium, Nutrient.Protein]
 		let expectation = XCTestExpectation(description: "Test Nutrient Report")
 		
 		let printTestNutrientReport: (FoodNutrientReport) -> Void = { (report: FoodNutrientReport) -> Void in
 			report.testPrint()
-//			print("report count: \(report.count())")
+			XCTAssert(report.count() == nutrients.count)
 			XCTAssertNotNil(report)
 			expectation.fulfill()
 		}
 		
-		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrientIds, printTestNutrientReport)
+		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printTestNutrientReport)
 		wait(for: [expectation], timeout: 15.0)
 
 		

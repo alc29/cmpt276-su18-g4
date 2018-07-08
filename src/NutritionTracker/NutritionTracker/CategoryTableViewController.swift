@@ -44,30 +44,43 @@ class CategoryTableViewController: UITableViewController {
 	// Called when a cell is tapped. dipslay a table view of the list of foods
 	// corresponding to the food group that was tapped.
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let foodGroupId = foodGroups[indexPath.row].getIdStr()
-		DatabaseWrapper.sharedInstance.getFoodItemsFrom(foodGroupId, handleFoodGroupItemsQuery)
-	}
-	
-	func handleFoodGroupItemsQuery(_ data: Data?) {
-		if (data != nil) {
-			let foodItemResults = DatabaseWrapper.sharedInstance.jsonToFoodItems(data!)
+		//let foodGroupId = foodGroups[indexPath.row].getIdStr()
+		//DatabaseWrapper.sharedInstance.getFoodItemsFrom(foodGroupId, handleFoodGroupItemsQuery)
+		//TODO get food items from food group
+		
+		if let indexPath = tableView.indexPathForSelectedRow {
+			
+			//present sample food items in the food group
+			var foodItems = [FoodItem]()
+			foodItems.append(FoodItem(123, "afasfsa"))
 			let vc = FoodListTableViewController()
-			vc.foodItems = foodItemResults
-			self.navigationController!.pushViewController(vc, animated: true)
-			DispatchQueue.main.async {
-				self.tableView.reloadData()
-			}
+			vc.foodItems = foodItems
+			self.navigationController?.pushViewController(vc, animated: true)
 		}
 	}
 	
-
 	//Display each cell as a FoodGroup
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
 		cell.textLabel!.text = foodGroups[indexPath.row].name
-        return cell
-    }
+		return cell
+	}
 	
+	
+//	func handleFoodGroupItemsQuery(_ data: Data?) {
+//		if (data != nil) {
+//			let foodItemResults = DatabaseWrapper.sharedInstance.jsonToFoodItems(data!)
+//			let vc = FoodListTableViewController()
+//			vc.foodItems = foodItemResults
+//			self.navigationController!.pushViewController(vc, animated: true)
+////			DispatchQueue.main.async {
+////				self.tableView.reloadData()
+////			}
+//		}
+//	}
+	
+
+
 	
 	
 	

@@ -43,7 +43,6 @@ class FoodListTableViewController: UITableViewController {
 	// Return the number of cells to display
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return foodItems.count
-		//return 0
     }
 	
 	// Called when a cell is tapped. present FoodDetailView when a FoodItem cell is tapped
@@ -51,12 +50,15 @@ class FoodListTableViewController: UITableViewController {
 		print("item selected")
 		
 		if let indexPath = tableView.indexPathForSelectedRow {
-			let foodDetailView = FoodDetailViewController()
-			let foodItem = foodItems[indexPath.row]
-			foodDetailView.foodItem = foodItem
-			self.navigationController!.pushViewController(foodDetailView, animated: true)
+			
+			//let foodDetailView = FoodDetailViewController()
+			let storyboard = UIStoryboard(name: "Main", bundle: nil)
+			let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
+			foodDetailView.foodItem = foodItems[indexPath.row]
+			self.navigationController?.pushViewController(foodDetailView, animated: true)
 		}
 		
+
 	}
 
 	// Setup the cells

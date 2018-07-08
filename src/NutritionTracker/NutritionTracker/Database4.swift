@@ -196,7 +196,9 @@ class DatabaseWrapper {
 			let data = try JSONDecoder().decode(Database.self, from: jsonData)
 
 			//pass name and id to FoodItem array
-			for i in data.list!.item! {
+			guard let dataList = data.list else { return foodItems }
+			guard let dataListItem = dataList.item else { return foodItems }
+			for i in dataListItem {
 				let temp = FoodItem(Int(i.ndbno!), i.name!)
 				foodItems.append(temp)
 			}

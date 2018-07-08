@@ -167,7 +167,7 @@
         <!--Food Detail View Controller-->
         <scene sceneID="5Ec-uy-saT">
             <objects>
-                <viewController id="HI8-ch-49d" customClass="FoodDetailViewController" customModule="NutritionTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FoodDetailView" id="HI8-ch-49d" customClass="FoodDetailViewController" customModule="NutritionTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="JBJ-l0-h4Q">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -191,7 +191,7 @@
                     <navigationItem key="navigationItem" id="uwf-lc-Gbk"/>
                     <connections>
                         <outlet property="barGraph" destination="gev-fC-9w5" id="Z0N-Xr-BZy"/>
-                        <outlet property="foodName" destination="W8B-Wo-XEM" id="3LM-FS-ZOA"/>
+                        <outlet property="foodNameLabel" destination="W8B-Wo-XEM" id="3LM-FS-ZOA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8EA-1M-eXP" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -239,9 +239,6 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <segue destination="HI8-ch-49d" kind="show" identifier="selectFoodItem" id="GsG-9f-fxF"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -345,34 +342,52 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="sQV-OG-2w8">
-                                <rect key="frame" x="20" y="122" width="335" height="200"/>
+                                <rect key="frame" x="20" y="89" width="335" height="150"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YRW-g2-ghx">
-                                        <rect key="frame" x="0.0" y="0.0" width="335" height="60"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
                                         <state key="normal" title="Search for Food"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="r3W-xD-kEB">
-                                        <rect key="frame" x="0.0" y="70" width="335" height="60"/>
+                                        <rect key="frame" x="0.0" y="53.5" width="335" height="43"/>
                                         <state key="normal" title="Browse Catalog"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GeG-6u-1g8">
-                                        <rect key="frame" x="0.0" y="140" width="335" height="60"/>
+                                        <rect key="frame" x="0.0" y="106.5" width="335" height="43.5"/>
                                         <state key="normal" title="Identify with Vision"/>
                                     </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="200" id="fhg-eL-LEb"/>
+                                    <constraint firstAttribute="height" constant="150" id="Gzn-n3-3Ci"/>
                                 </constraints>
                             </stackView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="41m-dI-hNI" userLabel="Your Meal">
+                                <rect key="frame" x="20" y="264" width="335" height="374"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="rRB-5V-zN3" customClass="FoodItemTableViewCell" customModule="NutritionTracker" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="335" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rRB-5V-zN3" id="kPV-C5-63c">
+                                            <rect key="frame" x="0.0" y="0.0" width="335" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="wvq-qX-OQq" firstAttribute="trailing" secondItem="sQV-OG-2w8" secondAttribute="trailing" constant="20" id="CkJ-MJ-p5d"/>
-                            <constraint firstItem="sQV-OG-2w8" firstAttribute="top" secondItem="wvq-qX-OQq" secondAttribute="top" constant="58" id="Y2l-N4-yOy"/>
                             <constraint firstItem="sQV-OG-2w8" firstAttribute="leading" secondItem="wvq-qX-OQq" secondAttribute="leading" constant="20" id="q1h-tQ-4cx"/>
+                            <constraint firstItem="sQV-OG-2w8" firstAttribute="top" secondItem="wvq-qX-OQq" secondAttribute="top" constant="25" id="vVY-KK-EL3"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="wvq-qX-OQq"/>
                     </view>
+                    <connections>
+                        <outlet property="mealTableView" destination="41m-dI-hNI" id="yxR-qq-HLp"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="72Y-RB-JTm" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -18,7 +18,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	@IBOutlet weak var searchFooter: SearchFooterView!
 	
 	var foodDetailController: FoodDetailViewController? = nil
-	var results = [FoodItem]()
+	//var results = [FoodItem]()
 	//var filteredResults = [FoodItem]()
 	var searchResults = [FoodItem]()
 	let searchController = UISearchController(searchResultsController: nil)
@@ -50,9 +50,9 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		tableView.tableFooterView = searchFooter
 		
 		//fake list of results
-		for i in 0..<10 {
-			results.append(FoodItem(i, "Food item \(i)"))
-		}
+//		for i in 0..<10 {
+//			searchResults.append(FoodItem(i, "Food item \(i)"))
+//		}
 		
     }
 
@@ -77,6 +77,20 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		return searchResults.count
 	}
 	
+	//called when a cell is tapped.
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		print("tappded")
+		if let indexPath = tableView.indexPathForSelectedRow {
+			let foodItem = searchResults[indexPath.row]
+			//let foodDetailView = FoodDetailViewController()
+			let foodDetailView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
+			foodDetailView.foodItem = foodItem
+			self.navigationController?.pushViewController(foodDetailView, animated: true)
+		}
+
+
+	}
+	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell!
 		let foodItem: FoodItem
@@ -89,22 +103,21 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		foodItem = searchResults[indexPath.row]
 		
 		cell.textLabel!.text = foodItem.getName()
-		cell.detailTextLabel!.text = "todo FoodItem.getFoodGroup()"
+		//cell.detailTextLabel!.text = "todo FoodItem.getFoodGroup()"
 		return cell
 	}
 	
 	//MARK: - Segues
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-
 		//Pass selected FoodItem to FoodDetailViweController
-		if (segue.identifier == "selectFoodItem") {
-			let foodDetailController: FoodDetailViewController = segue.destination as! FoodDetailViewController
-			let foodItem: FoodItem!
-			if let indexPath = tableView.indexPathForSelectedRow {
-				foodItem = results[indexPath.row]
-				foodDetailController.foodItem = foodItem
-			}
-		}
+//		if (segue.identifier == "selectFoodItem") {
+//			let foodDetailController: FoodDetailViewController = segue.destination as! FoodDetailViewController
+//			let foodItem: FoodItem!
+//			if let indexPath = tableView.indexPathForSelectedRow {
+//				foodItem = searchResults[indexPath.row]
+//				foodDetailController.foodItem = foodItem
+//			}
+//		}
 	}
 		
 	

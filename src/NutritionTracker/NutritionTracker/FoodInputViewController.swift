@@ -8,20 +8,73 @@
 
 import UIKit
 
-class FoodInputViewController: UIViewController {
-
+class FoodInputViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+	var meal = Meal()
+	//var mealTableViewCells = [FoodItemTableViewCell]()
+	@IBOutlet weak var mealTableView: UITableView!
+	
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+		
+		mealTableView.delegate = self
+		mealTableView.dataSource = self
+		
+		//TEST
+		meal.add(FoodItem(123124, "afasf"))
+		meal.add(FoodItem(354654, "gdsdgs"))
+		updateMealTable()
+		
+		mealTableView.register(FoodItemTableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
     }
+	
+	func saveMeal() {
+		//realm
+	}
+	
+	
+	
+	func addToMeal(_ foodItem: FoodItem) {
+		meal.add(foodItem)
+		addCell(foodItem)
+	}
+	
+	//add cell to table
+	func addCell(_ foodItem: FoodItem) {
+		updateMealTable()
+	}
+	
+	func updateMealTable() {
+		mealTableView.beginUpdates()
+		mealTableView.insertRows(at: [IndexPath(row: meal.count()-1, section: 0)], with: .automatic)
+		mealTableView.endUpdates()
+		mealTableView.reloadData()
+	}
+	
+	func openSearchFoodItemSelector() {
+		//add SearchViewController to stack
+	}
+	func openCatalogFoodItemSelector() {
+		//add CatalogViewController to stack
+	}
+	
+	// MARK: Table View Delegate
+	func numberOfSections(in tableView: UITableView) -> Int {
+		return 1
+	}
+	
+	// Return the number of cells to display
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return meal.count()
+	}
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let foodItem = meal.getFoodItems()[indexPath.row]
+		let cellToUse = FoodItemTableViewCell(foodItem)
+		cellToUse.textLabel!.text = foodItem.getName()
+		return cellToUse
+	}
+	
+	
     /*
     // MARK: - Navigation
 

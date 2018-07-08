@@ -19,14 +19,17 @@ class FoodNutrientReport {
 	}
 	
 	func addNutrient(_ nutrient: FoodItemNutrient) {
-		let isDuplicate = nutrients.contains { n in nutrient.getName() == n.getName() }
-		if (!isDuplicate) {
+		if !contains(nutrient) {
 			nutrients.append(nutrient)
 		}
 	}
 	
 	func getNutrients() -> [FoodItemNutrient] {
 		return nutrients
+	}
+	
+	func contains(_ nutrient: FoodItemNutrient) -> Bool {
+		return nutrients.contains { n in nutrient.getName() == n.getName() }
 	}
 	
 	func count() -> Int {
@@ -36,5 +39,9 @@ class FoodNutrientReport {
 	func testPrint() {
 		print("poggers")
 	}
+	
+}
+
+class FoodNutrientReportV2 {
 	
 }

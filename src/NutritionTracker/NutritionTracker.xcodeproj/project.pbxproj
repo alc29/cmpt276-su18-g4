@@ -18,6 +18,7 @@
 		0A6D420120E6F38600C3430A /* FoodItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D420020E6F38600C3430A /* FoodItemList.swift */; };
 		0A72CB7620EF24F500DB9DAC /* Database5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72CB7520EF24F500DB9DAC /* Database5.swift */; };
 		0A72CB7820EF281200DB9DAC /* FoodNutrientReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72CB7720EF281200DB9DAC /* FoodNutrientReport.swift */; };
+		0A72CB7B20F168A400DB9DAC /* FoodItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72CB7A20F168A400DB9DAC /* FoodItemTableViewCell.swift */; };
 		0A7B87D420E07E3E00B45D5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */; };
 		0A7B87D620E07E3E00B45D5C /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B87D520E07E3E00B45D5C /* EntryViewController.swift */; };
 		0A7B87D920E07E3E00B45D5C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A7B87D720E07E3E00B45D5C /* Main.storyboard */; };
@@ -65,6 +66,7 @@
 		0A6D420020E6F38600C3430A /* FoodItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemList.swift; sourceTree = "<group>"; };
 		0A72CB7520EF24F500DB9DAC /* Database5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database5.swift; sourceTree = "<group>"; };
 		0A72CB7720EF281200DB9DAC /* FoodNutrientReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutrientReport.swift; sourceTree = "<group>"; };
+		0A72CB7A20F168A400DB9DAC /* FoodItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemTableViewCell.swift; sourceTree = "<group>"; };
 		0A7B87D020E07E3E00B45D5C /* NutritionTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NutritionTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A7B87D520E07E3E00B45D5C /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
@@ -118,6 +120,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0A72CB7920F1687400DB9DAC /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				0A72CB7A20F168A400DB9DAC /* FoodItemTableViewCell.swift */,
+			);
+			name = UI;
+			sourceTree = "<group>";
+		};
 		0A7B87C720E07E3E00B45D5C = {
 			isa = PBXGroup;
 			children = (
@@ -145,6 +155,7 @@
 				0A7B87D720E07E3E00B45D5C /* Main.storyboard */,
 				0AA0632520E5919900CCE2FD /* Model */,
 				0A8F558D20E08A6D00B9E793 /* ViewControllers */,
+				0A72CB7920F1687400DB9DAC /* UI */,
 				0A7B87DA20E07E3E00B45D5C /* Assets.xcassets */,
 				0A7B87DC20E07E3E00B45D5C /* LaunchScreen.storyboard */,
 				0A7B87DF20E07E3E00B45D5C /* Info.plist */,
@@ -170,6 +181,7 @@
 				0AB4DBC720E8005D00BD052F /* Graph */,
 				0AB4DBC420E7F87600BD052F /* Catalog */,
 				0AC0717E20E9F60B00FD9657 /* Search */,
+				0ABBED7D20EAB4A600D7BD6A /* FoodDetailViewController.swift */,
 				0AB4DBC520E7F9BB00BD052F /* FoodInputViewController.swift */,
 			);
 			name = ViewControllers;
@@ -220,7 +232,6 @@
 			isa = PBXGroup;
 			children = (
 				0ABBED7B20EAB25A00D7BD6A /* FoodSearchViewController.swift */,
-				0ABBED7D20EAB4A600D7BD6A /* FoodDetailViewController.swift */,
 				0ABBED7F20EAB6F700D7BD6A /* SearchFooterView.swift */,
 			);
 			name = Search;
@@ -415,6 +426,7 @@
 			files = (
 				0A72CB7820EF281200DB9DAC /* FoodNutrientReport.swift in Sources */,
 				0A6D420120E6F38600C3430A /* FoodItemList.swift in Sources */,
+				0A72CB7B20F168A400DB9DAC /* FoodItemTableViewCell.swift in Sources */,
 				0A1471FC20EC98AC00731F8D /* Database2.swift in Sources */,
 				0AA0632720E591A900CCE2FD /* FoodItem.swift in Sources */,
 				0AC9B19720E86EC800334127 /* AmountPer.swift in Sources */,
