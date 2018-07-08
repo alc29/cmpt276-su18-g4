@@ -19,7 +19,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	//var mealTableViewCells = [FoodItemTableViewCell]()
 	var meal = Meal()
 
-	// MARK: - Methods
+	// MARK: - VC Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 		
@@ -33,6 +33,14 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		asyncReloadData()
 		
 		saveMealButton.isEnabled = meal.count() > 0
+	}
+	
+	//deselect selected cell, on returning to this view.
+	override func viewWillAppear(_ animated: Bool) {
+		if let selectionIndexPath = mealTableView.indexPathForSelectedRow {
+			mealTableView.deselectRow(at: selectionIndexPath, animated: animated)
+		}
+		super.viewWillAppear(animated)
 	}
 	
 	//MARK: - Actions
@@ -102,13 +110,14 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 	
 	
-	//MARK: FoodSelector
+	//MARK: - FoodSelector
 	func addFood(foodItem: FoodItem) {
 		print("food selector: food added.")
 		addToMeal(foodItem)
 	}
 	
-	// MARK: Table View Delegate
+	
+	// MARK: - Table View Delegate
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
 	}
@@ -132,6 +141,14 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 
 		cell.textLabel!.text = foodItem.getName()
 		return cell
+	}
+	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		if let indexPath = tableView.indexPathForSelectedRow {
+			let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
+			vc.foodItem = meal.get(indexPath.row)!
+			self.navigationController?.pushViewController(vc, animated: true)
+		}
 	}
 	
 	// MARK: - Table View Swiping gestures
