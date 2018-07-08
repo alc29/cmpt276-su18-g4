@@ -88,11 +88,11 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 			self.navigationController?.pushViewController(foodDetailView, animated: true)
 		}
 
-
+		
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell!
+		let cell: UITableViewCell = tableView.dequeueReusableCell(withIdentifier: "FoodSearchResultCell", for: indexPath) as UITableViewCell!
 		let foodItem: FoodItem
 //		if isFiltering() {
 //			foodItem = filteredResults[indexPath.row]

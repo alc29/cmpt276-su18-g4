@@ -18,7 +18,7 @@
 		0A6D420120E6F38600C3430A /* FoodItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D420020E6F38600C3430A /* FoodItemList.swift */; };
 		0A72CB7620EF24F500DB9DAC /* Database5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72CB7520EF24F500DB9DAC /* Database5.swift */; };
 		0A72CB7820EF281200DB9DAC /* FoodNutrientReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72CB7720EF281200DB9DAC /* FoodNutrientReport.swift */; };
-		0A72CB7B20F168A400DB9DAC /* FoodItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72CB7A20F168A400DB9DAC /* FoodItemTableViewCell.swift */; };
+		0A72CB7E20F1C6B100DB9DAC /* MealBuilderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72CB7D20F1C6B100DB9DAC /* MealBuilderTableViewCell.swift */; };
 		0A7B87D420E07E3E00B45D5C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */; };
 		0A7B87D620E07E3E00B45D5C /* EntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7B87D520E07E3E00B45D5C /* EntryViewController.swift */; };
 		0A7B87D920E07E3E00B45D5C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A7B87D720E07E3E00B45D5C /* Main.storyboard */; };
@@ -29,7 +29,7 @@
 		0A8F559120E08CE600B9E793 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8F559020E08CE600B9E793 /* MainMenuViewController.swift */; };
 		0A8F559320E0912C00B9E793 /* GraphViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8F559220E0912C00B9E793 /* GraphViewController.swift */; };
 		0AA0632720E591A900CCE2FD /* FoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AA0632620E591A900CCE2FD /* FoodItem.swift */; };
-		0AB4DBC620E7F9BB00BD052F /* FoodInputViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB4DBC520E7F9BB00BD052F /* FoodInputViewController.swift */; };
+		0AB4DBC620E7F9BB00BD052F /* MealBuilderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB4DBC520E7F9BB00BD052F /* MealBuilderViewController.swift */; };
 		0AB4DBC920E8073C00BD052F /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB4DBC820E8073C00BD052F /* CategoryTableViewController.swift */; };
 		0ABBED7A20EA0AD700D7BD6A /* FoodGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABBED7920EA0AD700D7BD6A /* FoodGroup.swift */; };
 		0ABBED7C20EAB25A00D7BD6A /* FoodSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABBED7B20EAB25A00D7BD6A /* FoodSearchViewController.swift */; };
@@ -66,7 +66,7 @@
 		0A6D420020E6F38600C3430A /* FoodItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemList.swift; sourceTree = "<group>"; };
 		0A72CB7520EF24F500DB9DAC /* Database5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database5.swift; sourceTree = "<group>"; };
 		0A72CB7720EF281200DB9DAC /* FoodNutrientReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodNutrientReport.swift; sourceTree = "<group>"; };
-		0A72CB7A20F168A400DB9DAC /* FoodItemTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemTableViewCell.swift; sourceTree = "<group>"; };
+		0A72CB7D20F1C6B100DB9DAC /* MealBuilderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealBuilderTableViewCell.swift; sourceTree = "<group>"; };
 		0A7B87D020E07E3E00B45D5C /* NutritionTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NutritionTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0A7B87D520E07E3E00B45D5C /* EntryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryViewController.swift; sourceTree = "<group>"; };
@@ -81,7 +81,7 @@
 		0A8F559020E08CE600B9E793 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
 		0A8F559220E0912C00B9E793 /* GraphViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphViewController.swift; sourceTree = "<group>"; };
 		0AA0632620E591A900CCE2FD /* FoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItem.swift; sourceTree = "<group>"; };
-		0AB4DBC520E7F9BB00BD052F /* FoodInputViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodInputViewController.swift; sourceTree = "<group>"; };
+		0AB4DBC520E7F9BB00BD052F /* MealBuilderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealBuilderViewController.swift; sourceTree = "<group>"; };
 		0AB4DBC820E8073C00BD052F /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 		0ABBED7920EA0AD700D7BD6A /* FoodGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodGroup.swift; sourceTree = "<group>"; };
 		0ABBED7B20EAB25A00D7BD6A /* FoodSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodSearchViewController.swift; sourceTree = "<group>"; };
@@ -123,9 +123,17 @@
 		0A72CB7920F1687400DB9DAC /* UI */ = {
 			isa = PBXGroup;
 			children = (
-				0A72CB7A20F168A400DB9DAC /* FoodItemTableViewCell.swift */,
 			);
 			name = UI;
+			sourceTree = "<group>";
+		};
+		0A72CB7C20F1C57B00DB9DAC /* MealBuilder */ = {
+			isa = PBXGroup;
+			children = (
+				0AB4DBC520E7F9BB00BD052F /* MealBuilderViewController.swift */,
+				0A72CB7D20F1C6B100DB9DAC /* MealBuilderTableViewCell.swift */,
+			);
+			name = MealBuilder;
 			sourceTree = "<group>";
 		};
 		0A7B87C720E07E3E00B45D5C = {
@@ -181,8 +189,8 @@
 				0AB4DBC720E8005D00BD052F /* Graph */,
 				0AB4DBC420E7F87600BD052F /* Catalog */,
 				0AC0717E20E9F60B00FD9657 /* Search */,
+				0A72CB7C20F1C57B00DB9DAC /* MealBuilder */,
 				0ABBED7D20EAB4A600D7BD6A /* FoodDetailViewController.swift */,
-				0AB4DBC520E7F9BB00BD052F /* FoodInputViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -426,13 +434,12 @@
 			files = (
 				0A72CB7820EF281200DB9DAC /* FoodNutrientReport.swift in Sources */,
 				0A6D420120E6F38600C3430A /* FoodItemList.swift in Sources */,
-				0A72CB7B20F168A400DB9DAC /* FoodItemTableViewCell.swift in Sources */,
 				0A1471FC20EC98AC00731F8D /* Database2.swift in Sources */,
 				0AA0632720E591A900CCE2FD /* FoodItem.swift in Sources */,
 				0AC9B19720E86EC800334127 /* AmountPer.swift in Sources */,
 				0ABBED8020EAB6F700D7BD6A /* SearchFooterView.swift in Sources */,
 				0A6D41FD20E5C06100C3430A /* LocalDataManager.swift in Sources */,
-				0AB4DBC620E7F9BB00BD052F /* FoodInputViewController.swift in Sources */,
+				0AB4DBC620E7F9BB00BD052F /* MealBuilderViewController.swift in Sources */,
 				0AC0717B20E9ED6800FD9657 /* FoodItemNutrient.swift in Sources */,
 				0A72CB7620EF24F500DB9DAC /* Database5.swift in Sources */,
 				0AC9B19320E8514A00334127 /* PlaceholderDatabase.swift in Sources */,
@@ -446,6 +453,7 @@
 				0A219E8F20E73832005965A9 /* Unit.swift in Sources */,
 				0A8F559320E0912C00B9E793 /* GraphViewController.swift in Sources */,
 				0A14720020ECBF5400731F8D /* Database3.swift in Sources */,
+				0A72CB7E20F1C6B100DB9DAC /* MealBuilderTableViewCell.swift in Sources */,
 				0ABBED7C20EAB25A00D7BD6A /* FoodSearchViewController.swift in Sources */,
 				0A8F558F20E08A9700B9E793 /* LoginViewController.swift in Sources */,
 				0A7B87D620E07E3E00B45D5C /* EntryViewController.swift in Sources */,

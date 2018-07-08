@@ -216,7 +216,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="Cell" textLabel="yc8-sd-mtG" detailTextLabel="pRN-Kn-9s4" rowHeight="51" style="IBUITableViewCellStyleSubtitle" id="IvZ-44-hWt">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="FoodSearchResultCell" textLabel="yc8-sd-mtG" detailTextLabel="pRN-Kn-9s4" rowHeight="51" style="IBUITableViewCellStyleSubtitle" id="IvZ-44-hWt">
                                         <rect key="frame" x="0.0" y="28" width="375" height="51"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="IvZ-44-hWt" id="V3c-sx-N7D">
@@ -333,10 +333,10 @@
             </objects>
             <point key="canvasLocation" x="3929" y="36"/>
         </scene>
-        <!--Food Input View Controller-->
+        <!--Meal Builder View Controller-->
         <scene sceneID="UeZ-lv-HnZ">
             <objects>
-                <viewController id="JxZ-yO-UqQ" customClass="FoodInputViewController" customModule="NutritionTracker" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="JxZ-yO-UqQ" customClass="MealBuilderViewController" customModule="NutritionTracker" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="mXo-rF-v00">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -366,7 +366,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="rRB-5V-zN3" customClass="FoodItemTableViewCell" customModule="NutritionTracker" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="MealFoodItemCell" id="rRB-5V-zN3" customClass="FoodItemTableViewCell" customModule="NutritionTracker" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="335" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rRB-5V-zN3" id="kPV-C5-63c">
