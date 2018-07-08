@@ -17,7 +17,8 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	@IBOutlet weak var tableView: UITableView!
 	@IBOutlet weak var searchFooter: SearchFooterView!
 	
-	var foodDetailController: FoodDetailViewController? = nil
+	var foodDetailViewController: FoodDetailViewController? = nil
+	
 	//var results = [FoodItem]()
 	//var filteredResults = [FoodItem]()
 	var searchResults = [FoodItem]()
@@ -34,18 +35,21 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		searchController.searchBar.placeholder = "Search Foods"
 		navigationItem.searchController = searchController
 		definesPresentationContext = true
+		
 		//make sure search bar isn't hidden
 		if #available(iOS 11.0, *) {
 			self.navigationItem.searchController = self.searchController
 			self.navigationItem.hidesSearchBarWhenScrolling = false
 		} else {
 			tableView.tableHeaderView = searchController.searchBar
+			tableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "FoodSearchResultCell")
+			
 		}
 		
 		//setup the scope bar
 		searchController.searchBar.scopeButtonTitles = ["All", "Meat", "Vegges"]
 		searchController.searchBar.delegate = self
-		
+
 		//setup search footer
 		tableView.tableFooterView = searchFooter
 		
@@ -79,16 +83,15 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	
 	//called when a cell is tapped.
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		print("tappded")
 		if let indexPath = tableView.indexPathForSelectedRow {
-			let foodItem = searchResults[indexPath.row]
-			//let foodDetailView = FoodDetailViewController()
-			let foodDetailView = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
-			foodDetailView.foodItem = foodItem
-			self.navigationController?.pushViewController(foodDetailView, animated: true)
-		}
 
-		
+			if self.foodDetailViewController == nil {
+				self.foodDetailViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
+			}
+
+			foodDetailViewController!.foodItem = searchResults[indexPath.row]
+			self.navigationController?.pushViewController(self.foodDetailViewController!, animated: true)
+		}		
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

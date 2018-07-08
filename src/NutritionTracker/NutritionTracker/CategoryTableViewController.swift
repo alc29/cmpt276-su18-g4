@@ -9,6 +9,7 @@
 //	The user can browse the catelog, and select foods based on a food group or other category.
 //	When a category is selected, the view will display a list of foods within that category.
 //	When a food item is selected, the View will present a detail page, for displaying information about the chosen item.
+//	TODO rename
 
 import UIKit
 
@@ -29,6 +30,9 @@ class CategoryTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+		
+		self.tableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "CategoryCell")
+
     }
 	
     // MARK: - Table view data source

@@ -8,20 +8,23 @@
 
 import UIKit
 
-class MealBuilderViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+protocol FoodSelector {
+	func addFood(foodItem: FoodItem)
+}
+
+class MealBuilderViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FoodSelector {
 	// MARK: Properties
 	@IBOutlet weak var mealTableView: UITableView!
 	@IBOutlet weak var saveMealButton: UIButton!
 	//var mealTableViewCells = [FoodItemTableViewCell]()
 	var meal = Meal()
 
-	// MARK: Methods
+	// MARK: - Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 		
 		mealTableView.delegate = self
 		mealTableView.dataSource = self
-		//mealTableView.register(MealBuilderTableViewCell.classForCoder(), forCellReuseIdentifier: "MealFoodItemCell")
 		mealTableView.register(MealBuilderTableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
 
 		//TEST
@@ -31,6 +34,42 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		
 		saveMealButton.isEnabled = meal.count() > 0
 	}
+	
+	//MARK: - Actions
+
+	@IBAction func catalogButtonPressed(_ sender: UIButton) {
+		let vc = CategoryTableViewController()
+		self.navigationController?.pushViewController(vc, animated: true)
+	}
+	
+	@IBAction func foodSearchButtonPressed(_ sender: UIButton) {
+		
+		let storyboard = UIStoryboard(name: "Main", bundle: nil)
+		
+		let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
+		
+		let vc = storyboard.instantiateViewController(withIdentifier: "FoodSearchView") as! FoodSearchViewController
+		vc.foodDetailViewController = foodDetailView
+		
+		//let addButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addButtonPressed(sender:)))
+		let addButton = UIBarButtonItem(title: "Add", style: .plain, target: foodDetailView, action: #selector(foodDetailView.addButtonPressed(sender:)))
+		foodDetailView.navigationItem.rightBarButtonItem = addButton
+		foodDetailView.foodSelector = self
+		
+		//TODO left off here: pass selected food item back to this MealBuilderVC.
+		//create FoodSelectorDelegate:
+		//selectFood(_ foodItem: FoodItem)
+//		vc.foodSelector = self
+		
+		self.navigationController?.pushViewController(vc, animated: true)
+	}
+	
+//	@objc func addButtonPressed(sender: UIBarButtonItem) {
+////		sender.
+//		print("add button pressed")
+//	}
+	
+	// MARK: - Functions
 	
 	func asyncReloadData() {
 		DispatchQueue.main.async {
@@ -62,6 +101,13 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		//add CatalogViewController to stack
 	}
 	
+	
+	//MARK: FoodSelector
+	func addFood(foodItem: FoodItem) {
+		print("food selector: food added.")
+		addToMeal(foodItem)
+	}
+	
 	// MARK: Table View Delegate
 	func numberOfSections(in tableView: UITableView) -> Int {
 		return 1
@@ -78,6 +124,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		var cell: UITableViewCell
 		//MealFoodItemCell
 		if let reuseCell = tableView.dequeueReusableCell(withIdentifier: "MealFoodItemCell", for: indexPath) as UITableViewCell! {
+		//if let reuseCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell! {
 			cell = reuseCell
 		} else {
 			cell = MealBuilderTableViewCell(foodItem)
@@ -87,13 +134,13 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		return cell
 	}
 	
+	// MARK: - Table View Swiping gestures
 //	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
 //		if editingStyle == .delete {
 //			removeFromMeal(indexPath.row)
 //		}
 //	}
 	
-
 	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let action = UIContextualAction(style: .destructive, title: "Delete", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
 			self.removeFromMeal(indexPath.row)

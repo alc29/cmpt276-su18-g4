@@ -13,26 +13,27 @@ import RealmSwift
 
 class MainMenuViewController: UIViewController {
 	
+	
     override func viewDidLoad() {
         super.viewDidLoad()
-		printList()
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
-		printList()
+	// MARK: Button actions
+	
+	@IBAction func catalogButtonPressed(_ sender: UIButton) {
+		let vc = CategoryTableViewController()
+		self.navigationController?.pushViewController(vc, animated: true)
 	}
 	
-	// Testing - print the number of meals saved on the device.
-	func printList() {
-		let realm = try! Realm()
-		let results = realm.objects(FoodItemList.self)
-		if (results.count == 0) {
-		} else {
-			//let foodItemList: FoodItemList! = results.first
-			//print("items in list: \(foodItemList.count())")
-		}
+	@IBAction func foodSearchButtonPressed(_ sender: UIButton) {
+		//let vc = FoodSearchViewController()
+		//self.navigationController?.pushViewController(vc, animated: true)
+		//let foodDetailView = FoodDetailViewController()
+		
+		let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoodSearchView")
+		self.navigationController?.pushViewController(vc, animated: true)
 	}
-
+	
     /*
     // MARK: - Navigation
 

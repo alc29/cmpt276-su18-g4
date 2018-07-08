@@ -21,10 +21,13 @@ class FoodDetailViewController: UIViewController {
 	@IBOutlet weak var barGraph: BarChartView!
 	//var foodNameLabel: UILabel?
 	var nutrientsToDisplay = [Nutrient]()
+	var foodSelector: FoodSelector?
 
 //	var foodItem: FoodItem? {
 //		didSet { configureView() }
 //	}
+	
+	
 	var foodItem = FoodItem(0, "default food item")
 
     override func viewDidLoad() {
@@ -47,6 +50,13 @@ class FoodDetailViewController: UIViewController {
 		configureView()
     }
 
+	@objc func addButtonPressed(sender: UIBarButtonItem) {
+		print("add button pressed from FoodDetail")
+		foodSelector?.addFood(foodItem: foodItem)
+	}
+
+	
+	
 	func configureView() {
 //		if let foodItem = foodItem {
 //			if let foodName = foodNameLabel {

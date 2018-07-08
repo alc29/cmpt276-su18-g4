@@ -47,12 +47,9 @@ class FoodListTableViewController: UITableViewController {
 	
 	// Called when a cell is tapped. present FoodDetailView when a FoodItem cell is tapped
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		print("item selected")
-		
 		if let indexPath = tableView.indexPathForSelectedRow {
-			
-			//let foodDetailView = FoodDetailViewController()
 			let storyboard = UIStoryboard(name: "Main", bundle: nil)
+			//let foodDetailView = FoodDetailViewController()
 			let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
 			foodDetailView.foodItem = foodItems[indexPath.row]
 			self.navigationController?.pushViewController(foodDetailView, animated: true)
