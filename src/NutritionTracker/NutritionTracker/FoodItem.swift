@@ -47,27 +47,6 @@ class FoodItem: Object {
 	func getName() -> String { return name }
 	func getAmount() -> Amount { return amount! }
 	
-	// MARK: Public methods
-//	
-//	// Return how much of the specified nutrient this food contains.
-//	func getAmountOf(_ nutrient: Nutrient) -> Amount {
-//
-//		//TODO: uncomment when database is ready.
-//		//if let amount = DatabaseWrapper.sharedInstance.getAmountPerOf(nutrient, foodId) {
-//		//	return amount.getAmount()
-//		//}
-//		//return Amount(0)
-//		
-//		DatabaseWrapper.sharedInstance.getAmountPerOf(nutrient, foodId, updateAmount)
-//		
-//		//return Amount.random() //return a random amount for testing.
-//	}
-//	private func updateAmount(_ data: Data?) {
-//		if (data != nil) {
-//			amount = DatabaseWrapper.sharedInstance.jsonToAmountPer(data, )
-//		}
-//	}
-	
 	//return the pid
 	override static func primaryKey() -> String? {
 		return "id";
