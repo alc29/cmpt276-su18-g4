@@ -46,12 +46,12 @@ class MainMenuViewController: UIViewController {
 	
 	//Testing - pass a foodItem to the next view.
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if (segue.identifier == "MainMenuToGraph") {
-			let vc:GraphViewController = segue.destination as! GraphViewController
-			//test passing a food item to the graph
-			let foodItem = FoodItem(12345, "Noodles")
-			vc.receiveTestFoodItem(foodItem: foodItem)
-		}
+//		if (segue.identifier == "MainMenuToGraph") {
+//			let vc:GraphViewController = segue.destination as! GraphViewController
+//			//test passing a food item to the graph
+//			let foodItem = FoodItem(12345, "Noodles")
+//			vc.receiveTestFoodItem(foodItem: foodItem)
+//		}
 	}
 
 }

@@ -9,50 +9,50 @@
 import UIKit
 
 class MealBuilderViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-	var meal = Meal()
-	//var mealTableViewCells = [FoodItemTableViewCell]()
+	// MARK: Properties
 	@IBOutlet weak var mealTableView: UITableView!
-	
+	@IBOutlet weak var saveMealButton: UIButton!
+	//var mealTableViewCells = [FoodItemTableViewCell]()
+	var meal = Meal()
+
+	// MARK: Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 		
 		mealTableView.delegate = self
 		mealTableView.dataSource = self
-		
+		//mealTableView.register(MealBuilderTableViewCell.classForCoder(), forCellReuseIdentifier: "MealFoodItemCell")
+		mealTableView.register(MealBuilderTableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
+
 		//TEST
 		meal.add(FoodItem(123124, "afasf"))
 		meal.add(FoodItem(354654, "gdsdgs"))
-		updateMealTable()
+		asyncReloadData()
 		
-		mealTableView.register(MealBuilderTableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
-    }
+		saveMealButton.isEnabled = meal.count() > 0
+	}
+	
+	func asyncReloadData() {
+		DispatchQueue.main.async {
+			self.mealTableView.reloadData()
+		}
+	}
 	
 	func saveMeal() {
 		//realm
 	}
 	
-	
-	
 	func addToMeal(_ foodItem: FoodItem) {
 		meal.add(foodItem)
-		addCell(foodItem)
+		asyncReloadData()
+		saveMealButton.isEnabled = true
 	}
 	
 	//TODO add button in UITableViewCell to remove food item.
 	func removeFromMeal(_ index: Int) {
 		meal.remove(index)
-	}
-	
-	//add cell to table
-	func addCell(_ foodItem: FoodItem) {
-		updateMealTable()
-	}
-	
-	func updateMealTable() {
-		mealTableView.beginUpdates()
-		mealTableView.insertRows(at: [IndexPath(row: meal.count()-1, section: 0)], with: .automatic)
-		mealTableView.endUpdates()
-		mealTableView.reloadData()
+		asyncReloadData()
+		saveMealButton.isEnabled = meal.count() > 0
 	}
 	
 	func openSearchFoodItemSelector() {
@@ -87,33 +87,40 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		return cell
 	}
 	
-	// AKN: https://medium.com/ios-os-x-development/enable-slide-to-delete-in-uitableview-9311653dfe2
-	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-		if editingStyle == .delete {
-			meal.remove(indexPath.row)
-			mealTableView.beginUpdates()
-			mealTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-			mealTableView.endUpdates()
-			mealTableView.reloadData()
-		}
+//	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+//		if editingStyle == .delete {
+//			removeFromMeal(indexPath.row)
+//		}
+//	}
+	
+
+	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+		let action = UIContextualAction(style: .destructive, title: "Delete", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+			self.removeFromMeal(indexPath.row)
+			success(true)
+		})
+		return UISwipeActionsConfiguration(actions: [action])
 	}
+	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+		let action = UIContextualAction(style: .destructive, title: "Delete", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
+			self.removeFromMeal(indexPath.row)
+			success(true)
+		})
+		//action.backgroundColor = .red
+		return UISwipeActionsConfiguration(actions: [action])
+	}
+
 	
-	
-//	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//		let action = UIContextualAction(style: .normal, title: "Close", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-//			print("Close")
-//		})
-//		return UISwipeActionsConfiguration(actions: [action])
-//	}
-//	func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-//		let action = UIContextualAction(style: .normal, title: "Close", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
-//			print("Close")
-//		})
-//		return UISwipeActionsConfiguration(actions: [action])
-//	}
-	
-	
-	
+	/*
+	func insertRow
+	func deleteRow(_ indexPath: IndexPath) {
+	mealTableView.beginUpdates()
+	//mealTableView.insertRows(at: [IndexPath], with: UITableViewRowAnimation.automatic)
+	//mealTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+	mealTableView.endUpdates()
+	mealTableView.reloadData()
+	}
+	*/
 	
     /*
     // MARK: - Navigation

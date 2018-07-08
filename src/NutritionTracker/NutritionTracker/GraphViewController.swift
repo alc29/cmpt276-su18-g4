@@ -122,33 +122,6 @@ class GraphViewController: UIViewController {
     }
     */
 	
-	//TODO remove when finished
-	//Testing - receive a food item from the previous MainMenu view.
-	func receiveTestFoodItem(foodItem: FoodItem) {
-		//Load existing, or create new FoodItemList
-		//retrieve food list from realm
-		let realm = try! Realm()
-		let foodItemLists = realm.objects(FoodItemList.self)
-		
-		var foodItemList: FoodItemList?
-		//if no list, make new one
-		if (foodItemLists.count == 0) {
-			try! realm.write {
-				foodItemList = FoodItemList()
-				realm.add(foodItemList!)
-			}
-		} else {
-			foodItemList = foodItemLists.first
-		}
-		
-		assert(foodItemList != nil)
-		
-		//print("added: " + foodItem.getName())
-		//add food to food item list
-		try! realm.write {
-			foodItemList!.add(foodItem)
-		}
-	}
 }
 
 /** A class used for saving graph-related settings. */
