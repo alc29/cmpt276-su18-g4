@@ -68,7 +68,7 @@ class Database5 {
 		return URLRequest(url: url)
 	}
 	
-	private static func printJsonData(_ data: Data) {
+	private func printJsonData(_ data: Data) {
 		print(String(data: data, encoding:String.Encoding.ascii)!)
 	}
 }
