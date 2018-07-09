@@ -110,16 +110,6 @@ class NutritionTrackerTests: XCTestCase {
 	}
 	
 	//MARK: - Database Tests
-//	func testGetNutrients() {
-////		let foodId = 01009 //Cheese, cheddar...
-////		var nutrients = [Nutrient]()
-////		nutrients.append(Nutrient.Water)
-////		let returnedNutrients = DatabaseWrapper.sharedInstance.getNutrients(foodId, nutrients)
-////		print("num returned nutrients: \(returnedNutrients.count)")
-//
-//		DatabaseWrapper.sharedInstance.getNutrientsAsync("haHAAAAAA", NutritionTrackerTests.printString)
-//	}
-	
 	private static func printString(_ str: String) {
 		print(str)
 	}
@@ -128,24 +118,34 @@ class NutritionTrackerTests: XCTestCase {
 	func testNutrientReport() {
 		let tunaFoodId = 15117
 		let nutrients = [Nutrient.Calcium, Nutrient.Protein]
-		let expectation = XCTestExpectation(description: "Test Nutrient Report")
 		
-		let printTestNutrientReport: (FoodNutrientReport) -> Void = { (report: FoodNutrientReport) -> Void in
-			report.testPrint()
-			XCTAssert(report.count() == nutrients.count)
+		let expectation = XCTestExpectation(description: "Test Nutrient Report")
+
+		let printNutrientReport: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
 			XCTAssertNotNil(report)
+			XCTAssert(report!.count() == nutrients.count)
 			expectation.fulfill()
 		}
-		
-		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printTestNutrientReport)
-		wait(for: [expectation], timeout: 15.0)
-
-		
-	}
-//	func printTestNutrientReport(_ report: FoodNutrientReport) {
-//		report.testPrint()
-//	}
 	
+		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
+		wait(for: [expectation], timeout: 15.0)
+	}
+	
+	func testNutrientReportNil() {
+		let tunaFoodId = 15117
+		let nutrients = [Nutrient]()
+
+		let expectation = XCTestExpectation(description: "Test Nutrient Report should be nil")
+
+		let printNutrientReport: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
+			XCTAssertNil(report)
+			expectation.fulfill()
+		}
+
+		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
+		wait(for: [expectation], timeout: 15.0)
+	}
+
 	//MARK: Performance
     func testPerformanceExample() {
         // This is an example of a performance test case.
