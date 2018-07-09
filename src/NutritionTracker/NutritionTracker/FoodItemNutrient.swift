@@ -31,4 +31,5 @@ class FoodItemNutrient {
 	func getNutrient() -> Nutrient { return nutrient }
 	func getName() -> String { return nutrient.name; }
 	func getAmountPer() -> AmountPer { return amountPer}
+	func getNutrientId() -> Int { return nutrient.nutrientId }
 }

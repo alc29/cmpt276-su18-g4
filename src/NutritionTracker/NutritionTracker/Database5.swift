@@ -20,14 +20,15 @@ class Database5 {
 	private let testFoodIds = [15117, 11090] //raw bluefin tuna, raw broccoli
 	
 	//typealias AnyCompletion = (_ data: Any?) -> Void
-	typealias DataCompletion = (_ data: Data) -> Void
-	//typealias FoodNutrientReportCompletion = (_ report: NutrientReport) -> Void
+	//typealias DataCompletion = (_ data: Data) -> Void
 	typealias NutrientReportCompletion = (_ report: NutrientReport?) -> Void
-	//typealias FoodNutrientReportCompletionV2 = (_ report: FoodNutrientReportV2) -> Void
+	typealias FoodReportCompletionV1 = (_ report: FoodReportV1) -> Void
+	//typealias FoodReportCompletionV2 = (_ report: FoodReportV2) -> Void
 	
 	
 	// MARK: - Requests
-	// for each food item in the meal, retrieve the amount of each nutrient
+	
+	// Request a food nutrient report from the usda database.
 	// NOTE: must provide at least 1 nutrient.
 	public func requestNutrientReport(_ foodId: Int, _ nutrientList: [Nutrient], _ completion: @escaping NutrientReportCompletion) {
 		var urlStr = "https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=\(KEY)&ndbno=\(foodId)"
@@ -55,83 +56,8 @@ class Database5 {
 	}
 	
 	
-//	public func requestNutrientReportV2(_ meal: Meal, _ completion: FoodNutrientReportV2) {
-//		var urlStr = ""
+//	public func requestFoodReportV2(_ meal: Meal, _ completion: FoodNutrientReportV2) {
 //	}
-	
-	//MARK: JSON parsing
-	
-	//parse json & return report
-//	private func jsonDataToNutrientReport(_ foodId: Int, _ jsonData: Data) -> NutrientReport? {
-//		guard let result = try? JSONDecoder().decode(FoodNutrientReport.Result.self, from: jsonData) else { print("json: result failed"); return nil }
-//		guard let report = result.report else {print("json: result.report failed"); return nil }
-//		guard let foods = report.foods else { print("json: result.foods failed"); return nil }
-//		guard let food = foods.first else { print("json: food.first failed"); return nil }
-//		if let jNutrients = food.nutrients {
-//			let foodNutrientReport = FoodNutrientReport(foodId)
-//			for nut in jNutrients {
-//				print("nut: \(nut.nutrient)")
-//				let nutrient = Nutrient.Test
-//				let amount = AmountPer()
-//				foodNutrientReport.addNutrient(FoodItemNutrient(nutrient, amount))
-//			}
-//			return foodNutrientReport
-//		} else {
-//			print("json: jNutrients failed")
-//		}
-//		return nil
-//	}
-	
-	func jsonDataToFoodReportV2(_ data: Data) -> FoodReportV2? {
-//		struct Result: Decodable {
-//			let foods: [JFood]?
-//			let count: Int?
-//			let notfound: Int?
-//			let api: Int?
-//		}
-//		struct Description: Decodable {
-//			let ndbno: Int?
-//		}
-//
-//		struct JFood: Decodable {
-//			let desc: Description?
-//			let nutrients: [JNutrient]?
-//		}
-//		struct JNutrient: Decodable {
-//			let nutrient_id: Int? //TODO
-//			let name: String?
-//			let group: String?
-//			let unit: String?
-//			let value: Float?
-//			let derivation: String?
-//			let measures: [Measure]?
-//		}
-//		struct Measure: Decodable {
-//			let label: String?
-//			let equiv: Int?
-//			let eunit: String?
-//			let qty: Int?
-//			let value: Float?
-//		}
-		
-		//		guard let result = try? JSONDecoder().decode(Result.self, from: data) else { print("json: result failed"); return nil }
-		//		guard let report = result.report else {print("json: result.report failed"); return nil }
-		//		guard let foods = report.foods else { print("json: result.foods failed"); return nil }
-		//		guard let food = foods.first else { print("json: food.first failed"); return nil }
-		//		if let jNutrients = food.nutrients {
-		//			let foodNutrientReport = FoodNutrientReport(foodId)
-		//			for nut in jNutrients as [JNutrient] {
-		//				let nutrient = Nutrient.Test
-		//				let amount = AmountPer()
-		//				foodNutrientReport.addNutrient(FoodItemNutrient(nutrient, amount))
-		//			}
-		//			return foodNutrientReport
-		//		} else {
-		//			print("json: jNutrients failed")
-		//		}
-		return nil
-		
-	}
 	
 	
 	//MARK: Helpers
@@ -142,7 +68,7 @@ class Database5 {
 		return URLRequest(url: url)
 	}
 	
-	private func printJsonData(_ data: Data) {
+	private static func printJsonData(_ data: Data) {
 		print(String(data: data, encoding:String.Encoding.ascii)!)
 	}
 }

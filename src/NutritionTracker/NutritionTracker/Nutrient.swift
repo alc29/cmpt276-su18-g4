@@ -23,7 +23,7 @@ struct Nutrient {
 	}
 	
 	//TODO remove, or make properties private
-	func getId() -> Int {return nutrientId}
+	func getId() -> Int { return nutrientId }
 	
 	static func get(id: Int) -> Nutrient {
 		let nutrient = Nutrient.dict[id]

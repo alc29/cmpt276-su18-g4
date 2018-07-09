@@ -123,7 +123,11 @@ class NutritionTrackerTests: XCTestCase {
 
 		let printNutrientReport: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
 			XCTAssertNotNil(report)
+			// test report properties
 			XCTAssert(report!.count() == nutrients.count)
+			XCTAssert(report!.contains(Nutrient.Calcium))
+			XCTAssert(report!.contains(Nutrient.Protein))
+			//TODO test repoort!.getFoodItemNutrient
 			expectation.fulfill()
 		}
 	

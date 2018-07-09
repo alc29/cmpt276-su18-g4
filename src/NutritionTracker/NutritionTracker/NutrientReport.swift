@@ -5,6 +5,10 @@
 //  Created by alc29 on 2018-07-05.
 //  Copyright © 2018 alc29. All rights reserved.
 //
+//	Contains the following classes:
+//	NutrientReport, FoodReportV1, FoodReportV2
+//	TODO rename file
+//	TODO: other TODOs in this file
 
 import Foundation
 
@@ -42,11 +46,12 @@ class NutrientReport {
 	var foodItemNutrients = [FoodItemNutrient]()
 	
 	
-	// MARK: public methods
+	// initi
 	init (_ foodId: Int) {
 		self.foodId = foodId
 	}
 
+	// MARK: public methods
 	func addNutrient(_ nutrient: FoodItemNutrient) {
 		if !contains(nutrient) {
 			foodItemNutrients.append(nutrient)
@@ -97,6 +102,7 @@ class NutrientReport {
 		return nutrientReport
 	}
 	
+	//TODO
 	private static func jNutrientToFoodItemNutrient(_ jNutrient: JNutrient) -> FoodItemNutrient {
 		let nutrient = NutrientReport.jNutrientToNutrient(Int(jNutrient.nutrient_id!)!)
 		let amountPer = AmountPer() //TODO
@@ -147,6 +153,11 @@ class FoodReportV2 {
 		let eunit: String?
 		let qty: Int?
 		let value: Float?
+	}
+	
+	static func fromJsonData(_ foodId: Int, _ jsonData: Data) -> FoodReportV2? {
+		//TODO
+		return nil
 	}
 	
 }
