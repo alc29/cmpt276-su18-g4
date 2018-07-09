@@ -1,16 +1,18 @@
 //
-//  FoodNutrientReport.swift
+//  NutrientReport.swift
 //  NutritionTracker
 //
 //  Created by alc29 on 2018-07-05.
 //  Copyright © 2018 alc29. All rights reserved.
 //
-//	Reference:
-//	https://ndb.nal.usda.gov/ndb/doc/apilist/API-NUTRIENT-REPORT.md
 
 import Foundation
 
-//nutrient information about a food
+/**
+//Nutrient information about a food
+Reference:
+https://ndb.nal.usda.gov/ndb/doc/apilist/API-NUTRIENT-REPORT.md
+*/
 class NutrientReport {
 	
 	//MARK: Json structs
@@ -37,7 +39,8 @@ class NutrientReport {
 	
 	//MARK: Properties
 	let foodId: Int
-	var nutrients = [FoodItemNutrient]()
+	var foodItemNutrients = [FoodItemNutrient]()
+	
 	
 	// MARK: public methods
 	init (_ foodId: Int) {
@@ -46,17 +49,33 @@ class NutrientReport {
 
 	func addNutrient(_ nutrient: FoodItemNutrient) {
 		if !contains(nutrient) {
-			nutrients.append(nutrient)
+			foodItemNutrients.append(nutrient)
 		}
 	}
 	
-	func contains(_ nutrient: FoodItemNutrient) -> Bool {
-		return nutrients.contains { n in nutrient.getName() == n.getName() }
+	func contains(_ nutrient: Nutrient) -> Bool {
+		return foodItemNutrients.contains { n in nutrient.getId() == n.getNutrientId() }
 	}
 	
-	func count() -> Int { return nutrients.count }
-	func getNutrients() -> [FoodItemNutrient] { return nutrients }
-
+	func contains(_ nutrient: FoodItemNutrient) -> Bool {
+		return foodItemNutrients.contains { n in nutrient.getName() == n.getName() }
+	}
+	
+	func count() -> Int { return foodItemNutrients.count }
+	func getFoodItemNutrients() -> [FoodItemNutrient] { return foodItemNutrients }
+	
+	//TODO use dictionary instead of for loop & test
+	func getFoodItemNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {
+		if !contains(nutrient) {
+			return nil
+		}
+		for n in foodItemNutrients {
+			if n.getNutrient().getId() == nutrient.getId() {
+				return n
+			}
+		}
+		return nil
+	}
 	
 	//MARK: json Parsing
 	
@@ -90,10 +109,44 @@ class NutrientReport {
 }
 
 class FoodReportV1 {
-	struct Report {
-		
-	}
 }
+
+/**
+
+Reference: https://ndb.nal.usda.gov/ndb/doc/apilist/API-FOOD-REPORTV2.md
+*/
 class FoodReportV2 {
+	struct Result: Decodable {
+		let foods: [JFood]?
+		let count: Int?
+		let notfound: Int?
+		let api: Int?
+	}
+
+	struct JFood: Decodable {
+		let desc: JDescription?
+		let nutrients: [JNutrient]?
+	}
+	struct JDescription: Decodable {
+		let ndbno: Int?
+	}
+
+	struct JNutrient: Decodable {
+		let nutrient_id: Int?
+		let name: String?
+		let group: String?
+		let unit: String?
+		let value: Float?
+		let derivation: String?
+		let dp: Int?
+		let measures: [JMeasure]?
+	}
+	struct JMeasure: Decodable {
+		let label: String?
+		let equiv: Int?
+		let eunit: String?
+		let qty: Int?
+		let value: Float?
+	}
 	
 }
