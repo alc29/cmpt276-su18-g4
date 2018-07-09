@@ -22,7 +22,16 @@ struct Nutrient {
 		self.unit = unit
 	}
 	
+	//TODO remove, or make properties private
 	func getId() -> Int {return nutrientId}
+	
+	static func get(id: Int) -> Nutrient {
+		let nutrient = Nutrient.dict[id]
+		if nutrient != nil {
+			return nutrient!
+		}
+		return Nutrient.Nil
+	}
 	
 	//Static predefined Nutrients
 	static let Water = Nutrient(255, "Water", Unit.Gram)
@@ -131,7 +140,118 @@ struct Nutrient {
 	static let Theobromine = Nutrient(263, "Theobromine", Unit.Miligram)
 	
 	static let Test = Nutrient(-1, "Test Nutrient", Unit.IU)
+	static let Nil = Nutrient(-2, "Nil", Unit.IU)
 	
+	static let dict = [
+		255 : Nutrient.Water,
+		208 : Nutrient.Energy_KCAL,
+		268 : Nutrient.Energy_KJ,
+		203 : Nutrient.Protein,
+		204 : Nutrient.Total_lipid,
+		207 : Nutrient.Ash,
+		205 : Nutrient.Carbohydrate_by_difference,
+		291 : Nutrient.Fiber_total_dietary,
+		295 : Nutrient.Fiber_soluble,
+		297 : Nutrient.Fiber_insoluble,
+		269 : Nutrient.Sugars_total,
+		539 : Nutrient.Sugars_added,
+		210 : Nutrient.Sucrose,
+		211 : Nutrient.Glucose,
+		212 : Nutrient.Fructose,
+		213 : Nutrient.Lactose,
+		214 : Nutrient.Maltose,
+		287 : Nutrient.Galactose,
+		299 : Nutrient.Sugar_alcohols,
+		209 : Nutrient.Starch,
+		301 : Nutrient.Calcium,
+		303 : Nutrient.Iron,
+		304 : Nutrient.Magnesium,
+		305 : Nutrient.Phosphorus,
+		306 : Nutrient.Potassium,
+		307 : Nutrient.Sodium,
+		309 : Nutrient.Zinc,
+		312 : Nutrient.Copper,
+		315 : Nutrient.Manganese,
+		317 : Nutrient.Selenium,
+		313 : Nutrient.Fluoride,
+		314 : Nutrient.Iodine,
+		401 : Nutrient.Vitamin,
+		404 : Nutrient.Thiamin,
+		405 : Nutrient.Riboflavin,
+		406 : Nutrient.Niacin,
+		410 : Nutrient.Pantothenic,
+		415 : Nutrient.VitaminB6,
+		417 : Nutrient.Folate_total,
+		431 : Nutrient.Folic_acid,
+		432 : Nutrient.Folate_food,
+		435 : Nutrient.Folate_DFE,
+		421 : Nutrient.Choline_total,
+		454 : Nutrient.Betaine,
+		418 : Nutrient.VitaminB12,
+		578 : Nutrient.VitaminB12_added,
+		416 : Nutrient.Biotin,
+		320 : Nutrient.VitaminA_RAE,
+		319 : Nutrient.Retinol,
+		321 : Nutrient.Carotene_beta,
+		322 : Nutrient.Carotene_alpha,
+		334 : Nutrient.Cryptoxanthin_beta,
+		318 : Nutrient.VitaminA_IU,
+		337 : Nutrient.Lycopene,
+		338 : Nutrient.Lutein_and_zeaxanthin,
+		323 : Nutrient.VitaminE,
+		573 : Nutrient.VitaminE_added,
+		341 : Nutrient.Tocopherol_beta,
+		342 : Nutrient.Tocopherol_gamma,
+		343 : Nutrient.Tocopherol_delta,
+		344 : Nutrient.Tocotrienol_alpha,
+		345 : Nutrient.Tocotrienol_beta,
+		346 : Nutrient.Tocotrienol_gamma,
+		347 : Nutrient.Tocotrienol_delta,
+		328 : Nutrient.Vitamin_D_D2_and_D3,
+		325 : Nutrient.Vitamin_D2_ergocalciferol,
+		326 : Nutrient.Vitamin_D3_cholecalciferol,
+		324 : Nutrient.Vitamin_D,
+		430 : Nutrient.Vitamin_K_phylloquinone,
+		429 : Nutrient.Dihydrophylloquinone,
+		428 : Nutrient.Menaquinone_4,
+		606 : Nutrient.Fatty_acids_total_saturated,
+		645 : Nutrient.Fatty_acids_total_monounsaturated,
+		646 : Nutrient.Fatty_acids_total_polyunsaturated,
+		605 : Nutrient.Fatty_acids_total_trans,
+		693 : Nutrient.Fatty_acids_total_trans_monoenoic,
+		695 : Nutrient.Fatty_acids_total_trans_polyenoic,
+		601 : Nutrient.Cholesterol,
+		636 : Nutrient.Phytosterols,
+		638 : Nutrient.Stigmasterol,
+		639 : Nutrient.Campesterol,
+		641 : Nutrient.Beta_sitosterol,
+		501 : Nutrient.Tryptophan,
+		502 : Nutrient.Threonine,
+		503 : Nutrient.Isoleucine,
+		504 : Nutrient.Leucine,
+		505 : Nutrient.Lysine,
+		506 : Nutrient.Methionine,
+		507 : Nutrient.Cystine,
+		508 : Nutrient.Phenylalanine,
+		509 : Nutrient.Tyrosine,
+		510 : Nutrient.Valine,
+		511 : Nutrient.Arginine,
+		512 : Nutrient.Histidine,
+		513 : Nutrient.Alanine,
+		514 : Nutrient.Aspartic_acid,
+		515 : Nutrient.Glutamic_acid,
+		516 : Nutrient.Glycine,
+		517 : Nutrient.Proline,
+		518 : Nutrient.Serine,
+		521 : Nutrient.Hydroxyproline,
+		221 : Nutrient.Alcohol_ethyl,
+		262 : Nutrient.Caffeine,
+		263 : Nutrient.Theobromine,
+		-1 : Nutrient.Test,
+		-2 : Nutrient.Nil
+	]
+
+
 	// Test nutrients
 //	static let TestBitterNutrientA = Nutrient(276, "TestBitterNutrientA", Unit.Miligram)
 //	static let TestBitterNutrientB = Nutrient(277, "TestBitterNutrientB", Unit.Miligram)
