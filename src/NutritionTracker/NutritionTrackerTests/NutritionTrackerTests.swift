@@ -118,7 +118,7 @@ class NutritionTrackerTests: XCTestCase {
 	func testNutrientReport() {
 		let tunaFoodId = 15117
 		let nutrients = [Nutrient.Calcium, Nutrient.Protein]
-		
+
 		let expectation = XCTestExpectation(description: "Test Nutrient Report")
 
 		let printNutrientReport: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
@@ -127,14 +127,14 @@ class NutritionTrackerTests: XCTestCase {
 			XCTAssert(report!.count() == nutrients.count)
 			XCTAssert(report!.contains(Nutrient.Calcium))
 			XCTAssert(report!.contains(Nutrient.Protein))
-			//TODO test repoort!.getFoodItemNutrient
+			//TODO test repoort!.getFoodItemNutrient = calcium, protein
 			expectation.fulfill()
 		}
-	
+
 		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
 		wait(for: [expectation], timeout: 15.0)
 	}
-	
+
 	func testNutrientReportNil() {
 		let tunaFoodId = 15117
 		let nutrients = [Nutrient]()
@@ -147,6 +147,24 @@ class NutritionTrackerTests: XCTestCase {
 		}
 
 		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
+		wait(for: [expectation], timeout: 15.0)
+	}
+	
+	func testFoodReportV2() {
+		let foods = [
+			FoodItem(01009, "testFoodreportV2"),  //cheddar cheese
+			//FoodItem(45202763, "testFoodreportV2"), //TODO handle no such food id
+			FoodItem(35193, "testFoodreportV2") //cooked agave
+		]
+
+		let expectation = XCTestExpectation(description: "Test Food Report V2")
+		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
+			XCTAssertNotNil(report)
+			XCTAssert(report!.count() == 2)
+			expectation.fulfill()
+		}
+
+		Database5.sharedInstance.requestFoodReportV2(foods, completion, true)
 		wait(for: [expectation], timeout: 15.0)
 	}
 

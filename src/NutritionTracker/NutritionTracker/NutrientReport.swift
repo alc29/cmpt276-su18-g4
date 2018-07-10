@@ -85,17 +85,17 @@ class NutrientReport {
 	//MARK: json Parsing
 	
 	//Factory method using json data
-	static func fromJsonData(_ foodId: Int, _ jsonData: Data) -> NutrientReport? {
+	static func fromJsonData(_ foodId: Int, _ jsonData: Data, _ debug: Bool = false) -> NutrientReport? {
 		
 		guard let result = try? JSONDecoder().decode(NutrientReport.Result.self, from: jsonData) else {print("json: result failed"); return nil }
-		guard let report = result.report else {print("json: result.report failed"); return nil }
-		guard let foods = report.foods else { print("json: result.foods failed"); return nil }
-		guard let food = foods.first else { print("json: food.first failed"); return nil }
-		guard let jNutrients = food.nutrients else { print("json: food.nutrients failed"); return nil }
+		guard let report = result.report else { if debug {print("json: result.report failed")}; return nil }
+		guard let foods = report.foods else { if debug {print("json: result.foods failed")}; return nil }
+		guard let food = foods.first else { if debug{print("json: food.first failed")}; return nil }
+		guard let jNutrients = food.nutrients else { if debug{print("json: food.nutrients failed")}; return nil }
 
 		let nutrientReport = NutrientReport(foodId)
 		for jNut in jNutrients {
-			print("nut: \(String(describing: jNut.nutrient))")
+			if debug {print("nut: \(String(describing: jNut.nutrient))")}
 			let foodItemNutrient = NutrientReport.jNutrientToFoodItemNutrient(jNut)
 			nutrientReport.addNutrient(foodItemNutrient)
 		}
@@ -114,8 +114,14 @@ class NutrientReport {
 	}
 }
 
+
+/**
+*/
 class FoodReportV1 {
 }
+
+
+
 
 /**
 
@@ -135,13 +141,16 @@ class FoodReportV2 {
 	}
 	struct JDescription: Decodable {
 		let ndbno: Int?
+		let name: String?
+		let sd: String? //short description
+		let fg: String? //food group
 	}
 
 	struct JNutrient: Decodable {
 		let nutrient_id: Int?
 		let name: String?
 		let group: String?
-		let unit: String?
+		let unit: String? //measurement unit
 		let value: Float?
 		let derivation: String?
 		let dp: Int?
@@ -152,12 +161,52 @@ class FoodReportV2 {
 		let equiv: Int?
 		let eunit: String?
 		let qty: Int?
-		let value: Float?
+		let value: Float? //gram equivalent value of the measure
 	}
 	
-	static func fromJsonData(_ foodId: Int, _ jsonData: Data) -> FoodReportV2? {
-		//TODO
-		return nil
+	//MARK: Properties
+	//TODO
+	private var jFoods = [JFood]()
+	
+	func addJFood(_ jFood: JFood) {
+		jFoods.append(jFood)
 	}
+	func count() -> Int {
+		return jFoods.count
+	}
+	
+	// MARK: Functions
+	static func fromJsonData(_ jsonData: Data, _ debug: Bool = false) -> FoodReportV2? {
+		//TODO
+		/*
+		guard let result = try? JSONDecoder().decode(NutrientReport.Result.self, from: jsonData) else {print("json: result failed"); return nil }
+		guard let report = result.report else { if debug {print("json: result.report failed")}; return nil }
+		guard let foods = report.foods else { if debug {print("json: result.foods failed")}; return nil }
+		guard let food = foods.first else { if debug{print("json: food.first failed")}; return nil }
+		guard let jNutrients = food.nutrients else { if debug{print("json: food.nutrients failed")}; return nil }
+		
+		let nutrientReport = NutrientReport(foodId)
+		for jNut in jNutrients {
+		if debug {print("nut: \(String(describing: jNut.nutrient))")}
+		let foodItemNutrient = NutrientReport.jNutrientToFoodItemNutrient(jNut)
+		nutrientReport.addNutrient(foodItemNutrient)
+		}
+		return nutrientReport
+		*/
+		
+		guard let result = try? JSONDecoder().decode(FoodReportV2.Result.self, from: jsonData) else { if debug {print("json: result failed")}; return nil }
+		guard let foods = result.foods else { if debug {print("json: result.foods failed")}; return nil }
+		let foodReportV2 = FoodReportV2()
+		for jFood in foods {
+			//let foodItem = jFoodToFoodItem(jFood) //TODO convert to FoodItem & list of FoodNutrientItems
+			foodReportV2.addJFood(jFood)
+		}
+		//for each JFood in foods,
+		return foodReportV2
+	}
+	
+//	func jFoodToFoodItem(_ jFood: JFood) -> FoodItem {
+//
+//	}
 	
 }

@@ -8,7 +8,6 @@
 
 /**
 Fake database for testing, until integration with actual.
-//TODO rename to Database
 AKN
 AKN: https://krakendev.io/blog/the-right-way-to-write-a-singleton
 https://code.bradymower.com/swift-3-apis-network-requests-json-getting-the-data-4aaae8a5efc0
