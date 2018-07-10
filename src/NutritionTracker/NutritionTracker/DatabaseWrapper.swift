@@ -71,17 +71,16 @@ class DatabaseWrapper {
 	// MARK: URL Queries
 	//Submits a query request to the database, and returns the json Data
 	func makeQuery(_ queryURL: String, _ completion: @escaping DataCompletion) {
-		print("query received")
-		guard let requestUrl = URL(string: queryURL) else {return}
-		let request = URLRequest(url:requestUrl)
-		let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
-			guard let data = data else {
-				print("makeQuery: error loading data")
-				return
-			}
-			completion(data)
-		}
-		task.resume()
+//		guard let requestUrl = URL(string: queryURL) else {return}
+//		let request = URLRequest(url:requestUrl)
+//		let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+//			guard let data = data else {
+//				print("makeQuery: error loading data")
+//				return
+//			}
+//			completion(data)
+//		}
+//		task.resume()
 	}
 
 	// MARK: JSON Conversion

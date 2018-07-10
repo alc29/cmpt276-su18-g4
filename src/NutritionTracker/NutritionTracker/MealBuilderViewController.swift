@@ -53,9 +53,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	@IBAction func foodSearchButtonPressed(_ sender: UIButton) {
 		
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
-		
 		let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
-		
 		let vc = storyboard.instantiateViewController(withIdentifier: "FoodSearchView") as! FoodSearchViewController
 		vc.foodDetailViewController = foodDetailView
 		
@@ -64,29 +62,27 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		foodDetailView.navigationItem.rightBarButtonItem = addButton
 		foodDetailView.foodSelector = self
 		
-		//TODO left off here: pass selected food item back to this MealBuilderVC.
-		//create FoodSelectorDelegate:
-		//selectFood(_ foodItem: FoodItem)
-//		vc.foodSelector = self
-		
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
 	
-//	@objc func addButtonPressed(sender: UIBarButtonItem) {
-////		sender.
-//		print("add button pressed")
-//	}
+	@IBAction func saveMealButtonPressed(_ sender: UIButton) {
+		//TODO
+		saveMeal(self.meal)
+		resetMeal()
+		//
+	}
+	
 	
 	// MARK: - Functions
 	
-	func asyncReloadData() {
-		DispatchQueue.main.async {
-			self.mealTableView.reloadData()
-		}
+	
+	func saveMeal(_ meal: Meal) {
+		//TODO realm
 	}
 	
-	func saveMeal() {
-		//realm
+	//replace current meal with new instance
+	func resetMeal() {
+		self.meal = Meal()
 	}
 	
 	func addToMeal(_ foodItem: FoodItem) {
@@ -109,8 +105,13 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		//add CatalogViewController to stack
 	}
 	
+	func asyncReloadData() {
+		DispatchQueue.main.async {
+			self.mealTableView.reloadData()
+		}
+	}
 	
-	//MARK: - FoodSelector
+	// MARK: - FoodSelector protocol
 	func addFood(foodItem: FoodItem) {
 		print("food selector: food added.")
 		addToMeal(foodItem)

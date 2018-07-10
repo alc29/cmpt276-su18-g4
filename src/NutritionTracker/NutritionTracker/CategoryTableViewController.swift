@@ -49,7 +49,7 @@ class CategoryTableViewController: UITableViewController {
 	// corresponding to the food group that was tapped.
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		//let foodGroupId = foodGroups[indexPath.row].getIdStr()
-		//DatabaseWrapper.sharedInstance.getFoodItemsFrom(foodGroupId, handleFoodGroupItemsQuery)
+		//Database5.sharedInstance.getFoodItemsFrom(foodGroupId, handleFoodGroupItemsQuery)
 		//TODO get food items from food group
 		
 		if let indexPath = tableView.indexPathForSelectedRow {
@@ -73,7 +73,7 @@ class CategoryTableViewController: UITableViewController {
 	
 //	func handleFoodGroupItemsQuery(_ data: Data?) {
 //		if (data != nil) {
-//			let foodItemResults = DatabaseWrapper.sharedInstance.jsonToFoodItems(data!)
+//			let foodItemResults = Database5.sharedInstance.jsonToFoodItems(data!)
 //			let vc = FoodListTableViewController()
 //			vc.foodItems = foodItemResults
 //			self.navigationController!.pushViewController(vc, animated: true)

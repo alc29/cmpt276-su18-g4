@@ -18,10 +18,15 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	@IBOutlet weak var searchFooter: SearchFooterView!
 	
 	var foodDetailViewController: FoodDetailViewController? = nil
-	
 	//var results = [FoodItem]()
 	//var filteredResults = [FoodItem]()
-	var searchResults = [FoodItem]()
+	var searchResults = [FoodItem]() {
+		didSet {
+			DispatchQueue.main.async {
+				self.tableView.reloadData()
+			}
+		}
+	}
 	let searchController = UISearchController(searchResultsController: nil)
 	
 	//MARK: - View Setup
@@ -43,11 +48,10 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		} else {
 			tableView.tableHeaderView = searchController.searchBar
 			tableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "FoodSearchResultCell")
-			
 		}
 		
 		//setup the scope bar
-		searchController.searchBar.scopeButtonTitles = ["All", "Meat", "Vegges"]
+		//searchController.searchBar.scopeButtonTitles = ["All", "Meat", "Vegges"] TODO use for filtering results, if desired.
 		searchController.searchBar.delegate = self
 
 		//setup search footer
@@ -109,22 +113,47 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		//cell.detailTextLabel!.text = "todo FoodItem.getFoodGroup()"
 		return cell
 	}
-	
-	//MARK: - Segues
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		//Pass selected FoodItem to FoodDetailViweController
-//		if (segue.identifier == "selectFoodItem") {
-//			let foodDetailController: FoodDetailViewController = segue.destination as! FoodDetailViewController
-//			let foodItem: FoodItem!
-//			if let indexPath = tableView.indexPathForSelectedRow {
-//				foodItem = searchResults[indexPath.row]
-//				foodDetailController.foodItem = foodItem
-//			}
-//		}
-	}
 		
 	
 //	//Mark: - private instance methods
+
+	
+	func searchBarIsEmpty() -> Bool {
+		return searchController.searchBar.text?.isEmpty ?? true
+	}
+	func isFiltering() -> Bool {
+		//let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
+		//return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
+		return false
+	}
+	
+	//MARK: - Search
+	func searchAndUpdateResults(_ searchTerm: String) {
+		Database5.sharedInstance.search(searchTerm, searchCompletion)
+	}
+	
+	func searchCompletion(_ foodItems: [FoodItem]) {
+		searchResults.removeAll()
+		searchResults = foodItems
+		DispatchQueue.main.async {
+			self.tableView.reloadData()
+		}
+	}
+
+	
+} //end of main class
+
+//MARK: - UISearchBar Delegate
+extension FoodSearchViewController: UISearchBarDelegate {
+	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+	//func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+		//filterContentForSearchText(searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
+		searchAndUpdateResults(searchBar.text!)
+	}
+	
+}
+
+// MARK: Filtering Results
 //	func filterContentForSearchText(_ searchText: String, scope: String = "All") {
 //		filteredResults = results.filter({(foodItem: FoodItem) -> Bool in
 //			//TODO implement if we want to filter results by a category (FoodGroup)
@@ -138,46 +167,6 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 //		})
 //		tableView.reloadData()
 //	}
-	
-	func searchBarIsEmpty() -> Bool {
-		return searchController.searchBar.text?.isEmpty ?? true
-	}
-	func isFiltering() -> Bool {
-		//let searchBarScopeIsFiltering = searchController.searchBar.selectedScopeButtonIndex != 0
-		//return searchController.isActive && (!searchBarIsEmpty() || searchBarScopeIsFiltering)
-		return false
-	}
-	
-	//MARK: - Search
-	func searchAndUpdateResults(_ searchTerm: String) { //query
-		DatabaseWrapper.sharedInstance.search(searchTerm, queryCompletion)
-	}
-	
-	func queryCompletion(_ data: Data?) {
-		
-		if (data != nil) {
-			searchResults.removeAll()
-			searchResults = DatabaseWrapper.sharedInstance.jsonToFoodItems(data!)
-			
-		}
-		DispatchQueue.main.async {
-			self.tableView.reloadData()
-		}
-	}
-
-	
-} //end of main class
-
-
-extension FoodSearchViewController: UISearchBarDelegate {
-	//MARK: - UISearchBar Delegate
-	func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-	//func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-		//filterContentForSearchText(searchBar.text!, scope: searchBar.scopeButtonTitles![selectedScope])
-		searchAndUpdateResults(searchBar.text!)
-	}
-	
-}
 
 //uncomment to update search results on any change in the search bar.
 //extension FoodSearchViewController: UISearchResultsUpdating {

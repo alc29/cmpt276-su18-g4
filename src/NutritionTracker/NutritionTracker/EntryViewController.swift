@@ -21,15 +21,6 @@ class EntryViewController: UIViewController {
 		//add fake meals for testing the app.
 		addTestMeals()
 		
-		
-//		DatabaseWrapper.sharedInstance.getNutrientsAsync("haHAAAAAA", printString)
-		DatabaseWrapper.sharedInstance.makeQuery("https://api.nal.usda.gov/ndb/V2/reports/?ndbno=01009&format=json&api_key=Y5qpjfCGqZ9mTIhN41iKHAGMIKOf42uS2mH3IQr4", handleData)
-	}
-	
-	func handleData(_ data: Data? ) {
-		if (data != nil) {
-			print(data!)
-		}
 	}
 	
 	//Testing - clear all persistent data

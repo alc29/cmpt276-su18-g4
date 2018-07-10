@@ -19,15 +19,12 @@ The specific nutrients to display can be set by the user.
 class FoodDetailViewController: UIViewController {
 	@IBOutlet weak var foodNameLabel: UILabel!
 	@IBOutlet weak var barGraph: BarChartView!
-	//var foodNameLabel: UILabel?
 	var nutrientsToDisplay = [Nutrient]()
 	var foodSelector: FoodSelector?
 
 //	var foodItem: FoodItem? {
 //		didSet { configureView() }
 //	}
-	
-	
 	var foodItem = FoodItem(0, "default food item")
 
     override func viewDidLoad() {
@@ -53,8 +50,6 @@ class FoodDetailViewController: UIViewController {
 		foodSelector?.addFood(foodItem: foodItem)
 	}
 
-	
-	
 	func configureView() {
 //		if let foodItem = foodItem {
 //			if let foodName = foodNameLabel {
@@ -72,20 +67,15 @@ class FoodDetailViewController: UIViewController {
 	}
 
 
-	func handleJsonData(_ jsonData: Data) {
-//		//turn jsonData into AmountPer
-//		print(jsonData)
-	}
-
 //	func loadGraph() { //invoker
 //		var count = 1
 //		var entries = [BarChartDataEntry]()
 //		let completion = handleJsonData
 //		for nut in nutrientsToDisplay {
-////			DatabaseWrapper.sharedInstance.getAmountPerOf(nut, foodItem!.getFoodId(), completion)
+////			Database5.sharedInstance.getAmountPerOf(nut, foodItem!.getFoodId(), completion)
 //			//TODO uncomment
-//			let amountPer = PlaceholderDatabase.sharedInstance.getAmountPerOf(nutrient: nut, foodId: foodItem!.getFoodId())
-////			if let amountPer = DatabaseWrapper.sharedInstance.getAmountPerOf(nut, foodItem!.getFoodId()) {
+//			let amountPer = Database5.sharedInstance.getAmountPerOf(nutrient: nut, foodId: foodItem!.getFoodId())
+////			if let amountPer = Database5.sharedInstance.getAmountPerOf(nut, foodItem!.getFoodId()) {
 //				let amount = amountPer.getAmount().getAmount()
 //				let entry = BarChartDataEntry(x: Double(count), y: Double(amount))
 //				entries.append(entry)

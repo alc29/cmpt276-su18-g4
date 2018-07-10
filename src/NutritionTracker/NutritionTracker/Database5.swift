@@ -21,9 +21,12 @@ class Database5 {
 	typealias NutrientReportCompletion = (_ report: NutrientReport?) -> Void
 	typealias FoodReportCompletionV1 = (_ report: FoodReportV1?) -> Void
 	typealias FoodReportCompletionV2 = (_ report: FoodReportV2?) -> Void
-	
+	typealias SearchCompletion = (_ data: Data?) -> Void
+	typealias SearchResultCompletion = (_ foodItems: [FoodItem]) -> Void
 	
 	// MARK: - Requests
+
+
 	
 	// Request a food nutrient report from the usda database.
 	// NOTE: must provide at least 1 nutrient.
@@ -82,7 +85,92 @@ class Database5 {
 			}
 		}
 		task.resume()
+	}
+	
+	//search for food items, return an array of FoodItems on completion.
+	public func search(_ searchTerms: String, _ completion: @escaping SearchResultCompletion) {
+		let sort = "n"      // n: sort by name, r: search by relevence
+		let max = "50"      // max items to return
 		
+		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&q=\(searchTerms)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
+		//makeSearchQuery(queryURL, completion)
+		guard let requestUrl = URL(string: queryURL) else {return}
+		let request = URLRequest(url:requestUrl)
+		let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+			guard let data = data else {
+				print("makeQuery: error loading data")
+				completion([FoodItem]())
+				return
+			}
+			let foodItems = Database5.jsonSearchToFoodItems(data)
+			completion(foodItems)
+		}
+		task.resume()
+	}
+	
+	//Return a list of FoodItem's corresponding to the given FoodGroup.
+	public func getFoodItemsFrom(_ foodGroupId: String, _ completion: @escaping DataCompletion) { //-> [FoodItem]()
+//		let fg = foodGroupId
+//		// query url for getting foods in a FoodGroup (using the food group id)
+//		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&fg=\(fg)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
+//		makeQuery(queryURL, completion)
+	}
+	
+	//return the amount of a specific nutrient in a specific food.
+	public func getAmountPerOf(_ nutrient: Nutrient, _ foodId: Int, _ completion: @escaping DataCompletion) {
+//		let ndbno = foodId
+//		//query url for getting the amount of a specific nutrient in the food.
+//		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&ndbno=\(ndbno)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
+//		makeQuery(queryURL, completion)
+	}
+	
+	//Return a list containing the amount of nutrients in a given food.
+	public func getNutrients(foodId: Int) { //-> [FoodItemNutrient]
+//		//var nutrients = [FoodItemNutrient]()
+//		let ndbno = foodId
+//		// query url for getting nutrients in a food
+//		//TODO query needs to be a "report", not a "search"
+//		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&ndbno=\(ndbno)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
+//		makeQuery(queryURL, emptyCompletionHandler)
+	}
+
+	
+	
+	//MARK: JSON
+	//Takes json data, and returns an array of FoodItem's (search results)
+	static func jsonSearchToFoodItems(_ jsonData: Data) -> [FoodItem] {
+		var foodItems = [FoodItem]()
+		
+		// Structs for containing json variables
+		struct Database: Decodable {
+			let list: List?
+		}
+		
+		struct List: Decodable {
+			let item: [Items]?
+		}
+		
+		struct Items: Decodable {
+			let name: String?
+			let group: String? // food group
+			let ndbno: String?
+		}
+		do {
+			//TODO parse json:
+			let data = try JSONDecoder().decode(Database.self, from: jsonData)
+			
+			//pass name and id to FoodItem array
+			guard let dataList = data.list else { return foodItems }
+			guard let dataListItem = dataList.item else { return foodItems }
+			for i in dataListItem {
+				let temp = FoodItem(Int(i.ndbno!), i.name!)
+				foodItems.append(temp)
+			}
+		} catch let jsonErr {
+			print("Error serializing Json:", jsonErr)
+		}
+		
+		return foodItems
 	}
 	
 	
