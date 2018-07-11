@@ -116,7 +116,7 @@ class DatabaseWrapper {
 			for n in nutrients {
 				let grams = Unit.Gram
 				let tempNutrient = Nutrient(n.nutrient_id!, n.name!, grams)
-				let tempAmount = AmountPer(amount: Amount(n.value, Unit.Gram), per: Amount(100, Unit.Gram))
+				let tempAmount = AmountPer(amount: Amount(n.value!, Unit.Gram), per: Amount(100, Unit.Gram)) //TODO unwrapping
 				let tempFoodItemNutrient = FoodItemNutrient(tempNutrient, tempAmount)
 				nutrientsToReturn.append(tempFoodItemNutrient)
 			}

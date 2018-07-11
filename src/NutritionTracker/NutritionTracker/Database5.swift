@@ -5,29 +5,31 @@
 //  Created by alc29 on 2018-07-05.
 //  Copyright © 2018 alc29. All rights reserved.
 //
+// 	TODO: test handling of nil values & failures.
 
 import Foundation
 
 
 class Database5 {
-	
+	// MARK: - Singleton
 	static let sharedInstance = Database5()
 	private init() {}
 	private let KEY = "Y5qpjfCGqZ9mTIhN41iKHAGMIKOf42uS2mH3IQr4"
-	private let testFoodIds = [15117, 11090] //raw bluefin tuna, raw broccoli
 	
-	//typealias AnyCompletion = (_ data: Any?) -> Void
-	//typealias DataCompletion = (_ data: Data) -> Void
+	// MARK: - Completion types
+	//TODO consider returning Bool for success, instead of Void
 	typealias NutrientReportCompletion = (_ report: NutrientReport?) -> Void
 	typealias FoodReportCompletionV1 = (_ report: FoodReportV1?) -> Void
 	typealias FoodReportCompletionV2 = (_ report: FoodReportV2?) -> Void
 	typealias SearchCompletion = (_ data: Data?) -> Void
 	typealias SearchResultCompletion = (_ foodItems: [FoodItem]) -> Void
+	typealias FoodItemNutrientCompletion = (_ foodItemNutrient: FoodItemNutrient) -> Void
+	typealias AmountPerCompletion = (_ amountPer: AmountPer) -> Void
+	typealias FoodItemsCompletion = (_ foodItems: [FoodItem]) -> Void
 	
-	// MARK: - Requests
+	// MARK: - USDA Queries
 
 
-	
 	// Request a food nutrient report from the usda database.
 	// NOTE: must provide at least 1 nutrient.
 	public func requestNutrientReport(_ foodId: Int, _ nutrientList: [Nutrient], _ completion: @escaping NutrientReportCompletion, _ debug: Bool = false) {
@@ -73,6 +75,7 @@ class Database5 {
 			completion(nil)
 			return
 		}
+		
 		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
 			guard let data = data else { print("error fetching data."); return }
 			if debug { self.printJsonData(data) }
@@ -108,33 +111,36 @@ class Database5 {
 		task.resume()
 	}
 	
-	//Return a list of FoodItem's corresponding to the given FoodGroup.
-	public func getFoodItemsFrom(_ foodGroupId: String, _ completion: @escaping DataCompletion) { //-> [FoodItem]()
-//		let fg = foodGroupId
-//		// query url for getting foods in a FoodGroup (using the food group id)
-//		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&fg=\(fg)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
-//		makeQuery(queryURL, completion)
+	
+	// MARK: Specific Queries
+
+	
+	public func getFoodItemNutrientOf(_ foodId: Int, nutrient: Nutrient, _ completion: @escaping FoodItemNutrientCompletion) {
+		
 	}
 	
 	//return the amount of a specific nutrient in a specific food.
-	public func getAmountPerOf(_ nutrient: Nutrient, _ foodId: Int, _ completion: @escaping DataCompletion) {
+//	public func getAmountPer(_ nutrient: Nutrient, _ foodId: Int, _ completion: @escaping AmountPerCompletion) {
 //		let ndbno = foodId
 //		//query url for getting the amount of a specific nutrient in the food.
 //		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&ndbno=\(ndbno)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
-//		makeQuery(queryURL, completion)
-	}
+//	}
 	
-	//Return a list containing the amount of nutrients in a given food.
-	public func getNutrients(foodId: Int) { //-> [FoodItemNutrient]
+	//Return a list containing the nutrients in a given food.
+//	public func getNutrients(foodId: Int, _ completion: @escaping ) { //-> [FoodItemNutrient]
 //		//var nutrients = [FoodItemNutrient]()
 //		let ndbno = foodId
 //		// query url for getting nutrients in a food
 //		//TODO query needs to be a "report", not a "search"
 //		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&ndbno=\(ndbno)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
-//		makeQuery(queryURL, emptyCompletionHandler)
-	}
+//	}
 
-	
+	//Return a list of FoodItem's corresponding to the given FoodGroup.
+//	public func getFoodItemsFrom(_ foodGroupId: String, _ completion: @escaping FoodItemsCompletion) {
+//		let fg = foodGroupId
+//		// query url for getting foods in a FoodGroup (using the food group id)
+//		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&fg=\(fg)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
+//	}
 	
 	//MARK: JSON
 	//Takes json data, and returns an array of FoodItem's (search results)

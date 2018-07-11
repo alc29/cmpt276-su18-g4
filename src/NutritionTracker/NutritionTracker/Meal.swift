@@ -13,6 +13,7 @@ import RealmSwift
 class Meal: FoodItemList {
 	// MARK: Properties
 	@objc dynamic var date = Date() //default to current date
+	@objc dynamic var nutrientReport: NutrientReport? = NutrientReport()
 	
 	// MARK: Setters
 	func setDate(_ date: Date?) {
@@ -24,5 +25,9 @@ class Meal: FoodItemList {
 	//Mark: Getters
 	func getDate() -> Date {
 		return date
+	}
+	
+	func addNutrientReport(_ report: NutrientReport) {
+		self.nutrientReport!.update(report)
 	}
 }

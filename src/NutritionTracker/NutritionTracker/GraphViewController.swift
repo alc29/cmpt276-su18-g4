@@ -17,15 +17,12 @@ import Charts
 class GraphViewController: UIViewController {
 	//MARK: Properties
 	@IBOutlet weak var graph: LineChartView! //ref to view in the storyboard
-	//var graphSettings: GraphSettings? //if no settings found, use default settings & save
+	var graphSettings: GraphSettings? //if no settings found, use default settings & save
 	let DEFAULT_TAGS = [Nutrient.Caffeine, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from user settings
-	// let nutrientReport
 	
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-	
-	
 	
 	
 	//update the data that should fill this graph.
@@ -48,50 +45,51 @@ class GraphViewController: UIViewController {
 //	}
 	
 	//callback for nutrient report requests. add data to graph when nutrient report received.
-//	func loadGraphData() {
-//		// TODO use existing nutrient report, otherwise request new one
-//
-//		//TODo append instead of resetting graph data; save as instance var
-//
-//		let data = LineChartData() //This is the object that will be added to the chart
-//		//let date = graphSettings!.getDate() //use date to determine which meals to
-//
-//
-//		//construct graph data from saved meals, filtered by tags.
-//		let realm = try! Realm()
-//		let meals = realm.objects(Meal.self) //(get all meals for testing)
-//		for tag in DEFAULT_TAGS { //for each nutrient tag
-//			var lineEntries = [ChartDataEntry]() //array for saving data to be plotted on a line.
-//			for meal in meals { //for each meal
-//				//determine date of meal
-//				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
-//				//determine the amount of the nutrient in the meal
-//
+	func loadGraphData() {
+		// TODO use existing nutrient report, otherwise request new one
+
+		//TODo append instead of resetting graph data; save as instance var
+
+		let data = LineChartData() //This is the object that will be added to the chart
+		let date = graphSettings!.getDate() //use date to determine which meals to
+
+		//construct graph data from saved meals, filtered by tags.
+		let realm = try! Realm()
+		let meals = realm.objects(Meal.self) //(get all meals for testing)
+		for tag in DEFAULT_TAGS { //for each nutrient tag
+			var lineEntries = [ChartDataEntry]() //array for saving data to be plotted on a line.
+			for meal in meals { //for each meal
+				//determine date of meal
+				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
+				//determine the amount of the nutrient in the meal
+
 //				for foodItem in meal.getFoodItems() {
 //					let nutrientItemAmount = nutrientReport.getFoodItemNutrient()
-//
 //				}
-//				//let nutrientAmount = getAmountOfNutrientInMeal(tag, meal)
-//
-////				//create point on the graph & add to array
-////				let entry = ChartDataEntry(x: Double(dayOfMonth!), y: Double(nutrientAmount.getAmount()))
-////				lineEntries.append(entry)
-//			}
-////			//create new line plot
-////			let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
-////
-////			//TODO set random line color
-////			data.addDataSet(line)
-//		}
+				//let nutrientAmount = getAmountOfNutrientInMeal(tag, meal)
 
-//		// Set the date of the graph
-//		let dateFormatter = DateFormatter()
-//		//TODO dateFormatter.setLocalizedDatFormatFromTemplate(graphSettings.dateFormat)
-//		let dateStr = dateFormatter.string(from: date)
+				//create point on the graph & add to array
+//				let entry = ChartDataEntry(x: Double(dayOfMonth!), y: Double(nutrientAmount.getAmount()))
+//				let x = dayOfMonth
+//				let y = meal.getNutrientAmount
+//				let entry = ChartDataEntry(x: x, y: y)
+//				lineEntries.append(entry)
+			}
+			//create new line plot
+			let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
 
-//		resetGraph(data, dateStr)
-//		print("nutrient report rexeiced.")
-//	}
+			//TODO set random line color
+			data.addDataSet(line)
+		}
+
+		// Set the date of the graph
+		let dateFormatter = DateFormatter()
+		//dateFormatter.setLocalizedDateFormatFromTemplate(graphSettings.dateFormat)
+		let dateStr = dateFormatter.string(from: date)
+
+		resetGraph(data, dateStr)
+		print("nutrient report rexeiced.")
+	}
 	
 
 

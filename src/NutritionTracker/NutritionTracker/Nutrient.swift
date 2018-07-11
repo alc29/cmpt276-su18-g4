@@ -9,17 +9,27 @@
 // Contains static instances of all possible nutrients.
 
 import Foundation
+import RealmSwift
 
-struct Nutrient {
+class Nutrient: Object {
 	// MARK: Properties
-	let nutrientId: Int
-	let name: String
-	let unit: Unit
+	@objc dynamic var nutrientId: Int = -1
+	@objc dynamic var name: String = "nil"
+	@objc dynamic var unit = Unit.IU.rawValue
+	var unitEnum: Unit {
+		get {
+			return Unit(rawValue: unit)!
+		}
+		set {
+			unit = newValue.rawValue
+		}
+	}
 	
-	init(_ nutrientId: Int, _ name: String, _ unit: Unit) {
+	convenience init(_ nutrientId: Int, _ name: String, _ unit: Unit) {
+		self.init()
 		self.nutrientId = nutrientId
 		self.name = name
-		self.unit = unit
+		self.unit = unit.rawValue
 	}
 	
 	//TODO remove, or make properties private

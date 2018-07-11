@@ -1,5 +1,5 @@
 //
-//  NutrientReport.swift
+//  reports.swift
 //  NutritionTracker
 //
 //  Created by alc29 on 2018-07-05.
@@ -7,17 +7,17 @@
 //
 //	Contains the following classes:
 //	NutrientReport, FoodReportV1, FoodReportV2
-//	TODO rename file
 //	TODO: other TODOs in this file
 
 import Foundation
+import RealmSwift
 
 /**
 //Nutrient information about a food
 Reference:
 https://ndb.nal.usda.gov/ndb/doc/apilist/API-NUTRIENT-REPORT.md
 */
-class NutrientReport {
+class NutrientReport: Object {
 	
 	//MARK: Json structs
 	struct Result: Decodable {
@@ -42,19 +42,34 @@ class NutrientReport {
 	}
 	
 	//MARK: Properties
-	let foodId: Int
-	var foodItemNutrients = [FoodItemNutrient]()
+	@objc dynamic var foodId: Int = -1
+	//var foodItemNutrients = [FoodItemNutrient]()
+	var foodItemNutrients = List<FoodItemNutrient>()
 	
-	
-	// initi
-	init (_ foodId: Int) {
+	// init
+	convenience init (_ foodId: Int) {
+		self.init()
 		self.foodId = foodId
 	}
-
+	
 	// MARK: public methods
 	func addNutrient(_ nutrient: FoodItemNutrient) {
 		if !contains(nutrient) {
 			foodItemNutrients.append(nutrient)
+		}
+	}
+	
+//	func removeNutrient(_ nutrient: FoodItemNutrient) {
+//	}
+	
+	//add or replace nutrients from the other report to this one.
+	func update(_ report: NutrientReport) {
+		for n in report.getFoodItemNutrients() {
+			if !self.contains(n) {
+				addNutrient(n)
+			} else {
+				//TODO remove & replace
+			}
 		}
 	}
 	
@@ -67,7 +82,7 @@ class NutrientReport {
 	}
 	
 	func count() -> Int { return foodItemNutrients.count }
-	func getFoodItemNutrients() -> [FoodItemNutrient] { return foodItemNutrients }
+	func getFoodItemNutrients() -> [FoodItemNutrient] { return Array(foodItemNutrients) }
 	
 	//TODO use dictionary instead of for loop & test
 	func getFoodItemNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 protocol FoodSelector {
 	func addFood(foodItem: FoodItem)
@@ -69,15 +70,23 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		//TODO
 		saveMeal(self.meal)
 		resetMeal()
-		//
+		saveMealButton.isEnabled = false
 	}
 	
 	
 	// MARK: - Functions
 	
-	
+	// Save new Meal to list of user's meals
 	func saveMeal(_ meal: Meal) {
-		//TODO realm
+		//get nutrient report to save with meal.
+		
+		let realm = try! Realm()
+		try!realm.write {
+			realm.add(meal)
+		}
+	}
+	func attachNutrientReport(_ meal: Meal, _ report: NutrientReport) {
+		meal.addNutrientReport(report)
 	}
 	
 	//replace current meal with new instance

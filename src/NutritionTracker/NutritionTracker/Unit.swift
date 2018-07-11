@@ -8,6 +8,7 @@
 //	An enum for representing all possible units of measurement.
 
 import Foundation
+import RealmSwift
 
 enum Unit: String {
 	case Gram

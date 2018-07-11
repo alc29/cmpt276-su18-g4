@@ -8,13 +8,15 @@
 //	Represents the amount of a specific nutrient within a specific food.
 
 import Foundation
+import RealmSwift
 
-class FoodItemNutrient {
+class FoodItemNutrient: Object {
 	// MARK: Properties
-	private var nutrient: Nutrient
-	private var amountPer: AmountPer
+	private var nutrient = Nutrient.Nil
+	private var amountPer = AmountPer()
 	
-	init(_ nutrient: Nutrient, _ amountPer: AmountPer) {
+	convenience init(_ nutrient: Nutrient, _ amountPer: AmountPer) {
+		self.init()
 		self.nutrient = nutrient
 		self.amountPer = amountPer
 	}
