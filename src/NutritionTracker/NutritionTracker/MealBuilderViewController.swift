@@ -65,6 +65,30 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
+    
+    @IBAction func visionButtonPressed(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
+        let foodSearchView = storyboard.instantiateViewController(withIdentifier: "FoodSearchView") as! FoodSearchViewController
+        foodSearchView.foodDetailViewController = foodDetailView
+        
+        let addButton = UIBarButtonItem(title: "Add", style: .plain, target: foodDetailView, action: #selector(foodDetailView.addButtonPressed(sender:)))
+        foodDetailView.navigationItem.rightBarButtonItem = addButton
+        foodDetailView.foodSelector = self
+        
+        let visionController = storyboard.instantiateViewController(withIdentifier: "VisionView") as! ImageClassificationViewController
+        visionController.mealBuilder = self
+        visionController.searchViewController = foodSearchView
+        
+        self.navigationController?.pushViewController(visionController, animated: true)
+        
+        
+        
+    }
+    
+    
+    
+    
 	
 	@IBAction func saveMealButtonPressed(_ sender: UIButton) {
 		

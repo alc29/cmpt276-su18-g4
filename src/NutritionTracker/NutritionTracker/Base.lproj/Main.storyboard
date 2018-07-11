@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -196,7 +197,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8EA-1M-eXP" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2728.8000000000002" y="1788.7556221889056"/>
+            <point key="canvasLocation" x="3094" y="1705"/>
         </scene>
         <!--Food Search View Controller-->
         <scene sceneID="1iX-au-uVa">
@@ -333,9 +334,12 @@
                                             <action selector="catalogButtonPressed:" destination="JxZ-yO-UqQ" eventType="touchUpInside" id="6fM-rb-g7e"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GeG-6u-1g8">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GeG-6u-1g8">
                                         <rect key="frame" x="0.0" y="106.5" width="335" height="43.5"/>
                                         <state key="normal" title="Identify with Vision"/>
+                                        <connections>
+                                            <action selector="visionButtonPressed:" destination="JxZ-yO-UqQ" eventType="touchUpInside" id="VQx-UX-bdN"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -403,8 +407,94 @@
             </objects>
             <point key="canvasLocation" x="2730" y="-698"/>
         </scene>
+        <!--Image Classification View Controller-->
+        <scene sceneID="YFn-AV-NK0">
+            <objects>
+                <viewController storyboardIdentifier="VisionView" id="9AT-2I-oFg" customClass="ImageClassificationViewController" customModule="NutritionTracker" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5t1-Gv-OgJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ojb-HN-Qy6">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SZ5-w7-Z01">
+                                <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem systemItem="camera" id="GXs-O6-Q0F">
+                                        <connections>
+                                            <action selector="takePicture" destination="9AT-2I-oFg" id="Ks0-Ce-awX"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="tSt-5u-VkW"/>
+                                </items>
+                            </toolbar>
+                            <visualEffectView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="drb-hy-9tB">
+                                <rect key="frame" x="16" y="547" width="138" height="60"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="yhz-VB-gcu">
+                                    <rect key="frame" x="0.0" y="0.0" width="138" height="60"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Add a photo." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="v3v-E6-Y1J">
+                                            <rect key="frame" x="20" y="20" width="98" height="20.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="v3v-E6-Y1J" firstAttribute="leading" secondItem="yhz-VB-gcu" secondAttribute="leading" constant="20" symbolic="YES" id="Dsm-4c-ave"/>
+                                        <constraint firstAttribute="trailing" secondItem="v3v-E6-Y1J" secondAttribute="trailing" constant="20" symbolic="YES" id="Qfa-m5-Fx9"/>
+                                        <constraint firstAttribute="bottom" secondItem="v3v-E6-Y1J" secondAttribute="bottom" constant="20" symbolic="YES" id="T8A-be-0qB"/>
+                                        <constraint firstItem="v3v-E6-Y1J" firstAttribute="top" secondItem="yhz-VB-gcu" secondAttribute="top" constant="20" symbolic="YES" id="gEF-av-7zE"/>
+                                    </constraints>
+                                </view>
+                                <blurEffect style="extraLight"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </visualEffectView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="92W-1C-XY1">
+                                <rect key="frame" x="197" y="547" width="162" height="60"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="27"/>
+                                <state key="normal" title="Confirm"/>
+                                <connections>
+                                    <action selector="confirmButtonPressed:" destination="9AT-2I-oFg" eventType="touchUpInside" id="0KB-BG-xjT"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Ojb-HN-Qy6" firstAttribute="leading" secondItem="5t1-Gv-OgJ" secondAttribute="leading" id="4L1-tn-piS"/>
+                            <constraint firstItem="Ojb-HN-Qy6" firstAttribute="leading" secondItem="SZ5-w7-Z01" secondAttribute="leading" id="A39-PB-amJ"/>
+                            <constraint firstItem="Ojb-HN-Qy6" firstAttribute="trailing" secondItem="SZ5-w7-Z01" secondAttribute="trailing" id="KPU-1z-GNn"/>
+                            <constraint firstItem="7Zj-fe-CwP" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="drb-hy-9tB" secondAttribute="trailing" constant="16" id="P1N-lG-K3n"/>
+                            <constraint firstAttribute="trailing" secondItem="Ojb-HN-Qy6" secondAttribute="trailing" id="SXk-fG-FI9"/>
+                            <constraint firstItem="Ojb-HN-Qy6" firstAttribute="centerY" secondItem="5t1-Gv-OgJ" secondAttribute="centerY" id="VQU-ms-9CK"/>
+                            <constraint firstItem="Ojb-HN-Qy6" firstAttribute="bottom" secondItem="SZ5-w7-Z01" secondAttribute="bottom" id="gEU-xl-eIe"/>
+                            <constraint firstItem="drb-hy-9tB" firstAttribute="leading" secondItem="5t1-Gv-OgJ" secondAttribute="leadingMargin" id="oG3-Ob-eaz"/>
+                            <constraint firstItem="Ojb-HN-Qy6" firstAttribute="top" secondItem="5t1-Gv-OgJ" secondAttribute="top" id="sQN-bF-3j1"/>
+                            <constraint firstItem="SZ5-w7-Z01" firstAttribute="top" secondItem="drb-hy-9tB" secondAttribute="bottom" constant="16" id="uQk-C7-Vuv"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7Zj-fe-CwP"/>
+                    </view>
+                    <connections>
+                        <outlet property="cameraButton" destination="GXs-O6-Q0F" id="uhG-od-JW0"/>
+                        <outlet property="classificationLabel" destination="v3v-E6-Y1J" id="XUv-NZ-PWM"/>
+                        <outlet property="confirmButton" destination="92W-1C-XY1" id="cMx-ue-OqL"/>
+                        <outlet property="imageView" destination="Ojb-HN-Qy6" id="wD5-0p-x8S"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="djQ-p2-3ts" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5616.8000000000002" y="-207.34632683658174"/>
+        </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Gwy-Pe-fdW"/>
+        <segue reference="VXZ-al-Uuk"/>
     </inferredMetricsTieBreakers>
 </document>
