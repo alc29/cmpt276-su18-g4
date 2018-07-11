@@ -67,9 +67,13 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 	
 	@IBAction func saveMealButtonPressed(_ sender: UIButton) {
-		//TODO
+		
+		//TODO present portions screen; set amounts for each food item in the meal.
+		
+		//TODO meal date defaults to current day; add option button to set date.
+		
+		//saveMeal(self.meal.clone())
 		saveMeal(self.meal)
-		resetMeal()
 		saveMealButton.isEnabled = false
 	}
 	
@@ -78,20 +82,30 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	
 	// Save new Meal to list of user's meals
 	func saveMeal(_ meal: Meal) {
-		//get nutrient report to save with meal.
 		
-		let realm = try! Realm()
-		try!realm.write {
-			realm.add(meal)
+		//get and save nutrient reports for each food item in meal.
+		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
+			guard let report = report else { return }
+			meal.setFoodReportV2(report) //TODO
+			let realm = try! Realm()
+			try!realm.write {
+				realm.add(meal)
+			}
+			//self.resetMeal()
+			print("meal saved")
 		}
+		
+		Database5.sharedInstance.requestFoodReportv2(meal, completion)
 	}
-	func attachNutrientReport(_ meal: Meal, _ report: NutrientReport) {
-		meal.addNutrientReport(report)
-	}
+	
+//	func attachNutrientReport(_ meal: Meal, _ report: NutrientReport) {
+//		meal.addNutrientReport(report)
+//	}
 	
 	//replace current meal with new instance
 	func resetMeal() {
 		self.meal = Meal()
+		asyncReloadData()
 	}
 	
 	func addToMeal(_ foodItem: FoodItem) {

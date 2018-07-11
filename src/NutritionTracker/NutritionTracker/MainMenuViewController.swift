@@ -13,9 +13,18 @@ import RealmSwift
 
 class MainMenuViewController: UIViewController {
 	
-	
     override func viewDidLoad() {
         super.viewDidLoad()
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		debug()
+	}
+	
+	private func debug() {
+		let realm = try! Realm()
+		let meals = realm.objects(Meal.self) //(get all meals for testing)
+		print("num meals: \(meals.count)")
 	}
 	
 	// MARK: Button actions

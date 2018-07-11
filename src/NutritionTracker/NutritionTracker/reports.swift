@@ -142,7 +142,7 @@ class FoodReportV1 {
 
 Reference: https://ndb.nal.usda.gov/ndb/doc/apilist/API-FOOD-REPORTV2.md
 */
-class FoodReportV2 {
+class FoodReportV2 : Object {
 	struct Result: Decodable {
 		let foods: [JFood]?
 		let count: Int?
@@ -180,8 +180,10 @@ class FoodReportV2 {
 	}
 	
 	//MARK: Properties
-	//TODO
-	private var jFoods = [JFood]()
+	//TODO convert all jFoods in Result into FoodItems.
+	var jFoods = [JFood]()
+	private var foodItems = List<FoodItem>()
+	
 	
 	func addJFood(_ jFood: JFood) {
 		jFoods.append(jFood)
@@ -190,7 +192,12 @@ class FoodReportV2 {
 		return jFoods.count
 	}
 	
-	// MARK: Functions
+//	func update(_ report: FoodReportV2) {
+//		for n in report.getFoodItemNutrients() {
+//			//for each food
+//				//for each nutrient
+//	}
+	
 	static func fromJsonData(_ jsonData: Data, _ debug: Bool = false) -> FoodReportV2? {
 		//TODO
 		/*
