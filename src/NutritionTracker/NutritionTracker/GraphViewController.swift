@@ -17,41 +17,24 @@ import Charts
 class GraphViewController: UIViewController {
 	//MARK: Properties
 	@IBOutlet weak var graph: LineChartView! //ref to view in the storyboard
-	var graphSettings: GraphSettings? //if no settings found, use default settings & save
+	var graphSettings = GraphSettings() //if no settings found, use default settings & save
 	let DEFAULT_TAGS = [Nutrient.Caffeine, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from user settings
 	
     override func viewDidLoad() {
         super.viewDidLoad()
+		
+		reloadGraphData()
     }
 	
+	override func viewWillAppear(_ animated: Bool) {
+		//TODO add flag for if graph needs to be reloaded.
+		reloadGraphData()
+	}
 	
-	//update the data that should fill this graph.
-//	private func requestNutrientReport() {
-//		//get meals within desired timeframe
-//		let realm = try! Realm()
-//		let meals = realm.objects(Meal.self) //(get all meals for testing)
-//		let tags = DEFAULT_TAGS
-//
-//		//request nutrient report for every food item
-//		let foodItems = [FoodItem]()
-//		for meal in meals { //for every food item in the meal
-//			for foodItem in meal.getFoodItems() {
-//			}
-//		}
-//		Database5.sharedInstance.requestNutrientReport(foodItem.getFoodId(), tags, receiveNutrientReport)
-//	}
-	
-//	func receiveNutrientReport(_ nutrientReport: FoodNutrientReport) {
-//	}
-	
-	//callback for nutrient report requests. add data to graph when nutrient report received.
-	func loadGraphData() {
-		// TODO use existing nutrient report, otherwise request new one
-
-		//TODo append instead of resetting graph data; save as instance var
-
+	// load meals to graph, & other graph settings. graph settings will change what should be displayed on the graph
+	func reloadGraphData() {
 		let data = LineChartData() //This is the object that will be added to the chart
-		let date = graphSettings!.getDate() //use date to determine which meals to
+		let date = graphSettings.getDate() //use date to determine which meals to
 
 		//construct graph data from saved meals, filtered by tags.
 		let realm = try! Realm()
@@ -72,8 +55,8 @@ class GraphViewController: UIViewController {
 //				let entry = ChartDataEntry(x: Double(dayOfMonth!), y: Double(nutrientAmount.getAmount()))
 //				let x = dayOfMonth
 //				let y = meal.getNutrientAmount
-//				let entry = ChartDataEntry(x: x, y: y)
-//				lineEntries.append(entry)
+				let entry = ChartDataEntry(x: 0, y: 0)
+				lineEntries.append(entry)
 			}
 			//create new line plot
 			let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
@@ -87,21 +70,15 @@ class GraphViewController: UIViewController {
 		//dateFormatter.setLocalizedDateFormatFromTemplate(graphSettings.dateFormat)
 		let dateStr = dateFormatter.string(from: date)
 
-		resetGraph(data, dateStr)
-		print("nutrient report rexeiced.")
+		graph.data = data
+		graph.notifyDataSetChanged()
+		graph.chartDescription?.text = dateStr
 	}
 	
 
 
 	// MARK: Graph
 
-	// Remove old data, reload graph with new data
-	private func resetGraph(_ data: LineChartData, _ date: String) {
-		graph.data = data
-		graph.notifyDataSetChanged()
-		graph.chartDescription?.text = date
-	}
-	
 	//AKN: https://stackoverflow.com/questions/25050309/swift-random-float-between-0-and-1
 	func randColor() -> UIColor {
 		let r = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
