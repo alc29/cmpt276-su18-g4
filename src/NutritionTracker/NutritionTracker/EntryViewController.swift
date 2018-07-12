@@ -5,6 +5,8 @@
 //  Created by alc29 on 2018-06-24.
 //  Copyright © 2018 alc29. All rights reserved.
 //
+//	ViewController for the app entry/launch screen. Contains initialization logic.
+// 	TODO add an interesting splash screen/logo/grpahic
 
 import UIKit
 import RealmSwift
@@ -14,10 +16,10 @@ class EntryViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		//clear all persistent data from the last run.
+		//Testing - clear all persistent data from the last test run.
 		clearRealmData()
+		//add fake meals for testing the app.
 		addTestMeals()
-		
 		
 	}
 	
@@ -31,7 +33,7 @@ class EntryViewController: UIViewController {
 	}
 
 	
-	//Testing - create test meals to display in graph
+	//Testing - create and add test meals to display in graph
 	private func addTestMeals() {
 		var daysToAdd = 1
 		
@@ -52,12 +54,6 @@ class EntryViewController: UIViewController {
 			
 		}
 	}
-
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
-	}
-
 
 }
 

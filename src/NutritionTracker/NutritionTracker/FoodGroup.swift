@@ -5,10 +5,32 @@
 //  Created by alc29 on 2018-07-02.
 //  Copyright © 2018 alc29. All rights reserved.
 //
+// A struct for representing a food group
+// Contains static instances of all possible food groups in the database.
+
 
 import Foundation
 
 struct FoodGroup {
+	// MARK: Properties
+	let id: Int
+	let name: String
+	
+	init (_ id: Int, _ name: String) {
+		self.id = id
+		self.name = name
+	}
+	
+	// Return the food group id as as string
+	public func getIdStr() -> String {
+		if (id <= 9) { // 1 digit
+			return "0\(id)00"
+		} else {
+			return "\(id)00"
+		}
+	}
+	
+	//static predefined food groups
 	static let Dairy_and_Egg_Products = FoodGroup(1, "Dairy_and_Egg_Products")
 	static let American_Indian_Alaska_Native_Foods = FoodGroup(24, "American_Indian_Alaska_Native_Foods")
 	static let Baby_Foods = FoodGroup(3, "Baby_Foods")
@@ -33,12 +55,6 @@ struct FoodGroup {
 	static let Soups_Sauces_and_Gravies = FoodGroup(6, "Soups_Sauces_and_Gravies")
 	static let Spices_and_Herbs = FoodGroup(2, "Spices_and_Herbs")
 	static let Sweets = FoodGroup(19, "Sweets")
-	static let Vegetables_and_Vegetable_Products = FoodGroup(11, "Vegetables_and_Vegetable_Products")
-	
-	let id: Int
-	let name: String
-	init (_ id: Int, _ name: String) {
-		self.id = id
-		self.name = name
-	}
+	//static let Vegetables_and_Vegetable_Products = FoodGroup(11, "Vegetables_and_Vegetable_Products")
+	static let Vegetables = FoodGroup(11, "Vegetables")	
 }

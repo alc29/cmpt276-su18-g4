@@ -101,8 +101,73 @@ class NutritionTrackerTests: XCTestCase {
 		XCTAssert(amount.getUnit() == NutritionTracker.Unit.Microgram)
 	}
 	
+	//MARK: - Test FoodGroup class
+	func testFoodGroup_getIdStr() {
+		let dairy = FoodGroup.Dairy_and_Egg_Products
+		let nativeFoods = FoodGroup.American_Indian_Alaska_Native_Foods
+		XCTAssert(dairy.getIdStr() == "0100")
+		XCTAssert(nativeFoods.getIdStr() == "2400")
+	}
 	
+	//MARK: - Database Tests
+	private static func printString(_ str: String) {
+		print(str)
+	}
 	
+	// MARK: - Database5 Tests
+	func testNutrientReport() {
+		let tunaFoodId = 15117
+		let nutrients = [Nutrient.Calcium, Nutrient.Protein]
+
+		let expectation = XCTestExpectation(description: "Test Nutrient Report")
+
+		let printNutrientReport: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
+			XCTAssertNotNil(report)
+			// test report properties
+			XCTAssert(report!.count() == nutrients.count)
+			XCTAssert(report!.contains(Nutrient.Calcium))
+			XCTAssert(report!.contains(Nutrient.Protein))
+			//TODO test repoort!.getFoodItemNutrient = calcium, protein
+			expectation.fulfill()
+		}
+
+		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
+		wait(for: [expectation], timeout: 15.0)
+	}
+
+	func testNutrientReportNil() {
+		let tunaFoodId = 15117
+		let nutrients = [Nutrient]()
+
+		let expectation = XCTestExpectation(description: "Test Nutrient Report should be nil")
+
+		let printNutrientReport: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
+			XCTAssertNil(report)
+			expectation.fulfill()
+		}
+
+		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
+		wait(for: [expectation], timeout: 15.0)
+	}
+	
+	func testFoodReportV2() {
+		let foods = [
+			FoodItem(01009, "testFoodreportV2"),  //cheddar cheese
+			//FoodItem(45202763, "testFoodreportV2"), //TODO handle no such food id
+			FoodItem(35193, "testFoodreportV2") //cooked agave
+		]
+
+		let expectation = XCTestExpectation(description: "Test Food Report V2")
+		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
+			XCTAssertNotNil(report)
+			XCTAssert(report!.count() == 2)
+			expectation.fulfill()
+		}
+
+		Database5.sharedInstance.requestFoodReportV2(foods, completion, true)
+		wait(for: [expectation], timeout: 15.0)
+	}
+
 	//MARK: Performance
     func testPerformanceExample() {
         // This is an example of a performance test case.
