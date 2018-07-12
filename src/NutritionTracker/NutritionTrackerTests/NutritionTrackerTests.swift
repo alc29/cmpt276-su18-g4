@@ -23,7 +23,7 @@ class NutritionTrackerTests: XCTestCase {
 	
 	//MARK: FoodItem
 	func testFoodItemInitTypical() {
-		let foodItem = FoodItem(foodId: 1, name: "Butter")
+		let foodItem = FoodItem(1, "Butter")
 		XCTAssert(foodItem.getFoodId() == 1)
 		XCTAssert(foodItem.getName() == "Butter")
 	}
@@ -35,26 +35,140 @@ class NutritionTrackerTests: XCTestCase {
 	}
 	
 	func testFoodItemInitNil() {
-		let foodItem = FoodItem(foodId: nil, name: nil)
+		let foodItem = FoodItem(nil, nil)
 		XCTAssert(foodItem.getFoodId() == -1)
 		XCTAssert(foodItem.getName() == "uninitialized")
 
-		let foodItem2 = FoodItem(foodId: nil, name: "Butter")
+		let foodItem2 = FoodItem(nil, "Butter")
 		XCTAssert(foodItem2.getFoodId() == -1)
 		XCTAssert(foodItem2.getName() == "Butter")
 		
-		let foodItem3 = FoodItem(foodId: 12345, name: nil)
+		let foodItem3 = FoodItem(12345, nil)
 		XCTAssert(foodItem3.getFoodId() == 12345)
 		XCTAssert(foodItem3.getName() == "uninitialized")
 	}
 	
+	// MARK: FoodItemList
+	func testFoodItemList() {
+		let foodList = FoodItemList()
+		XCTAssert(foodList.count() == 0)
+
+		//add items to list
+		for i in 0..<5 {
+			let foodItem = FoodItem(i, "food")
+			foodList.add(foodItem)
+			XCTAssert(foodList.count() == i+1)
+		}
+
+		//test list
+		XCTAssert(foodList.count() == 5)
+		for i in 0..<5 {
+			let foodItem = foodList.get(i)
+			XCTAssert(foodItem!.getFoodId() == i)
+			XCTAssert(foodItem!.getName() == "food")
+			XCTAssert(foodList.validIndex(i))
+			XCTAssert(foodList.count() == 5)
+		}
+		XCTAssertNil(foodList.get(5))
+		XCTAssert(!foodList.validIndex(5))
+
+		//remove items from list
+		for i in 0..<5 {
+			foodList.remove(0)
+			XCTAssert(foodList.count() == 5-1-i)
+		}
+		//XCTAssertNil(foodList.remove(0))
+	}
 	
-	//MARK: provided
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
-    
+	//MARK: Amount class
+	func testAmountDefault() {
+		let amount = Amount()
+		XCTAssert(amount.getAmount() == 0.0 as Float)
+		XCTAssert(amount.getUnit() == Unit.Miligram)
+	}
+	func testAmountInit() {
+		let amount = Amount(5.0, NutritionTracker.Unit.Microgram)
+		XCTAssert(amount.getAmount() == 5.0 as Float)
+		XCTAssert(amount.getUnit() == NutritionTracker.Unit.Microgram)
+	}
+	func testAmountGetSet() {
+		let amount = Amount()
+		amount.setAmount(-1.0)
+		XCTAssert(amount.getAmount() == 0.0 as Float)
+		amount.setAmount(5.0)
+		amount.setUnit(NutritionTracker.Unit.Microgram)
+		XCTAssert(amount.getAmount() == 5.0 as Float)
+		XCTAssert(amount.getUnit() == NutritionTracker.Unit.Microgram)
+	}
+	
+	//MARK: - Test FoodGroup class
+	func testFoodGroup_getIdStr() {
+		let dairy = FoodGroup.Dairy_and_Egg_Products
+		let nativeFoods = FoodGroup.American_Indian_Alaska_Native_Foods
+		XCTAssert(dairy.getIdStr() == "0100")
+		XCTAssert(nativeFoods.getIdStr() == "2400")
+	}
+	
+	//MARK: - Database Tests
+	private static func printString(_ str: String) {
+		print(str)
+	}
+	
+	// MARK: - Database5 Tests
+	func testNutrientReport() {
+		let tunaFoodId = 15117
+		let nutrients = [Nutrient.Calcium, Nutrient.Protein]
+
+		let expectation = XCTestExpectation(description: "Test Nutrient Report")
+
+		let printNutrientReport: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
+			XCTAssertNotNil(report)
+			// test report properties
+			XCTAssert(report!.count() == nutrients.count)
+			XCTAssert(report!.contains(Nutrient.Calcium))
+			XCTAssert(report!.contains(Nutrient.Protein))
+			//TODO test repoort!.getFoodItemNutrient = calcium, protein
+			expectation.fulfill()
+		}
+
+		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
+		wait(for: [expectation], timeout: 15.0)
+	}
+
+	func testNutrientReportNil() {
+		let tunaFoodId = 15117
+		let nutrients = [Nutrient]()
+
+		let expectation = XCTestExpectation(description: "Test Nutrient Report should be nil")
+
+		let printNutrientReport: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
+			XCTAssertNil(report)
+			expectation.fulfill()
+		}
+
+		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
+		wait(for: [expectation], timeout: 15.0)
+	}
+	
+	func testFoodReportV2() {
+		let foods = [
+			FoodItem(01009, "testFoodreportV2"),  //cheddar cheese
+			//FoodItem(45202763, "testFoodreportV2"), //TODO handle no such food id
+			FoodItem(35193, "testFoodreportV2") //cooked agave
+		]
+
+		let expectation = XCTestExpectation(description: "Test Food Report V2")
+		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
+			XCTAssertNotNil(report)
+			XCTAssert(report!.count() == 2)
+			expectation.fulfill()
+		}
+
+		Database5.sharedInstance.requestFoodReportV2(foods, completion, true)
+		wait(for: [expectation], timeout: 15.0)
+	}
+
+	//MARK: Performance
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
