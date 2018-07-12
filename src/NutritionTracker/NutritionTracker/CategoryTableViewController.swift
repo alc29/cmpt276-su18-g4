@@ -9,6 +9,7 @@
 //	The user can browse the catelog, and select foods based on a food group or other category.
 //	When a category is selected, the view will display a list of foods within that category.
 //	When a food item is selected, the View will present a detail page, for displaying information about the chosen item.
+//	TODO rename
 
 import UIKit
 
@@ -29,6 +30,9 @@ class CategoryTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+		
+		self.tableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "CategoryCell")
+
     }
 	
     // MARK: - Table view data source
@@ -44,25 +48,43 @@ class CategoryTableViewController: UITableViewController {
 	// Called when a cell is tapped. dipslay a table view of the list of foods
 	// corresponding to the food group that was tapped.
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let foodGroupId = foodGroups[indexPath.row].id
-		var foodItems = DatabaseWrapper.sharedInstance.getFoodItemsFrom(foodGroupId: foodGroupId)
+		//let foodGroupId = foodGroups[indexPath.row].getIdStr()
+		//Database5.sharedInstance.getFoodItemsFrom(foodGroupId, handleFoodGroupItemsQuery)
+		//TODO get food items from food group
 		
-		// TODO Testing = add sample item
-		let testFoodItem = FoodItem(12345, "Sample Food item of X Category")
-		foodItems.append(testFoodItem)
-		let vc = FoodListTableViewController()
-		vc.foodItems = foodItems
-		
-		self.navigationController!.pushViewController(vc, animated: true)
+		if let indexPath = tableView.indexPathForSelectedRow {
+			
+			//present sample food items in the food group
+			var foodItems = [FoodItem]()
+			foodItems.append(FoodItem(123, "afasfsa"))
+			let vc = FoodListTableViewController()
+			vc.foodItems = foodItems
+			self.navigationController?.pushViewController(vc, animated: true)
+		}
 	}
-
-	//Display each cell as a FoodGroup
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
-		cell.textLabel!.text = foodGroups[indexPath.row].name
-        return cell
-    }
 	
+	//Display each cell as a FoodGroup
+	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+		cell.textLabel!.text = foodGroups[indexPath.row].name
+		return cell
+	}
+	
+	
+//	func handleFoodGroupItemsQuery(_ data: Data?) {
+//		if (data != nil) {
+//			let foodItemResults = Database5.sharedInstance.jsonToFoodItems(data!)
+//			let vc = FoodListTableViewController()
+//			vc.foodItems = foodItemResults
+//			self.navigationController!.pushViewController(vc, animated: true)
+////			DispatchQueue.main.async {
+////				self.tableView.reloadData()
+////			}
+//		}
+//	}
+	
+
+
 	
 	
 	

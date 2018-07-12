@@ -6,6 +6,7 @@
 //  Copyright © 2018 alc29. All rights reserved.
 //
 //	A class that manages the local data saved on the device.
+//	TODO refactor other related functionality (ei realm) into this class, or remove it
 
 import Foundation
 import RealmSwift

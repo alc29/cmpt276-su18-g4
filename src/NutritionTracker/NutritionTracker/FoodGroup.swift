@@ -21,6 +21,15 @@ struct FoodGroup {
 		self.name = name
 	}
 	
+	// Return the food group id as as string
+	public func getIdStr() -> String {
+		if (id <= 9) { // 1 digit
+			return "0\(id)00"
+		} else {
+			return "\(id)00"
+		}
+	}
+	
 	//static predefined food groups
 	static let Dairy_and_Egg_Products = FoodGroup(1, "Dairy_and_Egg_Products")
 	static let American_Indian_Alaska_Native_Foods = FoodGroup(24, "American_Indian_Alaska_Native_Foods")

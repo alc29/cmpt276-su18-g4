@@ -22,7 +22,8 @@ class FoodItem: Object {
 	@objc private dynamic var foodId = -1
 	@objc private dynamic var name = "uninitialized"
 	@objc private dynamic var amount: Amount? = Amount()
-
+	
+	
 	//Note: optional initializer FoodItem() works, but should be avoided.
 	convenience init(_ foodId: Int?, _ name: String?) {
 		self.init()
@@ -45,20 +46,6 @@ class FoodItem: Object {
 	func getFoodId() -> Int { return foodId }
 	func getName() -> String { return name }
 	func getAmount() -> Amount { return amount! }
-	
-	// MARK: Public methods
-	
-	// Return how much of the specified nutrient this food contains.
-	func getAmountOf(_ nutrient: Nutrient) -> Amount {
-
-		//TODO: uncomment when database is ready.
-		//if let amount = DatabaseWrapper.sharedInstance.getAmountPerOf(nutrient, foodId) {
-		//	return amount.getAmount()
-		//}
-		//return Amount(0)
-		
-		return Amount.random() //return a random amount for testing.
-	}
 	
 	//return the pid
 	override static func primaryKey() -> String? {

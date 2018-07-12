@@ -15,24 +15,34 @@ class MainMenuViewController: UIViewController {
 	
     override func viewDidLoad() {
         super.viewDidLoad()
-		printList()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		printList()
+		debug()
 	}
 	
-	// Testing - print the number of meals saved on the device.
-	func printList() {
+	private func debug() {
 		let realm = try! Realm()
-		let results = realm.objects(FoodItemList.self)
-		if (results.count == 0) {
-		} else {
-			//let foodItemList: FoodItemList! = results.first
-			//print("items in list: \(foodItemList.count())")
-		}
+		let meals = realm.objects(Meal.self) //(get all meals for testing)
+		print("num meals: \(meals.count)")
 	}
-
+	
+	// MARK: Button actions
+	
+	@IBAction func catalogButtonPressed(_ sender: UIButton) {
+		let vc = CategoryTableViewController()
+		self.navigationController?.pushViewController(vc, animated: true)
+	}
+	
+	@IBAction func foodSearchButtonPressed(_ sender: UIButton) {
+		//let vc = FoodSearchViewController()
+		//self.navigationController?.pushViewController(vc, animated: true)
+		//let foodDetailView = FoodDetailViewController()
+		
+		let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoodSearchView")
+		self.navigationController?.pushViewController(vc, animated: true)
+	}
+	
     /*
     // MARK: - Navigation
 
@@ -46,12 +56,12 @@ class MainMenuViewController: UIViewController {
 	
 	//Testing - pass a foodItem to the next view.
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if (segue.identifier == "MainMenuToGraph") {
-			let vc:GraphViewController = segue.destination as! GraphViewController
-			//test passing a food item to the graph
-			let foodItem = FoodItem(12345, "Noodles")
-			vc.receiveTestFoodItem(foodItem: foodItem)
-		}
+//		if (segue.identifier == "MainMenuToGraph") {
+//			let vc:GraphViewController = segue.destination as! GraphViewController
+//			//test passing a food item to the graph
+//			let foodItem = FoodItem(12345, "Noodles")
+//			vc.receiveTestFoodItem(foodItem: foodItem)
+//		}
 	}
 
 }

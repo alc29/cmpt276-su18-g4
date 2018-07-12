@@ -10,22 +10,30 @@
 // Example usage: 10 grams of calcium per 100 grams of milk.
 
 import Foundation
+import RealmSwift
 
-class AmountPer {
+class AmountPer: Object {
 	// MARK: Properties
-	private var amount = Amount()
-	private var per = Amount()
-	init(amount: Amount = Amount(10.0, Unit.Microgram), per: Amount = Amount(100.0, Unit.Gram)) {
+	@objc private dynamic var amount: Amount? = Amount()
+	@objc private dynamic var per: Amount? = Amount()
+
+	convenience init(amount: Amount = Amount(10.0, Unit.Microgram), per: Amount = Amount(100.0, Unit.Gram)) {
+		self.init()
 		self.amount = amount
 		self.per = per
 	}
 	
+	//MARK: Setters
+	func setBaseAmount(_ amount: Float) {
+		self.amount!.setAmount(amount)
+	}
+	
 	// MARK: Getters
 	func getAmount() -> Amount {
-		return amount
+		return amount!
 	}
 	
 	func getPer() -> Amount {
-		return per
+		return per!
 	}
 }

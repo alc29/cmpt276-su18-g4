@@ -43,33 +43,24 @@ class FoodListTableViewController: UITableViewController {
 	// Return the number of cells to display
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return foodItems.count
-		//return 0
     }
 	
 	// Called when a cell is tapped. present FoodDetailView when a FoodItem cell is tapped
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-//		let foodDetailView = FoodDetailViewController()
-//		foodDetailView.foodItem = foodItems[indexPath.row]
-//		self.navigationController!.pushViewController(foodDetailView, animated: false)
-//
-//		if let selectionIndexPath = tableView.indexPathForSelectedRow {
-//			tableView.deselectRow(at: selectionIndexPath, animated: false)
-//		}
+		if let indexPath = tableView.indexPathForSelectedRow {
+			let storyboard = UIStoryboard(name: "Main", bundle: nil)
+			//let foodDetailView = FoodDetailViewController()
+			let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
+			foodDetailView.foodItem = foodItems[indexPath.row]
+			self.navigationController?.pushViewController(foodDetailView, animated: true)
+		}
+		
 
 	}
 
 	// Setup the cells
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//		var cellToUse: UITableViewCell?
-//		cellToUse = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
-//		if cellToUse == nil {
-//			let cell = UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: "Cell")
-//			cellToUse = cell
-//		}
-
 		let cellToUse = UITableViewCell()
-		
 		let foodItem = foodItems[indexPath.row]
 		cellToUse.textLabel!.text = foodItem.getName()
 		//cellToUse.detailTextLabel!.text = "todo FoodItem.getFoodGroup()"

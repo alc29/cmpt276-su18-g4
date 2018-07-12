@@ -57,16 +57,6 @@ class FoodItemList: Object {
 		return list
 	}
 	
-	//return total amount of the given nutrient contained in this meal.
-	func getAmountOf(nutrient: Nutrient) -> Amount {
-		var sum = 0.0 as Float
-		for foodItem in list {
-			sum += foodItem.getAmountOf(nutrient).getAmount()
-		}
-		let defaultUnit = Unit.Miligram //TODO use given nutrient's init, or add as arg
-		return Amount(sum, defaultUnit)
-	}
-	
 	// return the primery id key
 	override static func primaryKey() -> String? {
 		return "id";
