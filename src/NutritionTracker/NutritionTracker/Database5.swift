@@ -16,6 +16,7 @@ class Database5 {
 	private init() {}
 	private let KEY = "Y5qpjfCGqZ9mTIhN41iKHAGMIKOf42uS2mH3IQr4"
 	
+	
 	// MARK: - Completion types
 	//TODO consider returning Bool for success, instead of Void
 	typealias NutrientReportCompletion = (_ report: NutrientReport?) -> Void
@@ -58,11 +59,16 @@ class Database5 {
 	}
 	
 	//NOTE meal must contain at least 1 food item.
-	public func requestFoodReportv2(_ meal: Meal, _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
+	public func requestFoodReportV2(_ meal: Meal, _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
 		requestFoodReportV2(Array(meal.getFoodItems()), completion, debug)
 	}
 	public func requestFoodReportV2(_ foodItems: [FoodItem], _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
-		if (foodItems.count == 0) { return }
+		if (foodItems.count == 0) {
+			if debug { print("Databse5.requestFoodReportV2: 0 fooditems received.") }
+			completion(nil)
+			return
+		}
+		if debug {print("Database5.FoodReportV2 request received.")}
 
 		//for each food item in meal, add foodId to the query
 		var urlStr = "https://api.nal.usda.gov/ndb/V2/reports?&type=f&format=json&api_key=\(KEY)"
@@ -77,10 +83,15 @@ class Database5 {
 		}
 		
 		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-			guard let data = data else { print("error fetching data."); return }
+			guard let data = data else {
+				print("error fetching data.")
+				completion(nil)
+				return
+			}
 			if debug { self.printJsonData(data) }
 			
-			if let report = FoodReportV2.fromJsonData(data) {
+			if let report = FoodReportV2.fromJsonData(data, debug) {
+				if debug { print("report succeeded.") }
 				completion(report)
 			} else {
 				if debug { print("report failed") }
@@ -153,7 +164,7 @@ class Database5 {
 		}
 		
 		struct List: Decodable {
-			let item: [Items]?
+			let item: [Items?]?
 		}
 		
 		struct Items: Decodable {
@@ -162,14 +173,13 @@ class Database5 {
 			let ndbno: String?
 		}
 		do {
-			//TODO parse json:
 			let data = try JSONDecoder().decode(Database.self, from: jsonData)
 			
 			//pass name and id to FoodItem array
 			guard let dataList = data.list else { return foodItems }
 			guard let dataListItem = dataList.item else { return foodItems }
 			for i in dataListItem {
-				let temp = FoodItem(Int(i.ndbno!), i.name!)
+				let temp = FoodItem(Int(i!.ndbno!), i!.name!)
 				foodItems.append(temp)
 			}
 		} catch let jsonErr {
@@ -189,6 +199,8 @@ class Database5 {
 	}
 	
 	private func printJsonData(_ data: Data) {
+		print("*")
 		print(String(data: data, encoding:String.Encoding.ascii)!)
+		print("*")
 	}
 }

@@ -22,7 +22,7 @@ class FoodItem: Object {
 	@objc private dynamic var foodId = -1
 	@objc private dynamic var name = "uninitialized"
 	@objc private dynamic var amount: Amount? = Amount()
-	
+	var nutrients = List<FoodItemNutrient>()
 	
 	//Note: optional initializer FoodItem() works, but should be avoided.
 	convenience init(_ foodId: Int?, _ name: String?) {
@@ -40,6 +40,11 @@ class FoodItem: Object {
 	func setAmount(_ amount: Float, unit: Unit = Unit.Microgram) {
 		self.amount!.setAmount(amount)
 		self.amount!.setUnit(unit)
+	}
+	
+	func addNutrient(_ nutrient: FoodItemNutrient) {
+		nutrients.append(nutrient)
+		print("FoodItem: nutrient added: \(nutrient.getName())")
 	}
 
 	// MARK: Getters

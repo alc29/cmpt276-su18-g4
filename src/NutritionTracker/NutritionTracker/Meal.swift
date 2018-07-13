@@ -13,7 +13,6 @@ import RealmSwift
 class Meal: FoodItemList {
 	// MARK: Properties
 	@objc dynamic var date = Date() //default to current date
-	@objc dynamic var foodReportV2: FoodReportV2? = FoodReportV2()
 	
 	func clone() -> Meal {
 		let meal = Meal()
@@ -36,16 +35,4 @@ class Meal: FoodItemList {
 		return date
 	}
 	
-//	func addNutrientReport(_ report: NutrientReport) {
-//		self.nutrientReport!.update(report)
-//	}
-	
-//	func addFoodReportV2(_ report: FoodReportV2) {
-//		self.foodReportV2.update(report)
-//	}
-	
-	//replaces the current food report.
-	func setFoodReportV2(_ report: FoodReportV2) {
-		self.foodReportV2 = report
-	}
 }

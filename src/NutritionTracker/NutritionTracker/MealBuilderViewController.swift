@@ -41,8 +41,8 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		mealTableView.register(MealBuilderTableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
 
 		//TEST
-		meal.add(FoodItem(123124, "afasf"))
-		meal.add(FoodItem(354654, "gdsdgs"))
+		meal.add(FoodItem(45144608, "Poop candy"))
+//		meal.add(FoodItem(354654, "gdsdgs"))
 		asyncReloadData()
 		
 		saveMealButton.isEnabled = meal.count() > 0
@@ -70,7 +70,6 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		let vc = storyboard.instantiateViewController(withIdentifier: "FoodSearchView") as! FoodSearchViewController
 		vc.foodDetailViewController = foodDetailView
 		
-		//let addButton = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addButtonPressed(sender:)))
 		let addButton = UIBarButtonItem(title: "Add", style: .plain, target: foodDetailView, action: #selector(foodDetailView.addButtonPressed(sender:)))
 		foodDetailView.navigationItem.rightBarButtonItem = addButton
 		foodDetailView.foodSelector = self
@@ -102,6 +101,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		//TODO meal date defaults to current day; add option button to set date.
 		
 		//saveMeal(self.meal.clone())
+		//saveMeal(self.meal)
 		saveMeal(self.meal)
 		saveMealButton.isEnabled = false
 	}
@@ -110,25 +110,47 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	// MARK: - Functions
 	
 	// Save new Meal to list of user's meals
-	func saveMeal(_ meal: Meal) {
-		
-		let mealCopy = meal.clone()
+	func saveMeal(_ meal: Meal, _ debug: Bool = false) {
+		let savedMeal = meal
 		self.resetMeal()
+		self.displayMealSavedAlert()
 		
-		//get and save nutrient reports for each food item in meal.
+//		//get and save nutrient reports for each food item in meal.
 		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
-			guard let report = report else { return }
-			mealCopy.setFoodReportV2(report) //TODO
+			guard let report = report else {
+				print("MealBUilder: nil report received.")
+				return
+			}
+			print("MealBuilder: non-nil report received")
+			
+			//for each jfood
+			//convert each jnutrient in the jFood into nutrient info, add to food item in meal
+			for jFood in report.jFoods {
+////TODO use report.nutrients instead
+//				guard let nutrients = jFood.nutrients else { if debug{ print("no nutrients: \n\(String(describing: jFood.nutrients))")}; continue }
+//				guard let desc = jFood.desc, let ndbno = desc.ndbno else {if debug{ print("no desc or ndbno")};  continue }
+//				//let nutrients = jFood.nutrients
+//				//let desc = jFood.desc
+//				//let ndbno = desc.ndbno
+//
+//				guard let foodId = Int(ndbno) else { if debug{print("error parsing foodId Int fron ndbno")}; continue }
+//				guard let foodItem = savedMeal.get(foodId) else { continue }
+//				for jNutrient in nutrients {
+//					let foodItemNutrient = FoodReportV2.jNutrientToFoodItemNutrient(jNutrient)
+//					foodItem.addNutrient(foodItemNutrient)
+//					print("wtf")
+//				}
+			}
+			
+			//save meal to realm
 			let realm = try! Realm()
 			try!realm.write {
-				realm.add(mealCopy)
+				realm.add(savedMeal)
+				print("meal saved")
 			}
-			print("meal saved")
 		}
 		
-		self.displayMealSavedAlert() //shop popup
-
-		Database5.sharedInstance.requestFoodReportv2(mealCopy, completion)
+		Database5.sharedInstance.requestFoodReportV2(savedMeal, completion, false)
 	}
 	
 	func displayMealSavedAlert() {
@@ -136,9 +158,8 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		mealSavedAlertLabel.alpha = 0.5
 		UIView.animate(withDuration: 1.0, animations: { () -> Void in
 			self.mealSavedAlertLabel.alpha = 0
-//			self.mealSavedAlertLabel.isHidden = true
+			self.mealSavedAlertLabel.isHidden = true
 		})
-
 	}
 	
 //	func attachNutrientReport(_ meal: Meal, _ report: NutrientReport) {

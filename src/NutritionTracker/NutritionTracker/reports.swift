@@ -144,59 +144,71 @@ Reference: https://ndb.nal.usda.gov/ndb/doc/apilist/API-FOOD-REPORTV2.md
 */
 class FoodReportV2 : Object {
 	struct Result: Decodable {
-		let foods: [JFood]?
+		let foods: [JFoodContainer?]?
 		let count: Int?
 		let notfound: Int?
 		let api: Int?
-	}
-
-	struct JFood: Decodable {
-		let desc: JDescription?
-		let nutrients: [JNutrient]?
-	}
-	struct JDescription: Decodable {
-		let ndbno: Int?
-		let name: String?
-		let sd: String? //short description
-		let fg: String? //food group
-	}
-
-	struct JNutrient: Decodable {
-		let nutrient_id: Int?
-		let name: String?
-		let group: String?
-		let unit: String? //measurement unit
-		let value: Float?
-		let derivation: String?
-		let dp: Int?
-		let measures: [JMeasure]?
-	}
-	struct JMeasure: Decodable {
-		let label: String?
-		let equiv: Int?
-		let eunit: String?
-		let qty: Int?
-		let value: Float? //gram equivalent value of the measure
+		
+		struct JFoodContainer: Decodable {
+			let food: JFood?
+		}
+		
+		struct JFood: Decodable {
+			
+			let sr: String?
+			let type: String?
+			let desc: JDescription?
+			let ing: Ing?
+			let nutrients: [JNutrient?]?
+			
+			struct JDescription: Decodable {
+				let ndbno: String?
+				let name: String?
+				let ds: String? //short description
+				let manu: String?
+				let ru: String?
+			}
+			struct JNutrient: Decodable {
+				let nutrient_id: String?
+				let name: String?
+				let derivation: String?
+				let group: String?
+				let unit: String? //measurement unit
+				let value: String?
+				let measures: [JMeasure?]?
+				
+				struct JMeasure: Decodable {
+					let label: String?
+					let eqv: Int?
+					let eunit: String?
+					let qty: Int?
+					let value: String? //gram equivalent value of the measure
+				}
+			}
+			struct Ing: Decodable {
+				let desc: String?
+				let upd: String?
+			}
+		}
 	}
 	
 	//MARK: Properties
 	//TODO convert all jFoods in Result into FoodItems.
-	var jFoods = [JFood]()
-	private var foodItems = List<FoodItem>()
+	var jFoods = [Result.JFood]()
+	//private var foodItems = List<FoodItem>()
+	var result: Result?
 	
-	
-	func addJFood(_ jFood: JFood) {
+	// MARK: Methods
+	func addJFood(_ jFood: Result.JFood) {
 		jFoods.append(jFood)
 	}
 	func count() -> Int {
 		return jFoods.count
 	}
 	
-//	func update(_ report: FoodReportV2) {
-//		for n in report.getFoodItemNutrients() {
-//			//for each food
-//				//for each nutrient
-//	}
+	static func jNutrientToFoodItemNutrient(_ jNutrient: FoodReportV2.Result.JFood.JNutrient) -> FoodItemNutrient {
+		return FoodItemNutrient() //TODO
+	}
 	
 	static func fromJsonData(_ jsonData: Data, _ debug: Bool = false) -> FoodReportV2? {
 		//TODO
@@ -216,15 +228,39 @@ class FoodReportV2 : Object {
 		return nutrientReport
 		*/
 		
-		guard let result = try? JSONDecoder().decode(FoodReportV2.Result.self, from: jsonData) else { if debug {print("json: result failed")}; return nil }
-		guard let foods = result.foods else { if debug {print("json: result.foods failed")}; return nil }
-		let foodReportV2 = FoodReportV2()
-		for jFood in foods {
-			//let foodItem = jFoodToFoodItem(jFood) //TODO convert to FoodItem & list of FoodNutrientItems
-			foodReportV2.addJFood(jFood)
+		do {
+			let result = try JSONDecoder().decode(FoodReportV2.Result.self, from: jsonData)
+			guard let foods = result.foods else { if debug{print("result.foods failed")}; return nil}
+			let foodReportV2 = FoodReportV2()
+			foodReportV2.result = result
+			
+			for foodContainer in foods {
+				if let foodContainer = foodContainer, let jFood = foodContainer.food {
+					foodReportV2.addJFood(jFood)
+					
+					//TODO get nutrients from jFood, convert to FoodItemNutrient; add to food item
+					if let desc = jFood.desc, let ndbno = desc.ndbno, let foodId = Int(ndbno), let foodName = desc.name {
+						let foodItem = FoodItem(foodId, foodName)
+						if let jNutrients  = jFood.nutrients {
+							for jNutrient in jNutrients {
+								guard let jNutrient = jNutrient, let nutrient_id = jNutrient.nutrient_id, let nutrientId = Int(nutrient_id) else { continue }
+								let nutrient = Nutrient.get(id: nutrientId)
+								let amountPer = AmountPer()
+								let foodItemNutrient = FoodItemNutrient(nutrient, amountPer)
+								foodItem.addNutrient(foodItemNutrient)
+							}
+						}
+					}
+				}
+			}
+			
+			return foodReportV2
+		} catch let error {
+			print(error)
+			return nil
 		}
-		//for each JFood in foods,
-		return foodReportV2
+		
+		return nil
 	}
 	
 //	func jFoodToFoodItem(_ jFood: JFood) -> FoodItem {

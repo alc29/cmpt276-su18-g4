@@ -214,9 +214,9 @@
 			children = (
 				0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */,
 				0A7B87D720E07E3E00B45D5C /* Main.storyboard */,
+				0A31499A20F806E700EFBB96 /* Model */,
 				0A31499B20F8071400EFBB96 /* ViewControllers */,
 				0A31499820F806A900EFBB96 /* Vision */,
-				0A31499A20F806E700EFBB96 /* Model */,
 				0A7B87DA20E07E3E00B45D5C /* Assets.xcassets */,
 				0A7B87DC20E07E3E00B45D5C /* LaunchScreen.storyboard */,
 				0A7B87DF20E07E3E00B45D5C /* Info.plist */,

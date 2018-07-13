@@ -46,7 +46,6 @@ class FoodDetailViewController: UIViewController {
     }
 
 	@objc func addButtonPressed(sender: UIBarButtonItem) {
-		print("add button pressed from FoodDetail")
 		foodSelector?.addFood(foodItem: foodItem)
 	}
 

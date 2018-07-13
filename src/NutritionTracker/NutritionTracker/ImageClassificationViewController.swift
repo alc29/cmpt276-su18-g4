@@ -1,14 +1,16 @@
 /*
 
- SOURCE: https://developer.apple.com/documentation/vision/classifying_images_with_vision_and_core_ml
+SOURCE: https://developer.apple.com/documentation/vision/classifying_images_with_vision_and_core_ml
 
 This file is a modified version of ImageClassificationViewController.swift from downloadable project from the above link.
 
-See LICENSE folder for this sample’s licensing information.
+See LICENSE folder for this sample’s original licensing information.
  
- Abstract:
- View controller for selecting images and applying Vision + Core ML processing.
- */
+Abstract:
+View controller for selecting images and applying Vision + Core ML processing.
+
+TODO use device's camera for identificaiton
+*/
 
 import UIKit
 import CoreML
@@ -17,7 +19,6 @@ import ImageIO
 
 class ImageClassificationViewController: UIViewController {
     // MARK: - IBOutlets
-    
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var classificationLabel: UILabel!
@@ -58,21 +59,12 @@ class ImageClassificationViewController: UIViewController {
 		if !identifiedFoodStr.isEmpty {
 			if let searchViewController = searchViewController {
 				let identifiedFood = getFirstWord(identifiedFoodStr)
-				
 				searchViewController.searchController.searchBar.text = identifiedFood
-				//searchViewController.searchController.search
-				//searchViewController.searchAndUpdateResults(self.identifiedFood)
 				searchViewController.searchAndUpdateResults(identifiedFood)
-
-
 				self.navigationController?.pushViewController(searchViewController, animated: true)
 			}
 			
 		}
-//        print(classificationLabel.text)
-//        if searchViewController != nil{
-//            print("not nil")
-//        }
     }
 	
 	// if the string contains comma-separated words, return the first word.
