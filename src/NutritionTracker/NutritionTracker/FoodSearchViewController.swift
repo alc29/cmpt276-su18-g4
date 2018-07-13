@@ -129,10 +129,12 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	
 	//MARK: - Search
 	func searchAndUpdateResults(_ searchTerm: String) {
+		print("searchAndUpdateResults")
 		Database5.sharedInstance.search(searchTerm, searchCompletion)
 	}
 	
 	func searchCompletion(_ foodItems: [FoodItem]) {
+		print("search completion")
 		searchResults.removeAll()
 		searchResults = foodItems
 		DispatchQueue.main.async {

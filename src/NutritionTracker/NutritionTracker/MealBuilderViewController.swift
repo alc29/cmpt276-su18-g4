@@ -19,10 +19,22 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	@IBOutlet weak var saveMealButton: UIButton!
 	//var mealTableViewCells = [FoodItemTableViewCell]()
 	var meal = Meal()
+	var mealSavedAlertPopup:UIView?
+	var mealSavedAlertLabel:UILabel = UILabel(frame: CGRect(x:100, y:400, width:200, height:50))
 
 	// MARK: - VC Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+		 //TODO center label
+		mealSavedAlertLabel.text = "Meal Saved"
+		mealSavedAlertLabel.isHidden = true
+		mealSavedAlertLabel.isUserInteractionEnabled = false
+		mealSavedAlertLabel.backgroundColor = UIColor.black
+		mealSavedAlertLabel.textColor = UIColor.white
+		mealSavedAlertLabel.textAlignment = NSTextAlignment.center
+		mealSavedAlertLabel.layer.cornerRadius = 4.0
+		mealSavedAlertLabel.layer.masksToBounds = true
+		self.view.addSubview(mealSavedAlertLabel)
 		
 		mealTableView.delegate = self
 		mealTableView.dataSource = self
@@ -69,26 +81,19 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
     @IBAction func visionButtonPressed(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
-        let foodSearchView = storyboard.instantiateViewController(withIdentifier: "FoodSearchView") as! FoodSearchViewController
-        foodSearchView.foodDetailViewController = foodDetailView
-        
         let addButton = UIBarButtonItem(title: "Add", style: .plain, target: foodDetailView, action: #selector(foodDetailView.addButtonPressed(sender:)))
         foodDetailView.navigationItem.rightBarButtonItem = addButton
         foodDetailView.foodSelector = self
+		
+		let foodSearchView = storyboard.instantiateViewController(withIdentifier: "FoodSearchView") as! FoodSearchViewController
+		foodSearchView.foodDetailViewController = foodDetailView
         
         let visionController = storyboard.instantiateViewController(withIdentifier: "VisionView") as! ImageClassificationViewController
-        visionController.mealBuilder = self
+        //visionController.mealBuilder = self
         visionController.searchViewController = foodSearchView
         
         self.navigationController?.pushViewController(visionController, animated: true)
-        
-        
-        
     }
-    
-    
-    
-    
 	
 	@IBAction func saveMealButtonPressed(_ sender: UIButton) {
 		
@@ -107,19 +112,33 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	// Save new Meal to list of user's meals
 	func saveMeal(_ meal: Meal) {
 		
+		let mealCopy = meal.clone()
+		self.resetMeal()
+		
 		//get and save nutrient reports for each food item in meal.
 		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
 			guard let report = report else { return }
-			meal.setFoodReportV2(report) //TODO
+			mealCopy.setFoodReportV2(report) //TODO
 			let realm = try! Realm()
 			try!realm.write {
-				realm.add(meal)
+				realm.add(mealCopy)
 			}
-			//self.resetMeal()
 			print("meal saved")
 		}
 		
-		Database5.sharedInstance.requestFoodReportv2(meal, completion)
+		self.displayMealSavedAlert() //shop popup
+
+		Database5.sharedInstance.requestFoodReportv2(mealCopy, completion)
+	}
+	
+	func displayMealSavedAlert() {
+		mealSavedAlertLabel.isHidden = false
+		mealSavedAlertLabel.alpha = 0.5
+		UIView.animate(withDuration: 1.0, animations: { () -> Void in
+			self.mealSavedAlertLabel.alpha = 0
+//			self.mealSavedAlertLabel.isHidden = true
+		})
+
 	}
 	
 //	func attachNutrientReport(_ meal: Meal, _ report: NutrientReport) {

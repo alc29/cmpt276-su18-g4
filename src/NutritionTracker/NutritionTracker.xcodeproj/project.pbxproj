@@ -11,6 +11,8 @@
 		0A14720220ECCB1700731F8D /* DatabaseWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A14720120ECCB1700731F8D /* DatabaseWrapper.swift */; };
 		0A219E8D20E72F64005965A9 /* Amount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A219E8C20E72F64005965A9 /* Amount.swift */; };
 		0A219E8F20E73832005965A9 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A219E8E20E73832005965A9 /* Unit.swift */; };
+		0A31499220F8041100EFBB96 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A31499020F8041000EFBB96 /* LICENSE.txt */; };
+		0A31499320F8041100EFBB96 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0A31499120F8041100EFBB96 /* README.md */; };
 		0A6D41FD20E5C06100C3430A /* LocalDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */; };
 		0A6D420120E6F38600C3430A /* FoodItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D420020E6F38600C3430A /* FoodItemList.swift */; };
 		0A72CB7620EF24F500DB9DAC /* Database5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72CB7520EF24F500DB9DAC /* Database5.swift */; };
@@ -59,6 +61,8 @@
 		0A14720120ECCB1700731F8D /* DatabaseWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseWrapper.swift; sourceTree = "<group>"; };
 		0A219E8C20E72F64005965A9 /* Amount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Amount.swift; sourceTree = "<group>"; };
 		0A219E8E20E73832005965A9 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
+		0A31499020F8041000EFBB96 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		0A31499120F8041100EFBB96 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalDataManager.swift; sourceTree = "<group>"; };
 		0A6D420020E6F38600C3430A /* FoodItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemList.swift; sourceTree = "<group>"; };
 		0A72CB7520EF24F500DB9DAC /* Database5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database5.swift; sourceTree = "<group>"; };
@@ -120,11 +124,60 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0A72CB7920F1687400DB9DAC /* UI */ = {
+		0A31499820F806A900EFBB96 /* Vision */ = {
 			isa = PBXGroup;
 			children = (
+				6033730120F6F30400A3D81B /* ImageClassificationViewController.swift */,
+				6033730320F6F32800A3D81B /* CGImagePropertyOrientation+UIImageOrientation.swift */,
+				6033730520F6F4E600A3D81B /* MobileNet.mlmodel */,
+				0A31499920F806C900EFBB96 /* LICENSE */,
 			);
-			name = UI;
+			name = Vision;
+			sourceTree = "<group>";
+		};
+		0A31499920F806C900EFBB96 /* LICENSE */ = {
+			isa = PBXGroup;
+			children = (
+				0A31499120F8041100EFBB96 /* README.md */,
+				0A31499020F8041000EFBB96 /* LICENSE.txt */,
+			);
+			name = LICENSE;
+			sourceTree = "<group>";
+		};
+		0A31499A20F806E700EFBB96 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0A219E8E20E73832005965A9 /* Unit.swift */,
+				0A219E8C20E72F64005965A9 /* Amount.swift */,
+				0AC9B19420E8667100334127 /* Nutrient.swift */,
+				0AC9B19620E86EC800334127 /* AmountPer.swift */,
+				0ABBED7920EA0AD700D7BD6A /* FoodGroup.swift */,
+				0AA0632620E591A900CCE2FD /* FoodItem.swift */,
+				0AC0717A20E9ED6800FD9657 /* FoodItemNutrient.swift */,
+				0A6D420020E6F38600C3430A /* FoodItemList.swift */,
+				0AC9B18E20E8176100334127 /* Meal.swift */,
+				0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */,
+				0AC9B19220E8514A00334127 /* PlaceholderDatabase.swift */,
+				0A14720120ECCB1700731F8D /* DatabaseWrapper.swift */,
+				0A72CB7520EF24F500DB9DAC /* Database5.swift */,
+				0A72CB7720EF281200DB9DAC /* reports.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		0A31499B20F8071400EFBB96 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				0A7B87D520E07E3E00B45D5C /* EntryViewController.swift */,
+				0A8F558E20E08A9700B9E793 /* LoginViewController.swift */,
+				0A8F559020E08CE600B9E793 /* MainMenuViewController.swift */,
+				0AB4DBC720E8005D00BD052F /* Graph */,
+				0AB4DBC420E7F87600BD052F /* Catalog */,
+				0AC0717E20E9F60B00FD9657 /* Search */,
+				0A72CB7C20F1C57B00DB9DAC /* MealBuilder */,
+				0ABBED7D20EAB4A600D7BD6A /* FoodDetailViewController.swift */,
+			);
+			name = ViewControllers;
 			sourceTree = "<group>";
 		};
 		0A72CB7C20F1C57B00DB9DAC /* MealBuilder */ = {
@@ -161,10 +214,9 @@
 			children = (
 				0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */,
 				0A7B87D720E07E3E00B45D5C /* Main.storyboard */,
-				6033730020F6F29800A3D81B /* Vision */,
-				0AA0632520E5919900CCE2FD /* Model */,
-				0A8F558D20E08A6D00B9E793 /* ViewControllers */,
-				0A72CB7920F1687400DB9DAC /* UI */,
+				0A31499B20F8071400EFBB96 /* ViewControllers */,
+				0A31499820F806A900EFBB96 /* Vision */,
+				0A31499A20F806E700EFBB96 /* Model */,
 				0A7B87DA20E07E3E00B45D5C /* Assets.xcassets */,
 				0A7B87DC20E07E3E00B45D5C /* LaunchScreen.storyboard */,
 				0A7B87DF20E07E3E00B45D5C /* Info.plist */,
@@ -179,42 +231,6 @@
 				0A7B87EA20E07E3E00B45D5C /* Info.plist */,
 			);
 			path = NutritionTrackerTests;
-			sourceTree = "<group>";
-		};
-		0A8F558D20E08A6D00B9E793 /* ViewControllers */ = {
-			isa = PBXGroup;
-			children = (
-				0A7B87D520E07E3E00B45D5C /* EntryViewController.swift */,
-				0A8F558E20E08A9700B9E793 /* LoginViewController.swift */,
-				0A8F559020E08CE600B9E793 /* MainMenuViewController.swift */,
-				0AB4DBC720E8005D00BD052F /* Graph */,
-				0AB4DBC420E7F87600BD052F /* Catalog */,
-				0AC0717E20E9F60B00FD9657 /* Search */,
-				0A72CB7C20F1C57B00DB9DAC /* MealBuilder */,
-				0ABBED7D20EAB4A600D7BD6A /* FoodDetailViewController.swift */,
-			);
-			name = ViewControllers;
-			sourceTree = "<group>";
-		};
-		0AA0632520E5919900CCE2FD /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				0A219E8E20E73832005965A9 /* Unit.swift */,
-				0A219E8C20E72F64005965A9 /* Amount.swift */,
-				0AC9B19420E8667100334127 /* Nutrient.swift */,
-				0AC9B19620E86EC800334127 /* AmountPer.swift */,
-				0ABBED7920EA0AD700D7BD6A /* FoodGroup.swift */,
-				0AA0632620E591A900CCE2FD /* FoodItem.swift */,
-				0AC0717A20E9ED6800FD9657 /* FoodItemNutrient.swift */,
-				0A6D420020E6F38600C3430A /* FoodItemList.swift */,
-				0AC9B18E20E8176100334127 /* Meal.swift */,
-				0A6D41FC20E5C06100C3430A /* LocalDataManager.swift */,
-				0AC9B19220E8514A00334127 /* PlaceholderDatabase.swift */,
-				0A14720120ECCB1700731F8D /* DatabaseWrapper.swift */,
-				0A72CB7520EF24F500DB9DAC /* Database5.swift */,
-				0A72CB7720EF281200DB9DAC /* reports.swift */,
-			);
-			name = Model;
 			sourceTree = "<group>";
 		};
 		0AB4DBC420E7F87600BD052F /* Catalog */ = {
@@ -241,16 +257,6 @@
 				0ABBED7F20EAB6F700D7BD6A /* SearchFooterView.swift */,
 			);
 			name = Search;
-			sourceTree = "<group>";
-		};
-		6033730020F6F29800A3D81B /* Vision */ = {
-			isa = PBXGroup;
-			children = (
-				6033730320F6F32800A3D81B /* CGImagePropertyOrientation+UIImageOrientation.swift */,
-				6033730520F6F4E600A3D81B /* MobileNet.mlmodel */,
-				6033730120F6F30400A3D81B /* ImageClassificationViewController.swift */,
-			);
-			name = Vision;
 			sourceTree = "<group>";
 		};
 		ABFFE52AE037F07FF6E287E2 /* Pods */ = {
@@ -359,7 +365,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0A31499220F8041100EFBB96 /* LICENSE.txt in Resources */,
 				0A7B87DE20E07E3E00B45D5C /* LaunchScreen.storyboard in Resources */,
+				0A31499320F8041100EFBB96 /* README.md in Resources */,
 				0A7B87DB20E07E3E00B45D5C /* Assets.xcassets in Resources */,
 				0A7B87D920E07E3E00B45D5C /* Main.storyboard in Resources */,
 			);
