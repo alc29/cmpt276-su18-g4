@@ -49,7 +49,7 @@ class EntryViewController: UIViewController {
 				let nextDate = Calendar.current.date(byAdding: .day, value: daysToAdd, to: Date())
 				daysToAdd += 1
 				meal.setDate(nextDate)
-				realm.add(meal)
+				realm.add(meal, update: true)
 			}
 			
 		}

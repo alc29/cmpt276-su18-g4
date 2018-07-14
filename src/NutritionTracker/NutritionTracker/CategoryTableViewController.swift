@@ -55,6 +55,7 @@ class CategoryTableViewController: UITableViewController {
 		if let indexPath = tableView.indexPathForSelectedRow {
 			
 			//present sample food items in the food group
+			//TODO populate table
 			var foodItems = [FoodItem]()
 			foodItems.append(FoodItem(123, "afasfsa"))
 			let vc = FoodListTableViewController()

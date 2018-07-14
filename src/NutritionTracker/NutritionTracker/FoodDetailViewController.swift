@@ -71,7 +71,7 @@ class FoodDetailViewController: UIViewController {
 //		var entries = [BarChartDataEntry]()
 //		let completion = handleJsonData
 //		for nut in nutrientsToDisplay {
-////			Database5.sharedInstance.getAmountPerOf(nut, foodItem!.getFoodId(), completion)
+////			Database5.getAmountPerOf(nut, foodItem!.getFoodId(), completion)
 //			//TODO uncomment
 //			let amountPer = Database5.sharedInstance.getAmountPerOf(nutrient: nut, foodId: foodItem!.getFoodId())
 ////			if let amountPer = Database5.sharedInstance.getAmountPerOf(nut, foodItem!.getFoodId()) {

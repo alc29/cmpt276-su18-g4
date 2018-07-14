@@ -17,4 +17,8 @@ enum Unit: String {
 	case IU //international unit
 	case KJ
 	case KCAL
+	
+	static func get(_ rawValue: String) -> Unit? {
+		return Unit(rawValue: rawValue)
+	}
 }

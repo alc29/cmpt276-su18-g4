@@ -7,18 +7,29 @@
 //
 
 import XCTest
+import RealmSwift
+
 @testable import NutritionTracker
 
 class NutritionTrackerTests: XCTestCase {
-    
+	
+	// Put setup code here. This method is called before the invocation of each test method in the class.
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+		
+		let realm = try! Realm()
+		XCTAssertNotNil(realm)
+		
     }
-    
+
+	// Put teardown code here. This method is called after the invocation of each test method in the class.
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+		
+		let realm = try! Realm() //clear realm data
+		try! realm.write {
+			realm.deleteAll()
+		}
     }
 	
 	//MARK: FoodItem
@@ -124,7 +135,7 @@ class NutritionTrackerTests: XCTestCase {
 			expectation.fulfill()
 		}
 		
-		Database5.sharedInstance.requestFoodReportV2(foods, completion, false)
+		Database5.requestFoodReportV2(foods, completion, false)
 		wait(for: [expectation], timeout: 15.0)
 	}
 	func testFoodReportV2_nutrients() { //test json parsing for nutrients
@@ -170,8 +181,45 @@ class NutritionTrackerTests: XCTestCase {
 			expectation.fulfill()
 		}
 		
-		Database5.sharedInstance.requestFoodReportV2([foodItem], completion, false)
+		Database5.requestFoodReportV2([foodItem], completion, false)
 		wait(for: [expectation], timeout: 15.0)
+	}
+	
+	// MARK: - FoodDataCache Tests
+	
+	//save meal & check CachedFoodItem
+	func testCachedFoodItem() {
+		let ID = 5
+		let cachedFoodItem = CachedFoodItem(ID)
+		XCTAssert(cachedFoodItem.getFoodId() == ID)
+		
+		let realm = try! Realm() //clear realm data
+		try! realm.write {
+			realm.add(cachedFoodItem)
+		}
+		
+		let results = realm.objects(CachedFoodItem.self)
+		XCTAssert(results.count == 1)
+		XCTAssert(results.first!.getFoodId() == ID)
+	}
+	func testDatabaseAndFoodDataCache() {
+		let foodId = 45144608
+		let foodItem = FoodItem(foodId, "Poop candy")
+		let expectation = XCTestExpectation(description: "FoodReportV2 request completion is called.")
+		
+		let completion:(FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
+			XCTAssertNotNil(report!)
+			
+			let retrievedItem = Database5.getCachedFoodItem(foodId)
+			print("retrieved item: \(String(describing: retrievedItem))")
+			XCTAssertNotNil(retrievedItem!)
+			XCTAssert(retrievedItem!.getFoodId() == foodId)
+			
+			expectation.fulfill()
+		}
+
+		Database5.requestFoodReportV2([foodItem], completion, false)
+		wait(for: [expectation], timeout: 10.0)
 	}
 
 	// MARK: - Database5 Tests
@@ -191,7 +239,7 @@ class NutritionTrackerTests: XCTestCase {
 			expectation.fulfill()
 		}
 
-		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
+		Database5.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
 		wait(for: [expectation], timeout: 15.0)
 	}
 
@@ -206,7 +254,7 @@ class NutritionTrackerTests: XCTestCase {
 			expectation.fulfill()
 		}
 
-		Database5.sharedInstance.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
+		Database5.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
 		wait(for: [expectation], timeout: 15.0)
 	}
 	

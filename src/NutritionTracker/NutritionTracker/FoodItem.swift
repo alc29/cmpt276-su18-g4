@@ -22,7 +22,7 @@ class FoodItem: Object {
 	@objc private dynamic var foodId = -1
 	@objc private dynamic var name = "uninitialized"
 	@objc private dynamic var amount: Amount? = Amount()
-	var nutrients = List<FoodItemNutrient>()
+	//var nutrients = List<FoodItemNutrient>()
 	
 	//Note: optional initializer FoodItem() works, but should be avoided.
 	convenience init(_ foodId: Int?, _ name: String?) {
@@ -42,9 +42,13 @@ class FoodItem: Object {
 		self.amount!.setUnit(unit)
 	}
 	
-	func addNutrient(_ nutrient: FoodItemNutrient) {
-		nutrients.append(nutrient)
-		print("FoodItem: nutrient added: \(nutrient.getName())")
+	//retreive nutrient info from cache.
+	func getNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {
+		if let cachedFoodItem = Database5.getCachedFoodItem(self.foodId),
+			let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrient) {
+			return foodItemNutrient
+		}
+		return nil
 	}
 
 	// MARK: Getters

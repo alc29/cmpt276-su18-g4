@@ -118,39 +118,42 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 //		//get and save nutrient reports for each food item in meal.
 		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
 			guard let report = report else {
-				print("MealBUilder: nil report received.")
+				print("MealBuilder: nil report received.")
 				return
 			}
 			print("MealBuilder: non-nil report received")
 			
-			//for each jfood
-			//convert each jnutrient in the jFood into nutrient info, add to food item in meal
+			//convert each jfood into CachedFoodItem
+			//convert each jnutrient, convert to FoodItemNutrient & add to cachedFoodItem.
 			for jFood in report.jFoods {
-////TODO use report.nutrients instead
-//				guard let nutrients = jFood.nutrients else { if debug{ print("no nutrients: \n\(String(describing: jFood.nutrients))")}; continue }
-//				guard let desc = jFood.desc, let ndbno = desc.ndbno else {if debug{ print("no desc or ndbno")};  continue }
-//				//let nutrients = jFood.nutrients
-//				//let desc = jFood.desc
-//				//let ndbno = desc.ndbno
-//
-//				guard let foodId = Int(ndbno) else { if debug{print("error parsing foodId Int fron ndbno")}; continue }
-//				guard let foodItem = savedMeal.get(foodId) else { continue }
-//				for jNutrient in nutrients {
-//					let foodItemNutrient = FoodReportV2.jNutrientToFoodItemNutrient(jNutrient)
-//					foodItem.addNutrient(foodItemNutrient)
-//					print("wtf")
-//				}
+				
+				guard let desc = jFood.desc, let ndbno = desc.ndbno else {if debug{ print("no desc or ndbno")};  continue }
+				guard let foodId = Int(ndbno) else { if debug{print("error parsing foodId Int fron ndbno")}; continue }
+				let cachedFoodItem = CachedFoodItem(foodId)
+				guard let nutrients = jFood.nutrients else { if debug{ print("no nutrients: \n\(String(describing: jFood.nutrients))")}; continue }
+
+				guard let foodItem = savedMeal.get(foodId) else { continue }
+				for jNutrient in nutrients {
+					if let jNutrient = jNutrient {
+						let foodItemNutrient = FoodReportV2.jNutrientToFoodItemNutrient(jNutrient)!
+						//foodItem.addNutrient(foodItemNutrient) TODO
+						cachedFoodItem.addFoodItemNutrient(foodItemNutrient)
+						//print("MealBulder: nutrient added")
+					} else {
+						
+					}
+				}
 			}
 			
 			//save meal to realm
 			let realm = try! Realm()
 			try!realm.write {
-				realm.add(savedMeal)
+				realm.add(savedMeal, update: true)
 				print("meal saved")
 			}
 		}
 		
-		Database5.sharedInstance.requestFoodReportV2(savedMeal, completion, false)
+		Database5.requestFoodReportV2(savedMeal, completion, false)
 	}
 	
 	func displayMealSavedAlert() {

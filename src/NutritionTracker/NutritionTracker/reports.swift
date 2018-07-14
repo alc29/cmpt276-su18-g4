@@ -7,7 +7,6 @@
 //
 //	Contains the following classes:
 //	NutrientReport, FoodReportV1, FoodReportV2
-//	TODO: other TODOs in this file
 
 import Foundation
 import RealmSwift
@@ -195,8 +194,8 @@ class FoodReportV2 : Object {
 	//MARK: Properties
 	//TODO convert all jFoods in Result into FoodItems.
 	var jFoods = [Result.JFood]()
-	//private var foodItems = List<FoodItem>()
 	var result: Result?
+	//private var foodNutrientItems = List<FoodNutrientItem>()
 	
 	// MARK: Methods
 	func addJFood(_ jFood: Result.JFood) {
@@ -206,27 +205,18 @@ class FoodReportV2 : Object {
 		return jFoods.count
 	}
 	
-	static func jNutrientToFoodItemNutrient(_ jNutrient: FoodReportV2.Result.JFood.JNutrient) -> FoodItemNutrient {
-		return FoodItemNutrient() //TODO
+	static func jNutrientToFoodItemNutrient(_ jNutrient: FoodReportV2.Result.JFood.JNutrient) -> FoodItemNutrient? {
+		
+		guard let nutrientId = Int(jNutrient.nutrient_id!) else { print("no nutrient_id found."); return nil }
+		let nutrient = Nutrient.get(id: nutrientId)
+		let baseAmount = Amount()
+		let ratioAmount = Amount()
+		let amountPer = AmountPer(amount: baseAmount, per: ratioAmount)
+
+		return FoodItemNutrient(nutrient, amountPer) //TODO
 	}
 	
 	static func fromJsonData(_ jsonData: Data, _ debug: Bool = false) -> FoodReportV2? {
-		//TODO
-		/*
-		guard let result = try? JSONDecoder().decode(NutrientReport.Result.self, from: jsonData) else {print("json: result failed"); return nil }
-		guard let report = result.report else { if debug {print("json: result.report failed")}; return nil }
-		guard let foods = report.foods else { if debug {print("json: result.foods failed")}; return nil }
-		guard let food = foods.first else { if debug{print("json: food.first failed")}; return nil }
-		guard let jNutrients = food.nutrients else { if debug{print("json: food.nutrients failed")}; return nil }
-		
-		let nutrientReport = NutrientReport(foodId)
-		for jNut in jNutrients {
-		if debug {print("nut: \(String(describing: jNut.nutrient))")}
-		let foodItemNutrient = NutrientReport.jNutrientToFoodItemNutrient(jNut)
-		nutrientReport.addNutrient(foodItemNutrient)
-		}
-		return nutrientReport
-		*/
 		
 		do {
 			let result = try JSONDecoder().decode(FoodReportV2.Result.self, from: jsonData)
@@ -234,27 +224,33 @@ class FoodReportV2 : Object {
 			let foodReportV2 = FoodReportV2()
 			foodReportV2.result = result
 			
-			for foodContainer in foods {
+			for foodContainer in foods { // for each food item requested in the report
 				if let foodContainer = foodContainer, let jFood = foodContainer.food {
 					foodReportV2.addJFood(jFood)
 					
-					//TODO get nutrients from jFood, convert to FoodItemNutrient; add to food item
+					// get nutrients from jFood, convert to FoodItemNutrient; add to food item
 					if let desc = jFood.desc, let ndbno = desc.ndbno, let foodId = Int(ndbno), let foodName = desc.name {
-						let foodItem = FoodItem(foodId, foodName)
+						//let foodItem = FoodItem(foodId, foodName)
+						let cachedFoodItem = CachedFoodItem(foodId)
+
 						if let jNutrients  = jFood.nutrients {
 							for jNutrient in jNutrients {
 								guard let jNutrient = jNutrient, let nutrient_id = jNutrient.nutrient_id, let nutrientId = Int(nutrient_id) else { continue }
 								let nutrient = Nutrient.get(id: nutrientId)
 								let amountPer = AmountPer()
 								let foodItemNutrient = FoodItemNutrient(nutrient, amountPer)
-								foodItem.addNutrient(foodItemNutrient)
+								//foodItem.addNutrient(foodItemNutrient)
+								//add foodItemNutrient to cache
+								cachedFoodItem.addFoodItemNutrient(foodItemNutrient)
 							}
 						}
+						Database5.cacheFoodItem(cachedFoodItem)
 					}
 				}
 			}
 			
 			return foodReportV2
+			
 		} catch let error {
 			print(error)
 			return nil

@@ -8,13 +8,12 @@
 // 	TODO: test handling of nil values & failures.
 
 import Foundation
-
+import RealmSwift
 
 class Database5 {
 	// MARK: - Singleton
-	static let sharedInstance = Database5()
 	private init() {}
-	private let KEY = "Y5qpjfCGqZ9mTIhN41iKHAGMIKOf42uS2mH3IQr4"
+	private static let KEY = "Y5qpjfCGqZ9mTIhN41iKHAGMIKOf42uS2mH3IQr4"
 	
 	
 	// MARK: - Completion types
@@ -33,7 +32,7 @@ class Database5 {
 
 	// Request a food nutrient report from the usda database.
 	// NOTE: must provide at least 1 nutrient.
-	public func requestNutrientReport(_ foodId: Int, _ nutrientList: [Nutrient], _ completion: @escaping NutrientReportCompletion, _ debug: Bool = false) {
+	static func requestNutrientReport(_ foodId: Int, _ nutrientList: [Nutrient], _ completion: @escaping NutrientReportCompletion, _ debug: Bool = false) {
 		if (nutrientList.count == 0) { completion(nil) }
 
 		//add each nutrient id to query
@@ -58,11 +57,12 @@ class Database5 {
 		task.resume()
 	}
 	
+	//TODO consider renaming to "fetch"
 	//NOTE meal must contain at least 1 food item.
-	public func requestFoodReportV2(_ meal: Meal, _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
+	static func requestFoodReportV2(_ meal: Meal, _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
 		requestFoodReportV2(Array(meal.getFoodItems()), completion, debug)
 	}
-	public func requestFoodReportV2(_ foodItems: [FoodItem], _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
+	static func requestFoodReportV2(_ foodItems: [FoodItem], _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
 		if (foodItems.count == 0) {
 			if debug { print("Databse5.requestFoodReportV2: 0 fooditems received.") }
 			completion(nil)
@@ -102,7 +102,7 @@ class Database5 {
 	}
 	
 	//search for food items, return an array of FoodItems on completion.
-	public func search(_ searchTerms: String, _ completion: @escaping SearchResultCompletion) {
+	static func search(_ searchTerms: String, _ completion: @escaping SearchResultCompletion) {
 		let sort = "n"      // n: sort by name, r: search by relevence
 		let max = "50"      // max items to return
 		
@@ -112,7 +112,7 @@ class Database5 {
 		let request = URLRequest(url:requestUrl)
 		let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
 			guard let data = data else {
-				print("makeQuery: error loading data")
+				print("Database5.search(): error loading data")
 				completion([FoodItem]())
 				return
 			}
@@ -125,8 +125,8 @@ class Database5 {
 	
 	// MARK: Specific Queries
 
-	
-	public func getFoodItemNutrientOf(_ foodId: Int, nutrient: Nutrient, _ completion: @escaping FoodItemNutrientCompletion) {
+	//TODO
+	static func getFoodItemNutrientOf(_ foodId: Int, nutrient: Nutrient, _ completion: @escaping FoodItemNutrientCompletion) {
 		
 	}
 	
@@ -183,22 +183,59 @@ class Database5 {
 				foodItems.append(temp)
 			}
 		} catch let jsonErr {
-			print("Error serializing Json:", jsonErr)
+			print("Database5.jsonSearchToFoodItems: Error serializing Json:", jsonErr)
 		}
 		
 		return foodItems
 	}
 	
 	
+	
+	// MARK: FoodDataCache
+	//returns read-only instance of FoodDataCache from realm
+//	static func getFoodDataCache() -> FoodDataCache {
+//		let realm = try! Realm()
+//		let results = realm.objects(FoodDataCache.self)
+//		if results.count > 0 {
+//			return results.first!
+//		} else {
+//			let instance = FoodDataCache()
+//			try! realm.write {
+//				realm.add(instance, update: true)
+//			}
+//			return instance
+//		}
+//	}
+	
+	//save a food item that also contains nutrient information.
+	static func cacheFoodItem(_ cachedFoodItem: CachedFoodItem) {
+		let realm = try! Realm()
+		try! realm.write {
+			realm.add(cachedFoodItem, update: true)
+		}
+	}
+	
+	static func getCachedFoodItem(_ foodItemId: Int) -> CachedFoodItem? {
+		let realm = try! Realm()
+		let results = realm.objects(CachedFoodItem.self)
+		for item in results {
+			if item.getFoodId() == foodItemId {
+				return item
+			}
+		}
+		return nil
+	}
+	
+	
 	//MARK: Helpers
-	private func makeUrlRequestFromString(_ urlStr: String) -> URLRequest? {
+	private static func makeUrlRequestFromString(_ urlStr: String) -> URLRequest? {
 		guard let url = URL(string: urlStr) else {
 			print("error creating url: \(urlStr)"); return nil
 		}
 		return URLRequest(url: url)
 	}
 	
-	private func printJsonData(_ data: Data) {
+	private static func printJsonData(_ data: Data) {
 		print("*")
 		print(String(data: data, encoding:String.Encoding.ascii)!)
 		print("*")
