@@ -56,7 +56,7 @@ class GraphViewController: UIViewController {
 
 				//create point on the graph & add to array
 //				let entry = ChartDataEntry(x: Double(dayOfMonth!), y: Double(nutrientAmount.getAmount()))
-//				let x = dayOfMonth
+//				let x = dayOfMonth`
 				let y = Double(meal.getAmountOf(nutrient))
 				let entry = ChartDataEntry(x: 0, y: y)
 				lineEntries.append(entry)

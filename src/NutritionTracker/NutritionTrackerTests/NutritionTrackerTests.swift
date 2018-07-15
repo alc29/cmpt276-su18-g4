@@ -130,19 +130,19 @@ class NutritionTrackerTests: XCTestCase {
 	func testFoodReportV1() {
 		let poop = FoodItem(45144608, "poop") // v0.0
 		let cheese = FoodItem(01009, "cheese") // legacy
-		let expectationPoop = XCTestExpectation(description: "poop food report v1 completes")
+//		let expectationPoop = XCTestExpectation(description: "poop food report v1 completes")
 		let expectationCheese = XCTestExpectation(description: "cheese food report v1 completes")
 
-		let completionPoop: (FoodReportV1?) -> Void = { (foodReport: FoodReportV1?) -> Void in
-			XCTAssertNotNil(foodReport!)
-			XCTAssertNotNil(foodReport!.result!)
-			
-			let result = foodReport!.result as! FoodReportV1.Result
-			let report = result.report
-			//XCTAssert(report!.sr == "v0.0 June, 2018", report!.sr!)
-
-			expectationPoop.fulfill()
-		}
+//		let completionPoop: (FoodReportV1?) -> Void = { (foodReport: FoodReportV1?) -> Void in
+//			XCTAssertNotNil(foodReport!)
+//			XCTAssertNotNil(foodReport!.result!)
+//
+//			let result = foodReport!.result as! FoodReportV1.Result
+//			let report = result.report
+//			//XCTAssert(report!.sr == "v0.0 June, 2018", report!.sr!)
+//
+//			expectationPoop.fulfill()
+//		}
 		
 		let completionCheese: (FoodReportV1?) -> Void = { (foodReport: FoodReportV1?) -> Void in
 			XCTAssertNotNil(foodReport!)
@@ -150,14 +150,15 @@ class NutritionTrackerTests: XCTestCase {
 			
 			let result = foodReport!.result as! FoodReportV1.LegacyResult
 			let report = result.report
+			XCTAssertNotNil(report!)
 			XCTAssert(report!.sr == "Legacy", report!.sr!)
 
 			
 			expectationCheese.fulfill()
 		}
 
-		Database5.requestFoodReportV1(poop, completionPoop, false)
-		wait(for: [expectationPoop], timeout: 15)
+//		Database5.requestFoodReportV1(poop, completionPoop, false)
+//		wait(for: [expectationPoop], timeout: 15)
 		
 		Database5.requestFoodReportV1(cheese, completionCheese, true)
 		wait(for: [expectationCheese], timeout: 15)

@@ -44,7 +44,7 @@ class Database5 {
 		guard let urlRequest = makeUrlRequestFromString(urlStr) else { print("error creating urlRequest:\(urlStr)"); return}
 		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
 			guard let data = data else { print("error fetching data."); return }
-			if debug { self.printJsonData(data) }
+			if debug { Util.printJsonData(data) }
 			
 			//parse json data into FoodNutrientReport & return it via completion callback
 			//if let report = self.jsonDataToNutrientReport(foodId, data) {
@@ -59,9 +59,13 @@ class Database5 {
 	}
 	
 	
+	
 	static func requestFoodReportV1(_ foodItem: FoodItem, _ completion: @escaping FoodReportCompletionV1, _ debug: Bool = false) {
-		let foodId = foodItem.getFoodId()
-		let urlStr = "https://api.nal.usda.gov/ndb/reports/?ndbno=\(foodId)&type=f&format=json&api_key=\(KEY)"
+		//let foodId = foodItem.getFoodId()
+		//prefix foodId with zeroes: string representing ndbno must be at least 5 digits.
+		let foodIdStr = Util.getProperFoodIdStr(foodItem.getFoodId())
+		
+		let urlStr = "https://api.nal.usda.gov/ndb/reports/?ndbno=\(foodIdStr)&type=f&format=json&api_key=\(KEY)"
 		guard let urlRequest = makeUrlRequestFromString(urlStr) else {
 			if debug { print("url request failed: \(urlStr)") }
 			completion(nil)
@@ -221,15 +225,14 @@ class Database5 {
 	}
 	
 	//save a food item that also contains nutrient information.
-//	static func cacheFoodItem(_ cachedFoodItem: CachedFoodItem) {
-//		DispatchQueue.main.async {
-//			let realm = try! Realm()
-//			try! realm.write {
-//				realm.add(cachedFoodItem)
-//			}
-//		}
-//		
-//	}
+	static func cacheFoodItem(_ cachedFoodItem: CachedFoodItem) {
+		DispatchQueue.main.async {
+			let realm = try! Realm()
+			try! realm.write {
+				realm.add(cachedFoodItem)
+			}
+		}
+	}
 	
 	static func getCachedFoodItem(_ foodItemId: Int) -> CachedFoodItem? {
 		let realm = try! Realm()
@@ -251,9 +254,5 @@ class Database5 {
 		return URLRequest(url: url)
 	}
 	
-	private static func printJsonData(_ data: Data) {
-		print("*")
-		print(String(data: data, encoding:String.Encoding.ascii)!)
-		print("*")
-	}
+	
 }
