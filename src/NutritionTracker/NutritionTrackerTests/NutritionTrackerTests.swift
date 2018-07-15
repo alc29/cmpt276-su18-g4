@@ -149,7 +149,10 @@ class NutritionTrackerTests: XCTestCase {
 			XCTAssertNotNil(foodReport!.result!)
 			
 			let result = foodReport!.result as! FoodReportV1.LegacyResult
-		
+			let report = result.report
+			XCTAssert(report!.sr == "Legacy", report!.sr!)
+
+			
 			expectationCheese.fulfill()
 		}
 

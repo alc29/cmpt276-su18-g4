@@ -109,7 +109,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	
 	// Save new Meal to list of user's meals
 	func saveMeal(_ meal: Meal, _ debug: Bool = false) {
-		let mealCopy = meal
+		let mealCopy = meal.clone()
 		self.resetMeal()
 		self.displayMealSavedAlert()
 		
