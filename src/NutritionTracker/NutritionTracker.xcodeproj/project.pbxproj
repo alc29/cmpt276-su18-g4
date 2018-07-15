@@ -12,6 +12,8 @@
 		0A219E8F20E73832005965A9 /* Unit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A219E8E20E73832005965A9 /* Unit.swift */; };
 		0A31499220F8041100EFBB96 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A31499020F8041000EFBB96 /* LICENSE.txt */; };
 		0A31499320F8041100EFBB96 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0A31499120F8041100EFBB96 /* README.md */; };
+		0A68B77320FAE9C000C1FB0A /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A68B77220FAE9C000C1FB0A /* Util.swift */; };
+		0A68B77520FB13B200C1FB0A /* FoodReportV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A68B77420FB13B200C1FB0A /* FoodReportV1.swift */; };
 		0A6D41FD20E5C06100C3430A /* CachedFoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D41FC20E5C06100C3430A /* CachedFoodItem.swift */; };
 		0A6D420120E6F38600C3430A /* FoodItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D420020E6F38600C3430A /* FoodItemList.swift */; };
 		0A72CB7620EF24F500DB9DAC /* Database5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A72CB7520EF24F500DB9DAC /* Database5.swift */; };
@@ -60,6 +62,8 @@
 		0A219E8E20E73832005965A9 /* Unit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Unit.swift; sourceTree = "<group>"; };
 		0A31499020F8041000EFBB96 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		0A31499120F8041100EFBB96 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		0A68B77220FAE9C000C1FB0A /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
+		0A68B77420FB13B200C1FB0A /* FoodReportV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodReportV1.swift; sourceTree = "<group>"; };
 		0A6D41FC20E5C06100C3430A /* CachedFoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedFoodItem.swift; sourceTree = "<group>"; };
 		0A6D420020E6F38600C3430A /* FoodItemList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemList.swift; sourceTree = "<group>"; };
 		0A72CB7520EF24F500DB9DAC /* Database5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database5.swift; sourceTree = "<group>"; };
@@ -149,10 +153,11 @@
 				0AC9B19620E86EC800334127 /* AmountPer.swift */,
 				0ABBED7920EA0AD700D7BD6A /* FoodGroup.swift */,
 				0AA0632620E591A900CCE2FD /* FoodItem.swift */,
+				0A6D41FC20E5C06100C3430A /* CachedFoodItem.swift */,
 				0AC0717A20E9ED6800FD9657 /* FoodItemNutrient.swift */,
 				0A6D420020E6F38600C3430A /* FoodItemList.swift */,
 				0AC9B18E20E8176100334127 /* Meal.swift */,
-				0A6D41FC20E5C06100C3430A /* CachedFoodItem.swift */,
+				0A68B77420FB13B200C1FB0A /* FoodReportV1.swift */,
 				0A72CB7520EF24F500DB9DAC /* Database5.swift */,
 				0A72CB7720EF281200DB9DAC /* reports.swift */,
 			);
@@ -208,6 +213,7 @@
 			children = (
 				0A7B87D320E07E3E00B45D5C /* AppDelegate.swift */,
 				0A7B87D720E07E3E00B45D5C /* Main.storyboard */,
+				0A68B77220FAE9C000C1FB0A /* Util.swift */,
 				0A31499A20F806E700EFBB96 /* Model */,
 				0A31499B20F8071400EFBB96 /* ViewControllers */,
 				0A31499820F806A900EFBB96 /* Vision */,
@@ -453,6 +459,7 @@
 				0A72CB7620EF24F500DB9DAC /* Database5.swift in Sources */,
 				0ABBED7A20EA0AD700D7BD6A /* FoodGroup.swift in Sources */,
 				0ABBED7E20EAB4A600D7BD6A /* FoodDetailViewController.swift in Sources */,
+				0A68B77320FAE9C000C1FB0A /* Util.swift in Sources */,
 				0AC9B18F20E8176100334127 /* Meal.swift in Sources */,
 				0AC9B19520E8667100334127 /* Nutrient.swift in Sources */,
 				0A8F559120E08CE600B9E793 /* MainMenuViewController.swift in Sources */,
@@ -462,6 +469,7 @@
 				0A219E8F20E73832005965A9 /* Unit.swift in Sources */,
 				0A8F559320E0912C00B9E793 /* GraphViewController.swift in Sources */,
 				0A72CB7E20F1C6B100DB9DAC /* MealBuilderTableViewCell.swift in Sources */,
+				0A68B77520FB13B200C1FB0A /* FoodReportV1.swift in Sources */,
 				0ABBED7C20EAB25A00D7BD6A /* FoodSearchViewController.swift in Sources */,
 				0A8F558F20E08A9700B9E793 /* LoginViewController.swift in Sources */,
 				0A7B87D620E07E3E00B45D5C /* EntryViewController.swift in Sources */,

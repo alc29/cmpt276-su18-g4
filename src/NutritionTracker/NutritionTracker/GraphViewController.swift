@@ -18,7 +18,9 @@ class GraphViewController: UIViewController {
 	//MARK: Properties
 	@IBOutlet weak var graph: LineChartView! //ref to view in the storyboard
 	var graphSettings = GraphSettings() //if no settings found, use default settings & save
-	let DEFAULT_TAGS = [Nutrient.Caffeine, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from user settings
+	//let DEFAULT_TAGS = [Nutrient.Caffeine, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from user settings
+	let DEFAULT_TAGS = [Nutrient.Carbohydrate] //TODO load tags from user settings
+
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +41,8 @@ class GraphViewController: UIViewController {
 		//construct graph data from saved meals, filtered by tags.
 		let realm = try! Realm()
 		let meals = realm.objects(Meal.self) //(get all meals for testing)
-		for tag in DEFAULT_TAGS { //for each nutrient tag
+		//TODO only select meals within a certain range
+		for nutrient in DEFAULT_TAGS { //for each nutrient tag
 			var lineEntries = [ChartDataEntry]() //array for saving data to be plotted on a line.
 			for meal in meals { //for each meal
 				//determine date of meal
@@ -54,12 +57,12 @@ class GraphViewController: UIViewController {
 				//create point on the graph & add to array
 //				let entry = ChartDataEntry(x: Double(dayOfMonth!), y: Double(nutrientAmount.getAmount()))
 //				let x = dayOfMonth
-//				let y = meal.getNutrientAmount
-				let entry = ChartDataEntry(x: 0, y: 0)
+				let y = Double(meal.getAmountOf(nutrient))
+				let entry = ChartDataEntry(x: 0, y: y)
 				lineEntries.append(entry)
 			}
 			//create new line plot
-			let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
+			let line = LineChartDataSet(values: lineEntries, label: "\(nutrient.name)")
 
 			//TODO set random line color
 			data.addDataSet(line)

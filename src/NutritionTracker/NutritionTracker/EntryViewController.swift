@@ -26,33 +26,35 @@ class EntryViewController: UIViewController {
 	//Testing - clear all persistent data
 	//(note: if migration required, must erase all content from device & restart.)
 	private func clearRealmData() {
-		let realm = try! Realm()
-		try! realm.write {
-			realm.deleteAll()
+		DispatchQueue.main.async {
+			let realm = try! Realm()
+			try! realm.write {
+				realm.deleteAll()
+			}
 		}
+		
 	}
 
 	
 	//Testing - create and add test meals to display in graph
 	private func addTestMeals() {
-		var daysToAdd = 1
+//		var daysToAdd = 1
 		
-		let realm = try! Realm()
-		try! realm.write {
-			for _ in 0..<5 {
-				let meal = Meal()
-				for j in 0..<2 {
-					let foodItem = FoodItem(j, "food item: \(j)")
-					foodItem.setAmount(Float(arc4random_uniform(5)))
-					meal.add(foodItem)
-				}
-				let nextDate = Calendar.current.date(byAdding: .day, value: daysToAdd, to: Date())
-				daysToAdd += 1
-				meal.setDate(nextDate)
-				realm.add(meal, update: true)
-			}
-			
-		}
+//		let realm = try! Realm()
+//		try! realm.write {
+//			for _ in 0..<5 {
+//				let meal = Meal()
+//				for j in 0..<2 {
+//					let foodItem = FoodItem(j, "food item: \(j)")
+//					foodItem.setAmount(Float(arc4random_uniform(5)))
+//					meal.add(foodItem)
+//				}
+//				let nextDate = Calendar.current.date(byAdding: .day, value: daysToAdd, to: Date())
+//				daysToAdd += 1
+//				meal.setDate(nextDate)
+//				realm.add(meal)
+//			}
+//		}
 	}
 
 }

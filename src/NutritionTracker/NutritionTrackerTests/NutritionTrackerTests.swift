@@ -16,19 +16,24 @@ class NutritionTrackerTests: XCTestCase {
 	// Put setup code here. This method is called before the invocation of each test method in the class.
     override func setUp() {
         super.setUp()
-		
-		let realm = try! Realm()
-		XCTAssertNotNil(realm)
-		
+		DispatchQueue.main.async {
+			let realm = try! Realm()
+			XCTAssertNotNil(realm)
+			try! realm.write {
+				realm.deleteAll()
+			}
+		}
     }
 
 	// Put teardown code here. This method is called after the invocation of each test method in the class.
     override func tearDown() {
         super.tearDown()
-		
-		let realm = try! Realm() //clear realm data
-		try! realm.write {
-			realm.deleteAll()
+		DispatchQueue.main.async {
+			let realm = try! Realm()
+			XCTAssertNotNil(realm)
+			try! realm.write {
+				realm.deleteAll()
+			}
 		}
     }
 	
@@ -120,73 +125,114 @@ class NutritionTrackerTests: XCTestCase {
 		XCTAssert(nativeFoods.getIdStr() == "2400")
 	}
 	
+	
+	// MARK: FoodReportV1 tests
+	func testFoodReportV1() {
+		let poop = FoodItem(45144608, "poop") // v0.0
+		let cheese = FoodItem(01009, "cheese") // legacy
+		let expectationPoop = XCTestExpectation(description: "poop food report v1 completes")
+		let expectationCheese = XCTestExpectation(description: "cheese food report v1 completes")
+
+		let completionPoop: (FoodReportV1?) -> Void = { (foodReport: FoodReportV1?) -> Void in
+			XCTAssertNotNil(foodReport!)
+			XCTAssertNotNil(foodReport!.result!)
+			
+			let result = foodReport!.result as! FoodReportV1.Result
+			let report = result.report
+			//XCTAssert(report!.sr == "v0.0 June, 2018", report!.sr!)
+
+			expectationPoop.fulfill()
+		}
+		
+		let completionCheese: (FoodReportV1?) -> Void = { (foodReport: FoodReportV1?) -> Void in
+			XCTAssertNotNil(foodReport!)
+			XCTAssertNotNil(foodReport!.result!)
+			
+			let result = foodReport!.result as! FoodReportV1.LegacyResult
+		
+			expectationCheese.fulfill()
+		}
+
+		Database5.requestFoodReportV1(poop, completionPoop, false)
+		wait(for: [expectationPoop], timeout: 15)
+		
+		Database5.requestFoodReportV1(cheese, completionCheese, true)
+		wait(for: [expectationCheese], timeout: 15)
+	}
+	
+	
+	
+	
+	
 	//MARK: - FoodReportV2 tests
-	func testFoodReportV2() {
-		let foods = [
-			FoodItem(01009, "testFoodreportV2"),  //cheddar cheese
-			//FoodItem(45202763, "testFoodreportV2"), //TODO handle no such food id
-			FoodItem(35193, "testFoodreportV2") //cooked agave
-		]
-		
-		let expectation = XCTestExpectation(description: "Test Food Report V2")
-		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
-			//XCTAssertNotNil(report!) // TODO uncomment
-			//XCTAssert(report!.count() == 2)
-			expectation.fulfill()
-		}
-		
-		Database5.requestFoodReportV2(foods, completion, false)
-		wait(for: [expectation], timeout: 15.0)
-	}
-	func testFoodReportV2_nutrients() { //test json parsing for nutrients
-		let foodItem = FoodItem(45144608, "poop candy") //poop candy
-		
-		let expectation = XCTestExpectation(description: "completion invoked")
-		let completion:(FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
-			guard let report = report else { print("nil report"); return }
-			print("done")
-			print("num foods:\(report.jFoods.count)")
-			//guard let poop = report.jFoods.first else { return }
-			//print("poop: \(String(describing: poop))")
-			
-			//print("result: \(String(describing: report.result))")
-			
-			XCTAssertNotNil(report.result!)
-			let result = report.result!
-			XCTAssert(result.count == 1)
-			XCTAssert(result.notfound == 0)
-			XCTAssert(result.api == 2)
-			
-			XCTAssertNotNil(result.foods!)
-			let jFoodContainers = result.foods!
-			XCTAssertNotNil(jFoodContainers.first!)
-			let jFoodContainer = jFoodContainers.first!
-			XCTAssertNotNil(jFoodContainer!)
-			XCTAssertNotNil(jFoodContainer!.food!)
-			
-			let jFood = jFoodContainer!.food!
-			XCTAssert(jFood.sr! == "v0.0 March, 2018")
-			XCTAssert(jFood.type == "b")
-			XCTAssertNotNil(jFood.desc!)
-			let desc = jFood.desc!
-			XCTAssert(desc.ndbno! == "45144608")
-			XCTAssert(desc.name! == "CLEVER CANDY, EASTER BUNNY POOP ASSORTED JELLY BEANS, UPC: 618645313906")
-			
-			XCTAssertNotNil(jFood.nutrients!)
-			let nutrients = jFood.nutrients!
-			XCTAssertNotNil(nutrients.first!)
-			let firstNutrient = nutrients.first!
-			XCTAssert(firstNutrient!.nutrient_id! == "208")
-			
-			expectation.fulfill()
-		}
-		
-		Database5.requestFoodReportV2([foodItem], completion, false)
-		wait(for: [expectation], timeout: 15.0)
-	}
+//	func testFoodReportV2() {
+//		let foods = [
+//			FoodItem(01009, "testFoodreportV2"),  //cheddar cheese
+//			//FoodItem(45202763, "testFoodreportV2"), //TODO handle no such food id
+//			FoodItem(35193, "testFoodreportV2") //cooked agave
+//		]
+//
+//		let expectation = XCTestExpectation(description: "Test Food Report V2")
+//		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
+//			//XCTAssertNotNil(report!) // TODO uncomment
+//			//XCTAssert(report!.count() == 2)
+//			expectation.fulfill()
+//		}
+//
+//		Database5.requestFoodReportV2(foods, completion, false)
+//		wait(for: [expectation], timeout: 15.0)
+//	}
+//	func testFoodReportV2_nutrients() { //test json parsing for nutrients
+//		let foodItem = FoodItem(45144608, "poop candy") //poop candy
+//
+//		let expectation = XCTestExpectation(description: "completion invoked")
+//		let completion:(FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
+//			guard let report = report else { print("nil report"); return }
+//			print("done")
+//			print("num foods:\(report.jFoods.count)")
+//			//guard let poop = report.jFoods.first else { return }
+//			//print("poop: \(String(describing: poop))")
+//
+//			//print("result: \(String(describing: report.result))")
+//
+//			XCTAssertNotNil(report.result!)
+//			let result = report.result!
+//			XCTAssert(result.count == 1)
+//			XCTAssert(result.notfound == 0)
+//			XCTAssert(result.api == 2)
+//
+//			XCTAssertNotNil(result.foods!)
+//			let jFoodContainers = result.foods!
+//			XCTAssertNotNil(jFoodContainers.first!)
+//			let jFoodContainer = jFoodContainers.first!
+//			XCTAssertNotNil(jFoodContainer!)
+//			XCTAssertNotNil(jFoodContainer!.food!)
+//
+//			let jFood = jFoodContainer!.food!
+//			XCTAssert(jFood.sr! == "v0.0 March, 2018")
+//			XCTAssert(jFood.type == "b")
+//			XCTAssertNotNil(jFood.desc!)
+//			let desc = jFood.desc!
+//			XCTAssert(desc.ndbno! == "45144608")
+//			XCTAssert(desc.name! == "CLEVER CANDY, EASTER BUNNY POOP ASSORTED JELLY BEANS, UPC: 618645313906")
+//
+//			XCTAssertNotNil(jFood.nutrients!)
+//			let nutrients = jFood.nutrients!
+//			XCTAssertNotNil(nutrients.first!)
+//			let firstNutrient = nutrients.first!
+//
+//
+//			let nutrientId = Int(firstNutrient!.nutrient_id!)
+//			XCTAssert(nutrientId! == 208)
+//
+//			expectation.fulfill()
+//		}
+//
+//		Database5.requestFoodReportV2([foodItem], completion, false)
+//		wait(for: [expectation], timeout: 15.0)
+//	}
 	
 	// MARK: - FoodDataCache Tests
-	
 	//save meal & check CachedFoodItem
 	func testCachedFoodItem() {
 		let ID = 5
@@ -201,45 +247,68 @@ class NutritionTrackerTests: XCTestCase {
 		let results = realm.objects(CachedFoodItem.self)
 		XCTAssert(results.count == 1)
 		XCTAssert(results.first!.getFoodId() == ID)
+		//TODO test nutrient value
 	}
-	func testDatabaseAndFoodDataCache() {
-		let foodId = 45144608
-		let foodItem = FoodItem(foodId, "Poop candy")
-		let expectation = XCTestExpectation(description: "FoodReportV2 request completion is called.")
-		
-		let completion:(FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
-			XCTAssertNotNil(report!)
-			
-			let retrievedItem = Database5.getCachedFoodItem(foodId)
-			print("retrieved item: \(String(describing: retrievedItem))")
-			XCTAssertNotNil(retrievedItem!)
-			XCTAssert(retrievedItem!.getFoodId() == foodId)
-			
-			expectation.fulfill()
-		}
+	
+	// MARK: FoodReportV2
+//	func testDatabaseAndFoodDataCache() {
+//		let foodId = 45144608
+//		let foodItem = FoodItem(foodId, "Poop candy")
+//		let expectation = XCTestExpectation(description: "FoodReportV2 request completion is called.")
+//
+//		let completion:(FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
+//			XCTAssertNotNil(report!)
+//
+//			let retrievedItem = Database5.getCachedFoodItem(foodId)
+//			print("retrieved item: \(String(describing: retrievedItem))")
+//			XCTAssertNotNil(retrievedItem!)
+//			XCTAssert(retrievedItem!.getFoodId() == foodId)
+//
+//			expectation.fulfill()
+//		}
+//
+//		Database5.requestFoodReportV2([foodItem], completion, false)
+//		wait(for: [expectation], timeout: 10.0)
+//	}
+	
+//	func testNutritionCacheValues() {
+//		let foodId = 45144608
+//		let foodItem = FoodItem(foodId, "Poop candy")
+//		let nutrient = Nutrient.Sugars_total
+//		let expectation = XCTestExpectation(description: "FoodReportV2 request completion is called.")
+//		
+//		let completion:(FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
+//			XCTAssertNotNil(report!)
+//			
+//			let sugarsTotal = foodItem.getAmountOf(nutrient)
+//			XCTAssert(sugarsTotal == 80.49, String(describing: sugarsTotal))
+//			
+//			expectation.fulfill()
+//		}
+//		
+//		Database5.requestFoodReportV2([foodItem], completion, false)
+//		wait(for: [expectation], timeout: 10.0)
+//	}
 
-		Database5.requestFoodReportV2([foodItem], completion, false)
-		wait(for: [expectation], timeout: 10.0)
-	}
-
-	// MARK: - Database5 Tests
+	// MARK: - Nutrient Report
 	func testNutrientReport() {
+		let realm = try! Realm()
+
 		let tunaFoodId = 15117
 		let nutrients = [Nutrient.Calcium, Nutrient.Protein]
 
 		let expectation = XCTestExpectation(description: "Test Nutrient Report")
 
-		let printNutrientReport: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
+		let completion: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
 			XCTAssertNotNil(report)
-			// test report properties
 			XCTAssert(report!.count() == nutrients.count)
 			XCTAssert(report!.contains(Nutrient.Calcium))
 			XCTAssert(report!.contains(Nutrient.Protein))
 			//TODO test repoort!.getFoodItemNutrient = calcium, protein
 			expectation.fulfill()
 		}
-
-		Database5.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
+		
+		Database5.requestNutrientReport(tunaFoodId, nutrients, completion)
 		wait(for: [expectation], timeout: 15.0)
 	}
 

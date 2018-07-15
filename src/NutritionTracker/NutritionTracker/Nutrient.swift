@@ -50,7 +50,7 @@ class Nutrient: Object {
 	static let Protein = Nutrient(203, "Protein", Unit.Gram)
 	static let Total_lipid = Nutrient(204, "Total_lipid (fat)", Unit.Gram)
 	static let Ash = Nutrient(207, "Ash", Unit.Gram)
-	static let Carbohydrate_by_difference = Nutrient(205, "Carbohydrate_by_difference", Unit.Gram)
+	static let Carbohydrate = Nutrient(205, "Carbohydrate_by_difference", Unit.Gram)
 	static let Fiber_total_dietary = Nutrient(291, "Fiber_total_dietary", Unit.Gram)
 	static let Fiber_soluble = Nutrient(295, "Fiber_soluble", Unit.Gram)
 	static let Fiber_insoluble = Nutrient(297, "Fiber_insoluble", Unit.Gram)
@@ -159,7 +159,7 @@ class Nutrient: Object {
 		203 : Nutrient.Protein,
 		204 : Nutrient.Total_lipid,
 		207 : Nutrient.Ash,
-		205 : Nutrient.Carbohydrate_by_difference,
+		205 : Nutrient.Carbohydrate,
 		291 : Nutrient.Fiber_total_dietary,
 		295 : Nutrient.Fiber_soluble,
 		297 : Nutrient.Fiber_insoluble,

@@ -42,6 +42,16 @@ class FoodItem: Object {
 		self.amount!.setUnit(unit)
 	}
 	
+	//TODO handle conversion if necessary.
+	func getAmountOf(_ nutrient: Nutrient) -> Float {
+		if let foodItemNutrient = getNutrient(nutrient) {
+			let amount = foodItemNutrient.getBaseAmount()
+			//let per = foodItemNutrient.getAmountPer()
+			return Float(amount.getAmount())
+		}
+		return Float(0.0)
+	}
+	
 	//retreive nutrient info from cache.
 	func getNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {
 		if let cachedFoodItem = Database5.getCachedFoodItem(self.foodId),

@@ -20,12 +20,13 @@ class Database5 {
 	//TODO consider returning Bool for success, instead of Void
 	typealias NutrientReportCompletion = (_ report: NutrientReport?) -> Void
 	typealias FoodReportCompletionV1 = (_ report: FoodReportV1?) -> Void
-	typealias FoodReportCompletionV2 = (_ report: FoodReportV2?) -> Void
+//	typealias FoodReportCompletionV2 = (_ report: FoodReportV2?) -> Void
 	typealias SearchCompletion = (_ data: Data?) -> Void
 	typealias SearchResultCompletion = (_ foodItems: [FoodItem]) -> Void
 	typealias FoodItemNutrientCompletion = (_ foodItemNutrient: FoodItemNutrient) -> Void
 	typealias AmountPerCompletion = (_ amountPer: AmountPer) -> Void
 	typealias FoodItemsCompletion = (_ foodItems: [FoodItem]) -> Void
+	typealias MealCompletion = (_ meal: Meal?) -> Void
 	
 	// MARK: - USDA Queries
 
@@ -57,49 +58,79 @@ class Database5 {
 		task.resume()
 	}
 	
-	//TODO consider renaming to "fetch"
-	//NOTE meal must contain at least 1 food item.
-	static func requestFoodReportV2(_ meal: Meal, _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
-		requestFoodReportV2(Array(meal.getFoodItems()), completion, debug)
-	}
-	static func requestFoodReportV2(_ foodItems: [FoodItem], _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
-		if (foodItems.count == 0) {
-			if debug { print("Databse5.requestFoodReportV2: 0 fooditems received.") }
-			completion(nil)
-			return
-		}
-		if debug {print("Database5.FoodReportV2 request received.")}
-
-		//for each food item in meal, add foodId to the query
-		var urlStr = "https://api.nal.usda.gov/ndb/V2/reports?&type=f&format=json&api_key=\(KEY)"
-		for foodItem in foodItems {
-			urlStr.append("&ndbno=\(foodItem.getFoodId())")
-		}
-		
+	
+	static func requestFoodReportV1(_ foodItem: FoodItem, _ completion: @escaping FoodReportCompletionV1, _ debug: Bool = false) {
+		let foodId = foodItem.getFoodId()
+		let urlStr = "https://api.nal.usda.gov/ndb/reports/?ndbno=\(foodId)&type=f&format=json&api_key=\(KEY)"
 		guard let urlRequest = makeUrlRequestFromString(urlStr) else {
-			if debug{ print("urlRequest failed") }
+			if debug { print("url request failed: \(urlStr)") }
 			completion(nil)
 			return
 		}
 		
 		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
 			guard let data = data else {
-				print("error fetching data.")
+				print("error fetching data")
 				completion(nil)
 				return
 			}
-			if debug { self.printJsonData(data) }
+			//if debug { self.printJsonData(data) }
 			
-			if let report = FoodReportV2.fromJsonData(data, debug) {
-				if debug { print("report succeeded.") }
+			if let report = FoodReportV1.cacheFromJsonData(data, debug) {
+				if debug { print("foodreport v1 completion successful.") }
 				completion(report)
 			} else {
-				if debug { print("report failed") }
+				if debug { print("fromJsonData returned nil.") }
 				completion(nil)
 			}
 		}
 		task.resume()
 	}
+	
+	
+	//TODO consider renaming to "fetch"
+	//NOTE meal must contain at least 1 food item.
+//	static func requestFoodReportV2(_ meal: Meal, _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
+//		requestFoodReportV2(Array(meal.getFoodItems()), completion, debug)
+//	}
+//	static func requestFoodReportV2(_ foodItems: [FoodItem], _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
+//		if debug {print("Database5.FoodReportV2 request received.")}
+//		if (foodItems.count == 0) {
+//			if debug { print("Databse5.requestFoodReportV2: 0 fooditems received.") }
+//			completion(nil)
+//			return
+//		}
+//
+//		//for each food item in meal, add foodId to the query
+//		var urlStr = "https://api.nal.usda.gov/ndb/V2/reports?&type=f&format=json&api_key=\(KEY)"
+//		for foodItem in foodItems {
+//			urlStr.append("&ndbno=\(foodItem.getFoodId())")
+//		}
+//
+//		guard let urlRequest = makeUrlRequestFromString(urlStr) else {
+//			if debug{ print("urlRequest failed") }
+//			completion(nil)
+//			return
+//		}
+//
+//		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+//			guard let data = data else {
+//				print("error fetching data.")
+//				completion(nil)
+//				return
+//			}
+//			if debug { self.printJsonData(data) }
+//
+//			if let report = FoodReportV2.fromJsonData(data, debug) {
+//				if debug { print("report succeeded.") }
+//				completion(report)
+//			} else {
+//				if debug { print("report failed") }
+//				completion(nil)
+//			}
+//		}
+//		task.resume()
+//	}
 	
 	//search for food items, return an array of FoodItems on completion.
 	static func search(_ searchTerms: String, _ completion: @escaping SearchResultCompletion) {
@@ -126,9 +157,9 @@ class Database5 {
 	// MARK: Specific Queries
 
 	//TODO
-	static func getFoodItemNutrientOf(_ foodId: Int, nutrient: Nutrient, _ completion: @escaping FoodItemNutrientCompletion) {
-		
-	}
+//	static func getFoodItemNutrientOf(_ foodId: Int, nutrient: Nutrient, _ completion: @escaping FoodItemNutrientCompletion) {
+//
+//	}
 	
 	//return the amount of a specific nutrient in a specific food.
 //	public func getAmountPer(_ nutrient: Nutrient, _ foodId: Int, _ completion: @escaping AmountPerCompletion) {
@@ -189,31 +220,16 @@ class Database5 {
 		return foodItems
 	}
 	
-	
-	
-	// MARK: FoodDataCache
-	//returns read-only instance of FoodDataCache from realm
-//	static func getFoodDataCache() -> FoodDataCache {
-//		let realm = try! Realm()
-//		let results = realm.objects(FoodDataCache.self)
-//		if results.count > 0 {
-//			return results.first!
-//		} else {
-//			let instance = FoodDataCache()
-//			try! realm.write {
-//				realm.add(instance, update: true)
-//			}
-//			return instance
-//		}
-//	}
-	
 	//save a food item that also contains nutrient information.
-	static func cacheFoodItem(_ cachedFoodItem: CachedFoodItem) {
-		let realm = try! Realm()
-		try! realm.write {
-			realm.add(cachedFoodItem, update: true)
-		}
-	}
+//	static func cacheFoodItem(_ cachedFoodItem: CachedFoodItem) {
+//		DispatchQueue.main.async {
+//			let realm = try! Realm()
+//			try! realm.write {
+//				realm.add(cachedFoodItem)
+//			}
+//		}
+//		
+//	}
 	
 	static func getCachedFoodItem(_ foodItemId: Int) -> CachedFoodItem? {
 		let realm = try! Realm()
