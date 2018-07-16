@@ -22,12 +22,12 @@ class FoodItemNutrient: Object {
 	}
 	
 	// MARK: Setters
-	func setNutrient(_ nutrient: Nutrient) {
-		self.nutrient! = nutrient
-	}
-	func setBaseAmount(_ amount: Float) {
-		amountPer!.setBaseAmount(amount)
-	}
+//	func setNutrient(_ nutrient: Nutrient) {
+//		self.nutrient! = nutrient
+//	}
+//	func setBaseAmount(_ amount: Float) {
+//		amountPer!.setBaseAmount(amount)
+//	}
 	
 	// MARK: Getters
 	func getNutrient() -> Nutrient { return nutrient! }

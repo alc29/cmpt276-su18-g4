@@ -18,7 +18,7 @@ class Database5 {
 	
 	// MARK: - Completion types
 	//TODO consider returning Bool for success, instead of Void
-	typealias NutrientReportCompletion = (_ report: NutrientReport?) -> Void
+//	typealias NutrientReportCompletion = (_ report: NutrientReport?) -> Void
 	typealias FoodReportCompletionV1 = (_ report: FoodReportV1?) -> Void
 //	typealias FoodReportCompletionV2 = (_ report: FoodReportV2?) -> Void
 	typealias SearchCompletion = (_ data: Data?) -> Void
@@ -33,29 +33,29 @@ class Database5 {
 
 	// Request a food nutrient report from the usda database.
 	// NOTE: must provide at least 1 nutrient.
-	static func requestNutrientReport(_ foodId: Int, _ nutrientList: [Nutrient], _ completion: @escaping NutrientReportCompletion, _ debug: Bool = false) {
-		if (nutrientList.count == 0) { completion(nil) }
-
-		//add each nutrient id to query
-		var urlStr = "https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=\(KEY)&ndbno=\(foodId)"
-		for nut in nutrientList { urlStr.append("&nutrients=\(nut.getId())") }
-		
-		//request data from database
-		guard let urlRequest = makeUrlRequestFromString(urlStr) else { print("error creating urlRequest:\(urlStr)"); return}
-		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-			guard let data = data else { print("error fetching data."); return }
-			if debug { Util.printJsonData(data) }
-			
-			//parse json data into FoodNutrientReport & return it via completion callback
-			if let report = NutrientReport.fromJsonData(foodId, data, debug) {
-				completion(report)
-			} else {
-				if debug { print("report failed.") }
-				completion(nil)
-			}
-		}
-		task.resume()
-	}
+//	static func requestNutrientReport(_ foodId: Int, _ nutrientList: [Nutrient], _ completion: @escaping NutrientReportCompletion, _ debug: Bool = false) {
+//		if (nutrientList.count == 0) { completion(nil) }
+//
+//		//add each nutrient id to query
+//		var urlStr = "https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=\(KEY)&ndbno=\(foodId)"
+//		for nut in nutrientList { urlStr.append("&nutrients=\(nut.getId())") }
+//
+//		//request data from database
+//		guard let urlRequest = makeUrlRequestFromString(urlStr) else { print("error creating urlRequest:\(urlStr)"); return}
+//		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+//			guard let data = data else { print("error fetching data."); return }
+//			if debug { Util.printJsonData(data) }
+//
+//			//parse json data into FoodNutrientReport & return it via completion callback
+//			if let report = NutrientReport.fromJsonData(foodId, data, debug) {
+//				completion(report)
+//			} else {
+//				if debug { print("report failed.") }
+//				completion(nil)
+//			}
+//		}
+//		task.resume()
+//	}
 	
 	
 	

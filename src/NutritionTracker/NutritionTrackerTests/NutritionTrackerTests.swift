@@ -316,40 +316,39 @@ class NutritionTrackerTests: XCTestCase {
 //	}
 
 	// MARK: - Nutrient Report
-	func testNutrientReport() {
-		
-		let realm = try! Realm()
-		let tunaFoodId = 15117
-		let nutrients = [Nutrient.Calcium, Nutrient.Protein]
-		let expectation = XCTestExpectation(description: "Test Nutrient Report")
+//	func testNutrientReport() {
+//		let tunaFoodId = 15117
+//		let nutrients = [Nutrient.Calcium, Nutrient.Protein]
+//		let expectation = XCTestExpectation(description: "Test Nutrient Report")
+//
+//		let completion: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
+//			let realm = try! Realm()
+//
+//			XCTAssertNotNil(report)
+//			XCTAssert(report!.count() == nutrients.count)
+//			XCTAssert(report!.contains(Nutrient.Calcium))
+//			XCTAssert(report!.contains(Nutrient.Protein))
+//			//TODO test repoort!.getFoodItemNutrient = calcium, protein
+//			expectation.fulfill()
+//		}
+//
+//		Database5.requestNutrientReport(tunaFoodId, nutrients, completion)
+//		wait(for: [expectation], timeout: 15.0)
+//	}
 
-		let completion: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
-			XCTAssertNotNil(report)
-			XCTAssert(report!.count() == nutrients.count)
-			XCTAssert(report!.contains(Nutrient.Calcium))
-			XCTAssert(report!.contains(Nutrient.Protein))
-			//TODO test repoort!.getFoodItemNutrient = calcium, protein
-			expectation.fulfill()
-		}
-		
-		Database5.requestNutrientReport(tunaFoodId, nutrients, completion)
-		wait(for: [expectation], timeout: 15.0)
-	}
-
-	func testNutrientReportNil() {
-		let tunaFoodId = 15117
-		let nutrients = [Nutrient]()
-
-		let expectation = XCTestExpectation(description: "Test Nutrient Report should be nil")
-
-		let printNutrientReport: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
-			XCTAssertNil(report)
-			expectation.fulfill()
-		}
-
-		Database5.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
-		wait(for: [expectation], timeout: 15.0)
-	}
+//	func testNutrientReportNil() {
+//		let tunaFoodId = 15117
+//		let nutrients = [Nutrient]()
+//		let expectation = XCTestExpectation(description: "Test Nutrient Report should be nil")
+//
+//		let printNutrientReport: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in
+//			XCTAssertNil(report)
+//			expectation.fulfill()
+//		}
+//
+//		Database5.requestNutrientReport(tunaFoodId, nutrients, printNutrientReport)
+//		wait(for: [expectation], timeout: 15.0)
+//	}
 	
 
 
