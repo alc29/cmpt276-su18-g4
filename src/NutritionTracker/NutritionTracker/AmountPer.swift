@@ -17,7 +17,7 @@ class AmountPer: Object {
 	@objc private dynamic var amount: Amount? = Amount() // numerator
 	@objc private dynamic var denominator: Amount? = Amount() // denominator
 
-	convenience init(amount: Amount = Amount(0.0, Unit.Microgram), per: Amount = Amount(100.0, Unit.Gram)) {
+	convenience init(amount: Amount = Amount(0.0, Unit.GRAM), per: Amount = Amount(100.0, Unit.GRAM)) {
 		self.init()
 		self.amount = amount
 		self.denominator = per

@@ -37,7 +37,7 @@ class FoodItem: Object {
 	}
 	
 	// MARK: Setters
-	func setAmount(_ amount: Float, unit: Unit = Unit.Microgram) {
+	func setAmount(_ amount: Float, unit: Unit = Unit.GRAM) {
 		self.amount!.setAmount(amount)
 		self.amount!.setUnit(unit)
 	}
@@ -53,6 +53,7 @@ class FoodItem: Object {
 	}
 	
 	//retreive nutrient info from cache.
+	//TODO if nil, retrieve from database & cache; calling class must call a second time.
 	func getNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {
 		if let cachedFoodItem = Database5.getCachedFoodItem(self.foodId),
 			let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrient) {

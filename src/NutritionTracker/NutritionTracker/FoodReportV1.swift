@@ -84,7 +84,6 @@ class FoodReportV1 {
 	
 	
 	//MARK: Properties
-	//TODO convert all jFoods in Result into FoodItems.
 //	var jFoods = [Result.JFood]()
 	var result: Any?
 
@@ -107,15 +106,16 @@ class FoodReportV1 {
 	static func nonLegacyDecoder(_ jsonData: Data, _ debug: Bool = false) -> FoodReportV1? {
 		do {
 			let result = try JSONDecoder().decode(FoodReportV1.Result.self, from: jsonData)
-			if let report = result.report, let sr = report.sr {
+			if let report = result.report {
 				
 				let foodReportV1 = FoodReportV1()
 				foodReportV1.result = result
 				
 				// get nutrients from jFood, convert to FoodItemNutrient; add to food item
 				if let report = result.report,
-					let jFood = report.food, let ndbno = jFood.ndbno,
-					let foodId = Int(ndbno), let foodName = jFood.name {
+					let jFood = report.food,
+					let ndbno = jFood.ndbno,
+					let foodId = Int(ndbno) {
 					
 					//let cachedFoodItem = CachedFoodItem(foodId)
 					var nutrients = [FoodItemNutrient]()
@@ -124,11 +124,18 @@ class FoodReportV1 {
 						for jNutrient in jNutrients {
 							guard let jNutrient = jNutrient, let nutrient_id = jNutrient.nutrient_id else { continue }
 							
+							//TODO delegate nutrientId getter to another function; refactor this block
 							let nutrientId = Int(nutrient_id)
 							let nutrient = Nutrient.get(id: nutrientId!)
 							
-							let amount = Amount() //TODO
-							let per = Amount(100, Unit.Gram) //TODO
+							//TODO handle nil values; move definitions into the guard let statement
+							let amountValue = jNutrient.value
+							let amountUnit = Unit.get(jNutrient.unit!)!
+							//print("jNutrient unit: \(jNutrient.unit)")
+							//let amountUnit = Unit.GRAM //TODO get unit from jNutrient
+							
+							let amount = Amount(Float(amountValue!)!, amountUnit) //TODO
+							let per = Amount(100, Unit.GRAM) //TODO
 							let amountPer = AmountPer(amount: amount, per: per)
 							
 							let foodItemNutrient = FoodItemNutrient(nutrient, amountPer)
@@ -165,8 +172,9 @@ class FoodReportV1 {
 			
 			// get nutrients from jFood, convert to FoodItemNutrient; add to food item
 			if let report = result.report,
-				let jFood = report.food, let ndbno = jFood.ndbno,
-				let foodId = Int(ndbno), let foodName = jFood.name {
+				let jFood = report.food,
+				let ndbno = jFood.ndbno,
+				let foodId = Int(ndbno) {
 				//let foodItem = FoodItem(foodId, foodName)
 				//let cachedFoodItem = CachedFoodItem(foodId)
 				var nutrients = [FoodItemNutrient]()
@@ -178,7 +186,7 @@ class FoodReportV1 {
 						let nutrient = Nutrient.get(id: Int(nutrient_id))
 						
 						let amount = Amount() //TODO
-						let per = Amount(100, Unit.Gram) //TODO
+						let per = Amount(100, Unit.GRAM) //TODO
 						let amountPer = AmountPer(amount: amount, per: per)
 						
 						let foodItemNutrient = FoodItemNutrient(nutrient, amountPer)
