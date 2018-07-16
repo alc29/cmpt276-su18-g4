@@ -11,14 +11,25 @@ import Foundation
 import RealmSwift
 
 enum Unit: String {
-	case Gram
-	case Miligram
-	case Microgram
+	case GRAM
+	case MILIGRAM
+	case MICROGRAM
 	case IU //international unit
 	case KJ
 	case KCAL
 	
+	case G
+	case MG
+	
 	static func get(_ rawValue: String) -> Unit? {
-		return Unit(rawValue: rawValue)
+		var unit = Unit(rawValue: rawValue.uppercased())
+		if unit == nil {
+			return Unit.GRAM
+		}
+		return unit
+	}
+	
+	static func getDefault() -> Unit {
+		return Unit.GRAM
 	}
 }

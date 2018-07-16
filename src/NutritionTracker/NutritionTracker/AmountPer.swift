@@ -15,12 +15,12 @@ import RealmSwift
 class AmountPer: Object {
 	// MARK: Properties
 	@objc private dynamic var amount: Amount? = Amount() // numerator
-	@objc private dynamic var per: Amount? = Amount() // denominator
+	@objc private dynamic var denominator: Amount? = Amount() // denominator
 
-	convenience init(amount: Amount = Amount(10.0, Unit.Microgram), per: Amount = Amount(100.0, Unit.Gram)) {
+	convenience init(amount: Amount = Amount(0.0, Unit.GRAM), per: Amount = Amount(100.0, Unit.GRAM)) {
 		self.init()
 		self.amount = amount
-		self.per = per
+		self.denominator = per
 	}
 	
 	//MARK: Setters
@@ -34,6 +34,6 @@ class AmountPer: Object {
 	}
 	
 	func getPer() -> Amount {
-		return per!
+		return denominator!
 	}
 }

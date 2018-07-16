@@ -14,15 +14,20 @@ class CachedFoodItem: Object {
 	@objc private dynamic var foodId: Int = -1
 	let nutrients = List<FoodItemNutrient>()
 	
-	convenience init(_ foodId: Int) {
+	//NOTE: call from within write block.
+	convenience init(_ foodId: Int, _ nutrients: [FoodItemNutrient]) {
 		self.init()
 		self.foodId = foodId
+		self.nutrients.append(objectsIn: nutrients)
 	}
 	
-	func addFoodItemNutrient(_ foodItemNutrient: FoodItemNutrient) {
-		//TODO handle duplicates
-		nutrients.append(foodItemNutrient)
-	}
+//	func addFoodItemNutrient(_ foodItemNutrient: FoodItemNutrient) {
+//		//TODO handle duplicates
+//		if foodItemNutrient.getNutrientId() <= 0 {
+//			print("warning: id of foodItemNutrient is: \(foodItemNutrient.getNutrientId())")
+//		}
+//		nutrients.append(foodItemNutrient)
+//	}
 	
 	func getFoodItemNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {
 		for n in nutrients {

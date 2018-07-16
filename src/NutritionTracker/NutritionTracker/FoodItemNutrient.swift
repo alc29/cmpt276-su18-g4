@@ -12,8 +12,8 @@ import RealmSwift
 
 class FoodItemNutrient: Object {
 	// MARK: Properties
-	private var nutrient = Nutrient.Nil
-	private var amountPer = AmountPer()
+	@objc private dynamic var nutrient: Nutrient? = Nutrient.Nil
+	@objc private dynamic var amountPer: AmountPer? = AmountPer()
 	
 	convenience init(_ nutrient: Nutrient, _ amountPer: AmountPer) {
 		self.init()
@@ -22,16 +22,18 @@ class FoodItemNutrient: Object {
 	}
 	
 	// MARK: Setters
-	func setNutrient(_ nutrient: Nutrient) {
-		self.nutrient = nutrient
-	}
-	func setBaseAmount(_ amount: Float) {
-		amountPer.setBaseAmount(amount)
-	}
+//	func setNutrient(_ nutrient: Nutrient) {
+//		self.nutrient! = nutrient
+//	}
+//	func setBaseAmount(_ amount: Float) {
+//		amountPer!.setBaseAmount(amount)
+//	}
 	
 	// MARK: Getters
-	func getNutrient() -> Nutrient { return nutrient }
-	func getName() -> String { return nutrient.name; }
-	func getAmountPer() -> AmountPer { return amountPer}
-	func getNutrientId() -> Int { return nutrient.nutrientId }
+	func getNutrient() -> Nutrient { return nutrient! }
+	func getName() -> String { return nutrient!.name; }
+	//func getAmountPer() -> AmountPer { return amountPer }
+	func getBaseAmount() -> Amount { return amountPer!.getAmount() }
+	func getAmountPer() -> Amount { return amountPer!.getPer() }
+	func getNutrientId() -> Int { return nutrient!.nutrientId }
 }

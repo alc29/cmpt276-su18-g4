@@ -5,110 +5,77 @@
 //  Created by alc29 on 2018-07-05.
 //  Copyright © 2018 alc29. All rights reserved.
 //
+//	Class for interacting with the usda database via browser queries.
+//
 // 	TODO: test handling of nil values & failures.
 
 import Foundation
 import RealmSwift
 
 class Database5 {
-	// MARK: - Singleton
 	private init() {}
 	private static let KEY = "Y5qpjfCGqZ9mTIhN41iKHAGMIKOf42uS2mH3IQr4"
 	
 	
 	// MARK: - Completion types
 	//TODO consider returning Bool for success, instead of Void
-	typealias NutrientReportCompletion = (_ report: NutrientReport?) -> Void
 	typealias FoodReportCompletionV1 = (_ report: FoodReportV1?) -> Void
-	typealias FoodReportCompletionV2 = (_ report: FoodReportV2?) -> Void
-	typealias SearchCompletion = (_ data: Data?) -> Void
 	typealias SearchResultCompletion = (_ foodItems: [FoodItem]) -> Void
 	typealias FoodItemNutrientCompletion = (_ foodItemNutrient: FoodItemNutrient) -> Void
 	typealias AmountPerCompletion = (_ amountPer: AmountPer) -> Void
 	typealias FoodItemsCompletion = (_ foodItems: [FoodItem]) -> Void
-	
-	// MARK: - USDA Queries
+	typealias MealCompletion = (_ meal: Meal?) -> Void
 
-
-	// Request a food nutrient report from the usda database.
-	// NOTE: must provide at least 1 nutrient.
-	static func requestNutrientReport(_ foodId: Int, _ nutrientList: [Nutrient], _ completion: @escaping NutrientReportCompletion, _ debug: Bool = false) {
-		if (nutrientList.count == 0) { completion(nil) }
-
-		//add each nutrient id to query
-		var urlStr = "https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=\(KEY)&ndbno=\(foodId)"
-		for nut in nutrientList { urlStr.append("&nutrients=\(nut.getId())") }
-		
-		//request data from database
-		guard let urlRequest = makeUrlRequestFromString(urlStr) else { print("error creating urlRequest:\(urlStr)"); return}
-		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-			guard let data = data else { print("error fetching data."); return }
-			if debug { self.printJsonData(data) }
+	// Request a food reportV1, whcih returns & caches nutrient info about 1 specific food.
+	static func requestFoodReportV1(_ foodItem: FoodItem, _ completion: @escaping FoodReportCompletionV1, _ debug: Bool = false) {
+		do {
 			
-			//parse json data into FoodNutrientReport & return it via completion callback
-			//if let report = self.jsonDataToNutrientReport(foodId, data) {
-			if let report = NutrientReport.fromJsonData(foodId, data) {
-				completion(report)
-			} else {
-				if debug { print("report failed.") }
-				completion(nil)
-			}
-		}
-		task.resume()
-	}
-	
-	//TODO consider renaming to "fetch"
-	//NOTE meal must contain at least 1 food item.
-	static func requestFoodReportV2(_ meal: Meal, _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
-		requestFoodReportV2(Array(meal.getFoodItems()), completion, debug)
-	}
-	static func requestFoodReportV2(_ foodItems: [FoodItem], _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
-		if (foodItems.count == 0) {
-			if debug { print("Databse5.requestFoodReportV2: 0 fooditems received.") }
-			completion(nil)
-			return
-		}
-		if debug {print("Database5.FoodReportV2 request received.")}
-
-		//for each food item in meal, add foodId to the query
-		var urlStr = "https://api.nal.usda.gov/ndb/V2/reports?&type=f&format=json&api_key=\(KEY)"
-		for foodItem in foodItems {
-			urlStr.append("&ndbno=\(foodItem.getFoodId())")
-		}
-		
-		guard let urlRequest = makeUrlRequestFromString(urlStr) else {
-			if debug{ print("urlRequest failed") }
-			completion(nil)
-			return
-		}
-		
-		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-			guard let data = data else {
-				print("error fetching data.")
+			//let foodId = foodItem.getFoodId()
+			//prefix foodId with zeroes: string representing ndbno must be at least 5 digits.
+			let foodIdStr = Util.getProperFoodIdStr(foodItem.getFoodId())
+			
+			let urlStr = "https://api.nal.usda.gov/ndb/reports/?ndbno=\(foodIdStr)&type=f&format=json&api_key=\(KEY)"
+			guard let urlRequest = makeUrlRequestFromString(urlStr) else {
+				if debug { print("url request failed: \(urlStr)") }
 				completion(nil)
 				return
 			}
-			if debug { self.printJsonData(data) }
 			
-			if let report = FoodReportV2.fromJsonData(data, debug) {
-				if debug { print("report succeeded.") }
-				completion(report)
-			} else {
-				if debug { print("report failed") }
-				completion(nil)
+			let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+				guard let data = data else {
+					print("error fetching data")
+					completion(nil)
+					return
+				}
+				//if debug { self.printJsonData(data) }
+				
+				if let report = FoodReportV1.cacheFromJsonData(data, debug) {
+					if debug { print("foodreport v1 completion successful.") }
+					completion(report)
+				} else {
+					if debug { print("fromJsonData returned nil.") }
+					completion(nil)
+				}
 			}
+			task.resume()
+			
+		} catch let error {
+			print("requestFoodReportV1 error caught:")
+			print(error)
 		}
-		task.resume()
-	}
-	
-	//search for food items, return an array of FoodItems on completion.
-	static func search(_ searchTerms: String, _ completion: @escaping SearchResultCompletion) {
-		let sort = "n"      // n: sort by name, r: search by relevence
-		let max = "50"      // max items to return
 		
-		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&q=\(searchTerms)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
-		//makeSearchQuery(queryURL, completion)
-		guard let requestUrl = URL(string: queryURL) else {return}
+		
+	} //end request
+
+
+	
+	// Search for food items based on a string, return an array of FoodItems on completion.
+	static func search(_ searchTerms: String, _ completion: @escaping SearchResultCompletion) {
+		let sort = "n" // n: sort by name, r: search by relevence
+		let max = "50" // max items to return
+		
+		let urlStr = "https://api.nal.usda.gov/ndb/search/?format=json&q=\(searchTerms)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
+		guard let requestUrl = URL(string: urlStr) else {return}
 		let request = URLRequest(url:requestUrl)
 		let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
 			guard let data = data else {
@@ -122,36 +89,30 @@ class Database5 {
 		task.resume()
 	}
 	
-	
-	// MARK: Specific Queries
+	// Returns an array of food items from a given food group.
+	//TODO refactor; similar to search()
+	//TODO consider passing food group instead
+	static func foodGroupSearch(_ foodGroupId: String, _ completion: @escaping FoodItemsCompletion, _ max: Int = 50) {
 
-	//TODO
-	static func getFoodItemNutrientOf(_ foodId: Int, nutrient: Nutrient, _ completion: @escaping FoodItemNutrientCompletion) {
+		//TODO if not valid food group id, complete(nil)
+		var urlStr = "https://api.nal.usda.gov/ndb/search/?format=json&fg=\(foodGroupId)&max=\(max)&offset=0&api_key=\(KEY)"
+		guard let requestUrl = URL(string: urlStr) else {return}
+		let request = URLRequest(url: requestUrl)
+		let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+			guard let data = data else {
+				print("Database5.foodGroupSearch(): error loading data")
+				completion([FoodItem]())
+				return
+			}
+			let foodItems = Database5.jsonSearchToFoodItems(data)
+			completion(foodItems)
+		}
+		task.resume()
 		
+		//TODO convert json data to an array of food items
+		
+		//completion([FoodItem]()) //empty
 	}
-	
-	//return the amount of a specific nutrient in a specific food.
-//	public func getAmountPer(_ nutrient: Nutrient, _ foodId: Int, _ completion: @escaping AmountPerCompletion) {
-//		let ndbno = foodId
-//		//query url for getting the amount of a specific nutrient in the food.
-//		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&ndbno=\(ndbno)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
-//	}
-	
-	//Return a list containing the nutrients in a given food.
-//	public func getNutrients(foodId: Int, _ completion: @escaping ) { //-> [FoodItemNutrient]
-//		//var nutrients = [FoodItemNutrient]()
-//		let ndbno = foodId
-//		// query url for getting nutrients in a food
-//		//TODO query needs to be a "report", not a "search"
-//		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&ndbno=\(ndbno)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
-//	}
-
-	//Return a list of FoodItem's corresponding to the given FoodGroup.
-//	public func getFoodItemsFrom(_ foodGroupId: String, _ completion: @escaping FoodItemsCompletion) {
-//		let fg = foodGroupId
-//		// query url for getting foods in a FoodGroup (using the food group id)
-//		let queryURL = "https://api.nal.usda.gov/ndb/search/?format=json&fg=\(fg)&sort=\(sort)&max=\(max)&offset=0&api_key=\(KEY)"
-//	}
 	
 	//MARK: JSON
 	//Takes json data, and returns an array of FoodItem's (search results)
@@ -189,32 +150,7 @@ class Database5 {
 		return foodItems
 	}
 	
-	
-	
-	// MARK: FoodDataCache
-	//returns read-only instance of FoodDataCache from realm
-//	static func getFoodDataCache() -> FoodDataCache {
-//		let realm = try! Realm()
-//		let results = realm.objects(FoodDataCache.self)
-//		if results.count > 0 {
-//			return results.first!
-//		} else {
-//			let instance = FoodDataCache()
-//			try! realm.write {
-//				realm.add(instance, update: true)
-//			}
-//			return instance
-//		}
-//	}
-	
-	//save a food item that also contains nutrient information.
-	static func cacheFoodItem(_ cachedFoodItem: CachedFoodItem) {
-		let realm = try! Realm()
-		try! realm.write {
-			realm.add(cachedFoodItem, update: true)
-		}
-	}
-	
+	//TODO 2nd try
 	static func getCachedFoodItem(_ foodItemId: Int) -> CachedFoodItem? {
 		let realm = try! Realm()
 		let results = realm.objects(CachedFoodItem.self)
@@ -226,8 +162,6 @@ class Database5 {
 		return nil
 	}
 	
-	
-	//MARK: Helpers
 	private static func makeUrlRequestFromString(_ urlStr: String) -> URLRequest? {
 		guard let url = URL(string: urlStr) else {
 			print("error creating url: \(urlStr)"); return nil
@@ -235,9 +169,88 @@ class Database5 {
 		return URLRequest(url: url)
 	}
 	
-	private static func printJsonData(_ data: Data) {
-		print("*")
-		print(String(data: data, encoding:String.Encoding.ascii)!)
-		print("*")
-	}
+//save a food item that also contains nutrient information.
+//	static func cacheFoodItem(_ cachedFoodItem: CachedFoodItem) {
+//		DispatchQueue.main.async {
+//			let realm = try! Realm()
+//			try! realm.write {
+//				realm.add(cachedFoodItem)
+//			}
+//		}
+//	}
+
+	
+	// MARK: Method graveyard
+	
+// Request a food nutrient report from the usda database.
+// NOTE: must provide at least 1 nutrient.
+//	static func requestNutrientReport(_ foodId: Int, _ nutrientList: [Nutrient], _ completion: @escaping NutrientReportCompletion, _ debug: Bool = false) {
+//		if (nutrientList.count == 0) { completion(nil) }
+//
+//		//add each nutrient id to query
+//		var urlStr = "https://api.nal.usda.gov/ndb/nutrients/?format=json&api_key=\(KEY)&ndbno=\(foodId)"
+//		for nut in nutrientList { urlStr.append("&nutrients=\(nut.getId())") }
+//
+//		//request data from database
+//		guard let urlRequest = makeUrlRequestFromString(urlStr) else { print("error creating urlRequest:\(urlStr)"); return}
+//		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+//			guard let data = data else { print("error fetching data."); return }
+//			if debug { Util.printJsonData(data) }
+//
+//			//parse json data into FoodNutrientReport & return it via completion callback
+//			if let report = NutrientReport.fromJsonData(foodId, data, debug) {
+//				completion(report)
+//			} else {
+//				if debug { print("report failed.") }
+//				completion(nil)
+//			}
+//		}
+//		task.resume()
+//	}
+
+
+//TODO consider renaming to "fetch"
+//NOTE meal must contain at least 1 food item.
+//	static func requestFoodReportV2(_ meal: Meal, _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
+//		requestFoodReportV2(Array(meal.getFoodItems()), completion, debug)
+//	}
+//	static func requestFoodReportV2(_ foodItems: [FoodItem], _ completion: @escaping FoodReportCompletionV2, _ debug: Bool = false) {
+//		if debug {print("Database5.FoodReportV2 request received.")}
+//		if (foodItems.count == 0) {
+//			if debug { print("Databse5.requestFoodReportV2: 0 fooditems received.") }
+//			completion(nil)
+//			return
+//		}
+//
+//		//for each food item in meal, add foodId to the query
+//		var urlStr = "https://api.nal.usda.gov/ndb/V2/reports?&type=f&format=json&api_key=\(KEY)"
+//		for foodItem in foodItems {
+//			urlStr.append("&ndbno=\(foodItem.getFoodId())")
+//		}
+//
+//		guard let urlRequest = makeUrlRequestFromString(urlStr) else {
+//			if debug{ print("urlRequest failed") }
+//			completion(nil)
+//			return
+//		}
+//
+//		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+//			guard let data = data else {
+//				print("error fetching data.")
+//				completion(nil)
+//				return
+//			}
+//			if debug { self.printJsonData(data) }
+//
+//			if let report = FoodReportV2.fromJsonData(data, debug) {
+//				if debug { print("report succeeded.") }
+//				completion(report)
+//			} else {
+//				if debug { print("report failed") }
+//				completion(nil)
+//			}
+//		}
+//		task.resume()
+//	}
+	
 }

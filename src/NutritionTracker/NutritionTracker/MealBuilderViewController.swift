@@ -100,8 +100,6 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		
 		//TODO meal date defaults to current day; add option button to set date.
 		
-		//saveMeal(self.meal.clone())
-		//saveMeal(self.meal)
 		saveMeal(self.meal)
 		saveMealButton.isEnabled = false
 	}
@@ -111,49 +109,45 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	
 	// Save new Meal to list of user's meals
 	func saveMeal(_ meal: Meal, _ debug: Bool = false) {
-		let savedMeal = meal
+		let mealCopy = meal.clone()
 		self.resetMeal()
 		self.displayMealSavedAlert()
 		
-//		//get and save nutrient reports for each food item in meal.
-		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
-			guard let report = report else {
-				print("MealBuilder: nil report received.")
-				return
-			}
-			print("MealBuilder: non-nil report received")
-			
-			//convert each jfood into CachedFoodItem
-			//convert each jnutrient, convert to FoodItemNutrient & add to cachedFoodItem.
-			for jFood in report.jFoods {
-				
-				guard let desc = jFood.desc, let ndbno = desc.ndbno else {if debug{ print("no desc or ndbno")};  continue }
-				guard let foodId = Int(ndbno) else { if debug{print("error parsing foodId Int fron ndbno")}; continue }
-				let cachedFoodItem = CachedFoodItem(foodId)
-				guard let nutrients = jFood.nutrients else { if debug{ print("no nutrients: \n\(String(describing: jFood.nutrients))")}; continue }
-
-				guard let foodItem = savedMeal.get(foodId) else { continue }
-				for jNutrient in nutrients {
-					if let jNutrient = jNutrient {
-						let foodItemNutrient = FoodReportV2.jNutrientToFoodItemNutrient(jNutrient)!
-						//foodItem.addNutrient(foodItemNutrient) TODO
-						cachedFoodItem.addFoodItemNutrient(foodItemNutrient)
-						//print("MealBulder: nutrient added")
-					} else {
-						
-					}
-				}
+		//TODO cache nutrient info for each food item.
+		
+		for foodItem in mealCopy.getFoodItems() {
+			let completion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
+				print("completion for: \(foodItem.getFoodId())")
 			}
 			
-			//save meal to realm
+			//TODO request food report v1 & cache info.
+			Database5.requestFoodReportV1(foodItem, completion)
+		}
+		
+		DispatchQueue.main.async {
+		//DispatchQueue(label: "background").async {
 			let realm = try! Realm()
-			try!realm.write {
-				realm.add(savedMeal, update: true)
-				print("meal saved")
+			try! realm.write {
+				realm.add(mealCopy)
 			}
 		}
 		
-		Database5.requestFoodReportV2(savedMeal, completion, false)
+		
+		//TODO
+//		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
+//			guard let report = report else {
+//				print("MealBuilder: nil report received.")
+//				return
+//			}
+//
+//			//save meal to realm
+//			let realm = try! Realm()
+//			try!realm.write {
+//				realm.add(mealCopy)
+//				print("meal saved")
+//			}
+//		}
+//		Database5.requestFoodReportV2(mealCopy, completion, false)
 	}
 	
 	func displayMealSavedAlert() {
@@ -164,10 +158,6 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 			self.mealSavedAlertLabel.isHidden = true
 		})
 	}
-	
-//	func attachNutrientReport(_ meal: Meal, _ report: NutrientReport) {
-//		meal.addNutrientReport(report)
-//	}
 	
 	//replace current meal with new instance
 	func resetMeal() {

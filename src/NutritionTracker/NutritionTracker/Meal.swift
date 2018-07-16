@@ -35,4 +35,12 @@ class Meal: FoodItemList {
 		return date
 	}
 	
+	func getAmountOf(_ nutrient: Nutrient) -> Float {
+		var sum: Float = 0.0
+		for f in getFoodItems() {
+			sum = sum + f.getAmountOf(nutrient)
+		}
+		return sum
+	}
+	
 }

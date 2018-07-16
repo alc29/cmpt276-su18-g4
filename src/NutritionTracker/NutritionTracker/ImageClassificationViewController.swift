@@ -22,14 +22,13 @@ class ImageClassificationViewController: UIViewController {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
     @IBOutlet weak var classificationLabel: UILabel!
-    
+    @IBOutlet weak var confirmButton: UIButton!
+	
 	var identifiedFoodStr: String = ""
     //var mealBuilder: MealBuilderViewController?
     var searchViewController: FoodSearchViewController?
 	//var foodDetailViewController: FoodDetailViewController?
-    
-    @IBOutlet weak var confirmButton: UIButton!
-    
+	
     
     // MARK: - Image Classification
     
