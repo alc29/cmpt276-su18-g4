@@ -47,8 +47,7 @@ class Database5 {
 			if debug { Util.printJsonData(data) }
 			
 			//parse json data into FoodNutrientReport & return it via completion callback
-			//if let report = self.jsonDataToNutrientReport(foodId, data) {
-			if let report = NutrientReport.fromJsonData(foodId, data) {
+			if let report = NutrientReport.fromJsonData(foodId, data, debug) {
 				completion(report)
 			} else {
 				if debug { print("report failed.") }
@@ -61,35 +60,44 @@ class Database5 {
 	
 	
 	static func requestFoodReportV1(_ foodItem: FoodItem, _ completion: @escaping FoodReportCompletionV1, _ debug: Bool = false) {
-		//let foodId = foodItem.getFoodId()
-		//prefix foodId with zeroes: string representing ndbno must be at least 5 digits.
-		let foodIdStr = Util.getProperFoodIdStr(foodItem.getFoodId())
-		
-		let urlStr = "https://api.nal.usda.gov/ndb/reports/?ndbno=\(foodIdStr)&type=f&format=json&api_key=\(KEY)"
-		guard let urlRequest = makeUrlRequestFromString(urlStr) else {
-			if debug { print("url request failed: \(urlStr)") }
-			completion(nil)
-			return
-		}
-		
-		let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
-			guard let data = data else {
-				print("error fetching data")
+		do {
+			
+			//let foodId = foodItem.getFoodId()
+			//prefix foodId with zeroes: string representing ndbno must be at least 5 digits.
+			let foodIdStr = Util.getProperFoodIdStr(foodItem.getFoodId())
+			
+			let urlStr = "https://api.nal.usda.gov/ndb/reports/?ndbno=\(foodIdStr)&type=f&format=json&api_key=\(KEY)"
+			guard let urlRequest = makeUrlRequestFromString(urlStr) else {
+				if debug { print("url request failed: \(urlStr)") }
 				completion(nil)
 				return
 			}
-			//if debug { self.printJsonData(data) }
 			
-			if let report = FoodReportV1.cacheFromJsonData(data, debug) {
-				if debug { print("foodreport v1 completion successful.") }
-				completion(report)
-			} else {
-				if debug { print("fromJsonData returned nil.") }
-				completion(nil)
+			let task = URLSession.shared.dataTask(with: urlRequest) { (data, response, error) in
+				guard let data = data else {
+					print("error fetching data")
+					completion(nil)
+					return
+				}
+				//if debug { self.printJsonData(data) }
+				
+				if let report = FoodReportV1.cacheFromJsonData(data, debug) {
+					if debug { print("foodreport v1 completion successful.") }
+					completion(report)
+				} else {
+					if debug { print("fromJsonData returned nil.") }
+					completion(nil)
+				}
 			}
+			task.resume()
+			
+		} catch let error {
+			print("requestFoodReportV1 error caught:")
+			print(error)
 		}
-		task.resume()
-	}
+		
+		
+	} //end request
 	
 	
 	//TODO consider renaming to "fetch"
@@ -224,16 +232,19 @@ class Database5 {
 		return foodItems
 	}
 	
-	//save a food item that also contains nutrient information.
-	static func cacheFoodItem(_ cachedFoodItem: CachedFoodItem) {
-		DispatchQueue.main.async {
-			let realm = try! Realm()
-			try! realm.write {
-				realm.add(cachedFoodItem)
-			}
-		}
-	}
 	
+	// MARK: - Caching
+	//save a food item that also contains nutrient information.
+//	static func cacheFoodItem(_ cachedFoodItem: CachedFoodItem) {
+//		DispatchQueue.main.async {
+//			let realm = try! Realm()
+//			try! realm.write {
+//				realm.add(cachedFoodItem)
+//			}
+//		}
+//	}
+	
+	//TODO
 	static func getCachedFoodItem(_ foodItemId: Int) -> CachedFoodItem? {
 		let realm = try! Realm()
 		let results = realm.objects(CachedFoodItem.self)

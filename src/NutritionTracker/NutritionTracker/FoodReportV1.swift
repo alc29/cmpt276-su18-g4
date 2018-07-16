@@ -116,8 +116,9 @@ class FoodReportV1 {
 				if let report = result.report,
 					let jFood = report.food, let ndbno = jFood.ndbno,
 					let foodId = Int(ndbno), let foodName = jFood.name {
-					//let foodItem = FoodItem(foodId, foodName)
-					let cachedFoodItem = CachedFoodItem(foodId)
+					
+					//let cachedFoodItem = CachedFoodItem(foodId)
+					var nutrients = [FoodItemNutrient]()
 					
 					if let jNutrients = jFood.nutrients {
 						for jNutrient in jNutrients {
@@ -131,11 +132,12 @@ class FoodReportV1 {
 							let amountPer = AmountPer(amount: amount, per: per)
 							
 							let foodItemNutrient = FoodItemNutrient(nutrient, amountPer)
-							//foodItem.addNutrient(foodItemNutrient)
 							//add foodItemNutrient to cache
-							cachedFoodItem.addFoodItemNutrient(foodItemNutrient)
+							//cachedFoodItem.addFoodItemNutrient(foodItemNutrient)
+							nutrients.append(foodItemNutrient)
 						}
 					}
+					let cachedFoodItem = CachedFoodItem(foodId, nutrients)
 					//Database5.cacheFoodItem(cachedFoodItem)
 					DispatchQueue.main.async {
 						let realm = try! Realm()
@@ -156,7 +158,7 @@ class FoodReportV1 {
 	static func legacyDecoder(_ jsonData: Data, _ debug: Bool = false) -> FoodReportV1? {
 		//Try decoding legacy
 		do {
-			print("entering legacy decode")
+			if debug {print("entering legacy decode")}
 			let result = try JSONDecoder().decode(FoodReportV1.LegacyResult.self, from: jsonData)
 			let foodReportV1 = FoodReportV1()
 			foodReportV1.result = result
@@ -166,7 +168,8 @@ class FoodReportV1 {
 				let jFood = report.food, let ndbno = jFood.ndbno,
 				let foodId = Int(ndbno), let foodName = jFood.name {
 				//let foodItem = FoodItem(foodId, foodName)
-				let cachedFoodItem = CachedFoodItem(foodId)
+				//let cachedFoodItem = CachedFoodItem(foodId)
+				var nutrients = [FoodItemNutrient]()
 				
 				if let jNutrients = jFood.nutrients {
 					for jNutrient in jNutrients {
@@ -181,12 +184,20 @@ class FoodReportV1 {
 						let foodItemNutrient = FoodItemNutrient(nutrient, amountPer)
 						//foodItem.addNutrient(foodItemNutrient)
 						//add foodItemNutrient to cache
-						cachedFoodItem.addFoodItemNutrient(foodItemNutrient)
+						//cachedFoodItem.addFoodItemNutrient(foodItemNutrient)
+						nutrients.append(foodItemNutrient)
 					}
 				}
-				Database5.cacheFoodItem(cachedFoodItem)
+				let cachedFoodItem = CachedFoodItem(foodId, nutrients)
+				//Database5.cacheFoodItem(cachedFoodItem)
+				DispatchQueue.main.async {
+					let realm = try! Realm()
+					try! realm.write {
+						realm.add(cachedFoodItem)
+					}
+				}
 			}
-			print("legacy decode; returning foodReportV1")
+			if debug {print("legacy decode; returning foodReportV1")}
 			return foodReportV1
 			
 			

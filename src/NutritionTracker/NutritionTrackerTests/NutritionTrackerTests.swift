@@ -16,26 +16,24 @@ class NutritionTrackerTests: XCTestCase {
 	// Put setup code here. This method is called before the invocation of each test method in the class.
     override func setUp() {
         super.setUp()
-		DispatchQueue.main.async {
-			let realm = try! Realm()
-			XCTAssertNotNil(realm)
-			try! realm.write {
-				realm.deleteAll()
-			}
-		}
+		//clearRealm()
     }
 
 	// Put teardown code here. This method is called after the invocation of each test method in the class.
     override func tearDown() {
         super.tearDown()
-		DispatchQueue.main.async {
-			let realm = try! Realm()
-			XCTAssertNotNil(realm)
-			try! realm.write {
-				realm.deleteAll()
-			}
-		}
+		//clearRealm()
     }
+	
+	func clearRealm() {
+//		DispatchQueue.main.async {
+//			let realm = try! Realm()
+//			XCTAssertNotNil(realm)
+//			try! realm.write {
+//				realm.deleteAll()
+//			}
+//		}
+	}
 	
 	//MARK: FoodItem
 	func testFoodItemInitTypical() {
@@ -130,19 +128,18 @@ class NutritionTrackerTests: XCTestCase {
 	func testFoodReportV1() {
 		let poop = FoodItem(45144608, "poop") // v0.0
 		let cheese = FoodItem(01009, "cheese") // legacy
-//		let expectationPoop = XCTestExpectation(description: "poop food report v1 completes")
+		let expectationPoop = XCTestExpectation(description: "poop food report v1 completes")
 		let expectationCheese = XCTestExpectation(description: "cheese food report v1 completes")
 
-//		let completionPoop: (FoodReportV1?) -> Void = { (foodReport: FoodReportV1?) -> Void in
-//			XCTAssertNotNil(foodReport!)
-//			XCTAssertNotNil(foodReport!.result!)
-//
-//			let result = foodReport!.result as! FoodReportV1.Result
-//			let report = result.report
-//			//XCTAssert(report!.sr == "v0.0 June, 2018", report!.sr!)
-//
-//			expectationPoop.fulfill()
-//		}
+		let completionPoop: (FoodReportV1?) -> Void = { (foodReport: FoodReportV1?) -> Void in
+			XCTAssertNotNil(foodReport!)
+			XCTAssertNotNil(foodReport!.result!)
+
+			let result = foodReport!.result as! FoodReportV1.Result
+			let report = result.report
+			XCTAssert(report!.sr == "v0.0 June, 2018", report!.sr!)
+			expectationPoop.fulfill()
+		}
 		
 		let completionCheese: (FoodReportV1?) -> Void = { (foodReport: FoodReportV1?) -> Void in
 			XCTAssertNotNil(foodReport!)
@@ -152,15 +149,13 @@ class NutritionTrackerTests: XCTestCase {
 			let report = result.report
 			XCTAssertNotNil(report!)
 			XCTAssert(report!.sr == "Legacy", report!.sr!)
-
-			
 			expectationCheese.fulfill()
 		}
 
-//		Database5.requestFoodReportV1(poop, completionPoop, false)
-//		wait(for: [expectationPoop], timeout: 15)
+		Database5.requestFoodReportV1(poop, completionPoop, false)
+		wait(for: [expectationPoop], timeout: 15)
 		
-		Database5.requestFoodReportV1(cheese, completionCheese, true)
+		Database5.requestFoodReportV1(cheese, completionCheese, false)
 		wait(for: [expectationCheese], timeout: 15)
 	}
 	
@@ -239,19 +234,45 @@ class NutritionTrackerTests: XCTestCase {
 	// MARK: - FoodDataCache Tests
 	//save meal & check CachedFoodItem
 	func testCachedFoodItem() {
-		let ID = 5
-		let cachedFoodItem = CachedFoodItem(ID)
-		XCTAssert(cachedFoodItem.getFoodId() == ID)
+		let ID = 45144608
+		//let foodItemToCache = CachedFoodItem(ID, [FoodItemNutrient]())
+//		XCTAssert(foodItemToCache.getFoodId() == ID)
+		
+		let nutrientToGet = Nutrient.Sugars_total
+		let expectedSugarsTotal = 80.49
+		let expectation = XCTestExpectation(description: "completion is called")
+		
+		let completion: (FoodReportV1?) -> Void = { (foodReport: FoodReportV1?) -> Void in
+			XCTAssertNotNil(foodReport!)
+			expectation.fulfill()
+		}
+		
+		Database5.requestFoodReportV1(FoodItem(ID, "poop candy"), completion)
+		wait(for: [expectation], timeout: 15)
+		
 		
 		let realm = try! Realm() //clear realm data
-		try! realm.write {
-			realm.add(cachedFoodItem)
-		}
+//		try! realm.write {
+//			realm.add(foodItemToCache)
+//		}
 		
 		let results = realm.objects(CachedFoodItem.self)
 		XCTAssert(results.count == 1)
-		XCTAssert(results.first!.getFoodId() == ID)
-		//TODO test nutrient value
+		
+		//Test nutrinet value
+		let cachedFoodItem = results.first! as! CachedFoodItem
+		//print(String(describing:cachedFoodItem))
+		
+		XCTAssert(cachedFoodItem.getFoodId() == ID)
+		XCTAssert(cachedFoodItem.nutrients.count > 0)
+		
+		//print(String(describing: cachedFoodItem.nutrients.first))
+		//print(cachedFoodItem.nutrients.count)
+		
+//		let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet)
+//		XCTAssertNotNil(foodItemNutrient!)
+//		XCTAssert(foodItemNutrient!.getBaseAmount().getAmount().isEqual(to: Float(expectedSugarsTotal)))
+		//TODO handle nturient not found, using Nutrient.Nil
 	}
 	
 	// MARK: FoodReportV2
@@ -296,11 +317,10 @@ class NutritionTrackerTests: XCTestCase {
 
 	// MARK: - Nutrient Report
 	func testNutrientReport() {
+		
 		let realm = try! Realm()
-
 		let tunaFoodId = 15117
 		let nutrients = [Nutrient.Calcium, Nutrient.Protein]
-
 		let expectation = XCTestExpectation(description: "Test Nutrient Report")
 
 		let completion: (NutrientReport?) -> Void = { (report: NutrientReport?) -> Void in

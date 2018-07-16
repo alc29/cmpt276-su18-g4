@@ -42,13 +42,13 @@ class NutrientReport {
 	
 	//MARK: Properties
 	var foodId: Int = -1
-	var foodItemNutrients = [FoodItemNutrient]()
-	//let foodItemNutrients = List<FoodItemNutrient>()
+	//var foodItemNutrients = [FoodItemNutrient]()
+	let foodItemNutrients = List<FoodItemNutrient>()
 	
 	convenience init (_ foodId: Int, _ nutrients: [FoodItemNutrient]) {
 		self.init()
 		self.foodId = foodId
-		self.foodItemNutrients = nutrients
+		self.foodItemNutrients.append(objectsIn: nutrients)
 	}
 	
 	// MARK: public methods
@@ -56,10 +56,7 @@ class NutrientReport {
 	func contains(_ nutrient: Nutrient) -> Bool {
 		return foodItemNutrients.contains { n in nutrient.getId() == n.getNutrientId() }
 	}
-	
-	func contains(_ nutrient: FoodItemNutrient) -> Bool {
-		return foodItemNutrients.contains { n in nutrient.getName() == n.getName() }
-	}
+
 	
 	func count() -> Int { return foodItemNutrients.count }
 	func getFoodItemNutrients() -> [FoodItemNutrient] { return Array(foodItemNutrients) }
@@ -81,20 +78,28 @@ class NutrientReport {
 	
 	//Factory method using json data
 	static func fromJsonData(_ foodId: Int, _ jsonData: Data, _ debug: Bool = false) -> NutrientReport? {
-		
-		guard let result = try? JSONDecoder().decode(NutrientReport.Result.self, from: jsonData) else {print("json: result failed"); return nil }
-		guard let report = result.report else { if debug {print("json: result.report failed")}; return nil }
-		guard let foods = report.foods else { if debug {print("json: result.foods failed")}; return nil }
-		guard let food = foods.first else { if debug{print("json: food.first failed")}; return nil }
-		guard let jNutrients = food.nutrients else { if debug{print("json: food.nutrients failed")}; return nil }
-
-		var nutrients = [FoodItemNutrient]()
-		for jNut in jNutrients {
-			if debug {print("nut: \(String(describing: jNut.nutrient))")}
-			let foodItemNutrient = NutrientReport.jNutrientToFoodItemNutrient(jNut)
-			nutrients.append(foodItemNutrient)
+		do {
+			guard let result = try? JSONDecoder().decode(NutrientReport.Result.self, from: jsonData) else { print("json: result failed"); return nil }
+			guard let report = result.report else { if debug {print("json: result.report failed")}; return nil }
+			guard let foods = report.foods else { if debug {print("json: result.foods failed")}; return nil }
+			guard let food = foods.first else { if debug{print("json: food.first failed")}; return nil }
+			guard let jNutrients = food.nutrients else { if debug{print("json: food.nutrients failed")}; return nil }
+			
+			var nutrients = [FoodItemNutrient]()
+			for jNut in jNutrients {
+				if debug {print("nut: \(String(describing: jNut.nutrient))")}
+				let foodItemNutrient = NutrientReport.jNutrientToFoodItemNutrient(jNut)
+				nutrients.append(foodItemNutrient)
+			}
+			
+			if debug { print("NutrientReport.fromJsonData: returning report") }
+			return NutrientReport(foodId, nutrients)
+			
+		} catch let error {
+			print(error)
 		}
-		return NutrientReport(foodId, nutrients)
+		if debug { print("NutrientReport.fromJsonData: returning nil") }
+		return nil
 	}
 	
 	//TODO

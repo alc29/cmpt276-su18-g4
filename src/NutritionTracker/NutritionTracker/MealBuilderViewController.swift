@@ -124,8 +124,8 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 			Database5.requestFoodReportV1(foodItem, completion)
 		}
 		
-		//DispatchQueue.main.async {
-		DispatchQueue(label: "background").async {
+		DispatchQueue.main.async {
+		//DispatchQueue(label: "background").async {
 			let realm = try! Realm()
 			try! realm.write {
 				realm.add(mealCopy)
