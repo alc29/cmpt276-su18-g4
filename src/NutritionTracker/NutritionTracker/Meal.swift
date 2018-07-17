@@ -12,7 +12,7 @@ import RealmSwift
 
 class Meal: FoodItemList {
 	// MARK: Properties
-	@objc dynamic var date = Date() //default to current date
+	//@objc dynamic var date = Date() //default to current date
 	
 	func clone() -> Meal {
 		let meal = Meal()
@@ -24,17 +24,17 @@ class Meal: FoodItemList {
 		return meal
 	}
 	
-	// MARK: Setters
-	func setDate(_ date: Date?) {
-		if (date != nil) {
-			self.date = date!;
-		}
-	}
+//	// MARK: Setters
+//	func setDate(_ date: Date?) {
+//		if (date != nil) {
+//			self.date = date!;
+//		}
+//	}
 	
 	//Mark: Getters
-	func getDate() -> Date {
-		return date
-	}
+//	func getDate() -> Date {
+//		return date
+//	}
 	
 	func getAmountOf(_ nutrient: Nutrient) -> Float {
 		var sum: Float = 0.0

@@ -26,13 +26,13 @@ class NutritionTrackerTests: XCTestCase {
     }
 	
 	func clearRealm() {
-//		DispatchQueue.main.async {
-//			let realm = try! Realm()
-//			XCTAssertNotNil(realm)
-//			try! realm.write {
-//				realm.deleteAll()
-//			}
-//		}
+		DispatchQueue(label: "NutrientTrackerTests").async {
+			let realm = try! Realm()
+			XCTAssertNotNil(realm)
+			try! realm.write {
+				realm.deleteAll()
+			}
+		}
 	}
 	
 	//MARK: FoodItem
@@ -46,20 +46,6 @@ class NutritionTrackerTests: XCTestCase {
 		let foodItem = FoodItem()
 		XCTAssert(foodItem.getFoodId() == -1)
 		XCTAssert(foodItem.getName() == "uninitialized")
-	}
-	
-	func testFoodItemInitNil() {
-		let foodItem = FoodItem(nil, nil)
-		XCTAssert(foodItem.getFoodId() == -1)
-		XCTAssert(foodItem.getName() == "uninitialized")
-
-		let foodItem2 = FoodItem(nil, "Butter")
-		XCTAssert(foodItem2.getFoodId() == -1)
-		XCTAssert(foodItem2.getName() == "Butter")
-		
-		let foodItem3 = FoodItem(12345, nil)
-		XCTAssert(foodItem3.getFoodId() == 12345)
-		XCTAssert(foodItem3.getName() == "uninitialized")
 	}
 	
 	// MARK: FoodItemList
@@ -93,27 +79,7 @@ class NutritionTrackerTests: XCTestCase {
 		}
 		//XCTAssertNil(foodList.remove(0))
 	}
-	
-	//MARK: Amount class
-	func testAmountDefault() {
-		let amount = Amount()
-		XCTAssert(amount.getAmount() == 0.0 as Float)
-		XCTAssert(amount.getUnit() == NutritionTracker.Unit.getDefault())
-	}
-	func testAmountInit() {
-		let amount = Amount(5.0, NutritionTracker.Unit.MICROGRAM)
-		XCTAssert(amount.getAmount() == 5.0 as Float)
-		XCTAssert(amount.getUnit() == NutritionTracker.Unit.MICROGRAM)
-	}
-	func testAmountGetSet() {
-		let amount = Amount()
-		amount.setAmount(-1.0)
-		XCTAssert(amount.getAmount() == 0.0 as Float)
-		amount.setAmount(5.0)
-		amount.setUnit(NutritionTracker.Unit.MICROGRAM)
-		XCTAssert(amount.getAmount() == 5.0 as Float)
-		XCTAssert(amount.getUnit() == NutritionTracker.Unit.MICROGRAM)
-	}
+
 	
 	//MARK: - Test FoodGroup class
 	func testFoodGroup_getIdStr() {
@@ -186,43 +152,47 @@ class NutritionTrackerTests: XCTestCase {
 		
 		let realm = try! Realm() //clear realm data
 		let results = realm.objects(CachedFoodItem.self)
-		XCTAssert(results.count == 1)
+		XCTAssert(results.count == 1) //TODO assertion not working
 		
 		//Test nutrient value
 		print(String(describing: results))
-		let cachedFoodItem = results.first!
-		let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet)!
-		let amount = foodItemNutrient.getBaseAmount().getAmount()
-		XCTAssert(amount.isEqual(to: expectedSugarsTotal), String(amount))
-		//print(String(describing:cachedFoodItem))
+		if let cachedFoodItem = results.first {
+			let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet)!
+			let amount = foodItemNutrient.getAmount()
+			XCTAssert(amount.isEqual(to: expectedSugarsTotal), String(amount))
+			//print(String(describing:cachedFoodItem))
+			
+			XCTAssert(cachedFoodItem.getFoodId() == ID)
+			XCTAssert(cachedFoodItem.nutrients.count > 0)
+			
+			//print(String(describing: cachedFoodItem.nutrients.first))
+			//print(cachedFoodItem.nutrients.count)
+			
+			//let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet)
+			//XCTAssertNotNil(foodItemNutrient!)
+			//XCTAssert(foodItemNutrient!.getBaseAmount().getAmount().isEqual(to: Float(expectedSugarsTotal)))
+			//TODO handle nutrient not found, using Nutrient.Nil
+		} else {
+			XCTAssert(false)
+		}
 		
-		XCTAssert(cachedFoodItem.getFoodId() == ID)
-		XCTAssert(cachedFoodItem.nutrients.count > 0)
-		
-		//print(String(describing: cachedFoodItem.nutrients.first))
-		//print(cachedFoodItem.nutrients.count)
-		
-		//		let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet)
-		//		XCTAssertNotNil(foodItemNutrient!)
-		//		XCTAssert(foodItemNutrient!.getBaseAmount().getAmount().isEqual(to: Float(expectedSugarsTotal)))
-		//TODO handle nutrient not found, using Nutrient.Nil
 	}
 	
 	func testSaveMeal() {
 		let ID = 45144608
 		let nutrientToGet = Nutrient.Sugars_total
 		let expectedSugarsTotal: Float = 80.49
-		let expectation = XCTestExpectation(description: "completion is called")
-		
+		//let expectation = XCTestExpectation(description: "completion is called")
 		
 		let meal = Meal()
 		meal.add(FoodItem(ID, "poop candy"))
-		MealBuilderViewController.testSaveMeal(meal)
-		wait(for: [expectation], timeout: 3)
+		MealBuilderViewController().saveMeal(meal, true)
+		//wait(for: [expectation], timeout: 3)
 
 		let cachedFoodItem = Database5.getCachedFoodItem(ID)!
-		let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet)!
-		let amount = foodItemNutrient.getBaseAmount().getAmount()
+		let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet)
+		let unwrapped = foodItemNutrient!
+		let amount = unwrapped.getAmount()
 		XCTAssert(amount.isEqual(to: expectedSugarsTotal), String(amount))
 		XCTAssert(cachedFoodItem.getFoodId() == ID)
 		XCTAssert(cachedFoodItem.nutrients.count > 0)

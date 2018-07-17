@@ -23,9 +23,7 @@ class Database5 {
 	typealias FoodReportCompletionV1 = (_ report: FoodReportV1?) -> Void
 	typealias SearchResultCompletion = (_ foodItems: [FoodItem]) -> Void
 	typealias FoodItemNutrientCompletion = (_ foodItemNutrient: FoodItemNutrient) -> Void
-	typealias AmountPerCompletion = (_ amountPer: AmountPer) -> Void
 	typealias FoodItemsCompletion = (_ foodItems: [FoodItem]) -> Void
-	typealias MealCompletion = (_ meal: Meal?) -> Void
 
 	// Request a food reportV1, whcih returns & caches nutrient info about 1 specific food.
 	static func requestFoodReportV1(_ foodItem: FoodItem, _ completion: @escaping FoodReportCompletionV1, _ debug: Bool = false) {
@@ -141,7 +139,7 @@ class Database5 {
 			guard let dataList = data.list else { return foodItems }
 			guard let dataListItem = dataList.item else { return foodItems }
 			for i in dataListItem {
-				let temp = FoodItem(Int(i!.ndbno!), i!.name!)
+				let temp = FoodItem(Int(i!.ndbno!)!, i!.name!)
 				foodItems.append(temp)
 			}
 		} catch let jsonErr {
@@ -155,7 +153,8 @@ class Database5 {
 	static func getCachedFoodItem(_ foodId: Int) -> CachedFoodItem? {
 		var cachedItem = CachedFoodItem()
 		do {
-			DispatchQueue(label: "background").async {
+			//DispatchQueue(label: "Database5.getCachedFoodItem").async {
+			DispatchQueue.main.async {
 				autoreleasepool {
 					let realm = try! Realm()
 					//realm.refresh()

@@ -41,8 +41,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		mealTableView.register(MealBuilderTableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
 
 		//TEST
-		meal.add(FoodItem(45144608, "Poop candy"))
-//		meal.add(FoodItem(354654, "gdsdgs"))
+		meal.add(FoodItem(45144608, "Poop candy", 0, "g"))
 		asyncReloadData()
 		
 		saveMealButton.isEnabled = meal.count() > 0
@@ -105,6 +104,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	
 	
 	// MARK: - Functions
+	typealias BoolCompletion = (_ success: Bool) -> Void
 	
 	// Save new Meal to list of user's meals
 	func saveMeal(_ meal: Meal, _ debug: Bool = false) {
@@ -116,53 +116,37 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		for foodItem in mealCopy.getFoodItems() {
 			let completion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
 				print("completion for: \(foodItem.getFoodId())")
+				//TODO saved cahced food item from report
+				if let toCache = report?.toCache {
+					self.saveCachedFoodItemToRealm(toCache)
+				} else if debug {
+					print("could not retrieve cached item.")
+				}
 			}
 			
 			// request food report v1 & cache info.
 			Database5.requestFoodReportV1(foodItem, completion)
 		}
 		
-		DispatchQueue(label: "background").async {
-			autoreleasepool {
-				let realm = try! Realm()
-				try! realm.write {
-					//realm.add(mealCopy)
-					let newMeal = realm.create(Meal.self)
-					for foodItem in mealCopy.getFoodItems() {
-						newMeal.add(foodItem)
-					}
-				}
-			}
-		}
+		//TODO clone meal to save to realm.
+		saveMealToRealm(mealCopy)
 	}
 	
-	public static func testSaveMeal(_ meal: Meal, _ debug: Bool = false) {
-		let mealCopy = meal.clone()
-//		self.resetMeal()
-//		self.displayMealSavedAlert()
-		
-		//get & cache nutrient info for each food item.
-		for foodItem in mealCopy.getFoodItems() {
-			let completion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
-				print("completion for: \(foodItem.getFoodId())")
-			}
-			
-			// request food report v1 & cache info.
-			Database5.requestFoodReportV1(foodItem, completion)
-		}
-		
-		DispatchQueue(label: "background").async {
+	func saveMealToRealm(_ meal: Meal) -> Bool {
+		var success = false
+		DispatchQueue(label: "MealBuilderVC.saveMealToRealm").async {
 			autoreleasepool {
 				let realm = try! Realm()
 				try! realm.write {
-					//realm.add(mealCopy)
-					let newMeal = realm.create(Meal.self)
-					for foodItem in mealCopy.getFoodItems() {
-						newMeal.add(foodItem)
-					}
+					realm.add(meal)
+					success = true
 				}
 			}
 		}
+		return success
+	}
+	func saveCachedFoodItemToRealm(_ toCache: CachedFoodItem) -> Bool {
+		return false
 	}
 	
 	func displayMealSavedAlert() {
@@ -201,9 +185,10 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 	
 	func asyncReloadData() {
-		DispatchQueue.main.async {
-			self.mealTableView.reloadData()
-		}
+		//TODO
+//		DispatchQueue.main.async {
+//			self.mealTableView.reloadData()
+//		}
 	}
 	
 	// MARK: - FoodSelector protocol

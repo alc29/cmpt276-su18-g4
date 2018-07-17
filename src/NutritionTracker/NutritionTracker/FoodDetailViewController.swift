@@ -25,7 +25,7 @@ class FoodDetailViewController: UIViewController {
 //	var foodItem: FoodItem? {
 //		didSet { configureView() }
 //	}
-	var foodItem = FoodItem(0, "default food item")
+	var foodItem = FoodItem(0, "default food item", 0, "g")
 
     override func viewDidLoad() {
         super.viewDidLoad()

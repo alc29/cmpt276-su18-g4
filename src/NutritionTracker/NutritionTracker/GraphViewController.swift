@@ -46,7 +46,8 @@ class GraphViewController: UIViewController {
 			var lineEntries = [ChartDataEntry]() //array for saving data to be plotted on a line.
 			for meal in meals { //for each meal
 				//determine date of meal
-				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
+				//let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
+				let dayOfMonth = 0 //TODO
 				//determine the amount of the nutrient in the meal
 
 				//create point on the graph & add to array

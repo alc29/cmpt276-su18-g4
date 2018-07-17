@@ -19,14 +19,15 @@ class EntryViewController: UIViewController {
 		//Testing - clear all persistent data from the last test run.
 		clearRealmData()
 		//add fake meals for testing the app.
-		addTestMeals()
+		//addTestMeals()
 		
 	}
 	
 	//Testing - clear all persistent data
 	//(note: if migration required, must erase all content from device & restart.)
 	private func clearRealmData() {
-		DispatchQueue.main.async {
+		//DispatchQueue.main.async {
+		DispatchQueue(label: "EntryVC").async {
 			let realm = try! Realm()
 			try! realm.write {
 				realm.deleteAll()

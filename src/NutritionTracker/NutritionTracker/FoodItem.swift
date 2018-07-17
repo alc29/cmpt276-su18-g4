@@ -21,59 +21,61 @@ class FoodItem: Object {
 	@objc private dynamic var id = UUID().uuidString
 	@objc private dynamic var foodId = -1
 	@objc private dynamic var name = "uninitialized"
-	@objc private dynamic var amount: Amount? = Amount()
+	@objc private dynamic var amount: Float = Float(0)
+	@objc private dynamic var unit: String = ""
 	//var nutrients = List<FoodItemNutrient>()
 	
 	//Note: optional initializer FoodItem() works, but should be avoided.
-	convenience init(_ foodId: Int?, _ name: String?) {
+	convenience init(_ foodId: Int, _ name: String, _ amount: Float = Float(0), _ unit: String = "g") {
 		self.init()
-		
-		if (foodId != nil) {
-			self.foodId = foodId!
-		}
-		if (name != nil) {
-			self.name = name!
-		}
+		self.foodId = foodId
+		self.name = name
+		self.amount = amount
+		self.unit = unit
 	}
 	
 	// MARK: Setters
-	func setAmount(_ amount: Float, unit: Unit = Unit.GRAM) {
-		self.amount!.setAmount(amount)
-		self.amount!.setUnit(unit)
-	}
+	//TODO
+//	func setAmount(_ amount: Float, unit: Unit = Unit.GRAM) {
+//		self.amount!.setAmount(amount)
+//		self.amount!.setUnit(unit)
+//	}
 	
 	//TODO consider moving to Database
 	// return the specified amount of nutrient contained in this food.
 	func getAmountOf(_ nutrient: Nutrient) -> Float {
 		//get nutrient amount info from cached food item in realm.
 
+		
+		//TODO
 		//if let foodItemNutrient = getNutrient(nutrient) {
-		if let cached = Database5.getCachedFoodItem(self.foodId), let foodItemNutrient = cached.getFoodItemNutrient(nutrient) {
-			let amount = foodItemNutrient.getBaseAmount()
-			//let per = foodItemNutrient.getAmountPer()
-			return amount.getAmount()
-		}
-	
-		//need request? or perform cache check first, before calling this method.
-		print("cached food item not found: \(foodId)")
+//		if let cached = Database5.getCachedFoodItem(self.foodId), let foodItemNutrient = cached.getFoodItemNutrient(nutrient) {
+//			let amount = foodItemNutrient.getBaseAmount()
+//			//let per = foodItemNutrient.getAmountPer()
+//			return amount.getAmount()
+//		}
+//
+//		//need request? or perform cache check first, before calling this method.
+//		print("cached food item not found: \(foodId)")
 		return Float(0)
 	}
 	
 	//TODO remove
 	//retreive nutrient info from cache.
 	//TODO if nil, retrieve from database & cache; calling class must call a second time.
-	func getNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {
-		if let cachedFoodItem = Database5.getCachedFoodItem(self.foodId),
-			let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrient) {
-			return foodItemNutrient
-		}
-		return nil
-	}
+//	func getNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {
+//		if let cachedFoodItem = Database5.getCachedFoodItem(self.foodId),
+//			let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrient) {
+//			return foodItemNutrient
+//		}
+//		return nil
+//	}
 
 	// MARK: Getters
 	func getFoodId() -> Int { return foodId }
 	func getName() -> String { return name }
-	func getAmount() -> Amount { return amount! }
+	func getAmount() -> Float { return amount }
+	func getUnit() -> String { return unit }
 	
 	//return the pid
 	override static func primaryKey() -> String? {

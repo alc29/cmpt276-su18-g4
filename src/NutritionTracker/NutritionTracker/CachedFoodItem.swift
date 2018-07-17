@@ -31,7 +31,7 @@ class CachedFoodItem: Object {
 	
 	func getFoodItemNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {
 		for n in nutrients {
-			if n.getNutrient().getId() == nutrient.getId() {
+			if n.getNutrientId() == nutrient.getId() {
 				return n
 			}
 		}
