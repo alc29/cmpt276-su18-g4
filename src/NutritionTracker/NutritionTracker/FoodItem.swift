@@ -42,16 +42,24 @@ class FoodItem: Object {
 		self.amount!.setUnit(unit)
 	}
 	
-	//TODO handle conversion if necessary.
+	//TODO consider moving to Database
+	// return the specified amount of nutrient contained in this food.
 	func getAmountOf(_ nutrient: Nutrient) -> Float {
-		if let foodItemNutrient = getNutrient(nutrient) {
+		//get nutrient amount info from cached food item in realm.
+
+		//if let foodItemNutrient = getNutrient(nutrient) {
+		if let cached = Database5.getCachedFoodItem(self.foodId), let foodItemNutrient = cached.getFoodItemNutrient(nutrient) {
 			let amount = foodItemNutrient.getBaseAmount()
 			//let per = foodItemNutrient.getAmountPer()
-			return Float(amount.getAmount())
+			return amount.getAmount()
 		}
-		return Float(0.0)
+	
+		//need request? or perform cache check first, before calling this method.
+		print("cached food item not found: \(foodId)")
+		return Float(0)
 	}
 	
+	//TODO remove
 	//retreive nutrient info from cache.
 	//TODO if nil, retrieve from database & cache; calling class must call a second time.
 	func getNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {

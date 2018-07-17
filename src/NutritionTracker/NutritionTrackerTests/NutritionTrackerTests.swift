@@ -162,12 +162,18 @@ class NutritionTrackerTests: XCTestCase {
 	
 	
 	// MARK: - FoodDataCache Tests
-	//save meal & check CachedFoodItem
+	
+	func testSavedMeal() {
+		//TODO left off here
+	}
+	
+	//check CachedFoodItem
 	func testCachedFoodItem() {
 		let ID = 45144608
 		let nutrientToGet = Nutrient.Sugars_total
 		let expectedSugarsTotal: Float = 80.49
 		let expectation = XCTestExpectation(description: "completion is called")
+		let waitEx = XCTestExpectation(description: "need wait")
 		
 		let completion: (FoodReportV1?) -> Void = { (foodReport: FoodReportV1?) -> Void in
 			XCTAssertNotNil(foodReport!)
@@ -176,13 +182,15 @@ class NutritionTrackerTests: XCTestCase {
 		
 		Database5.requestFoodReportV1(FoodItem(ID, "poop candy"), completion)
 		wait(for: [expectation], timeout: 15)
+		wait(for: [waitEx], timeout: 3)
 		
 		let realm = try! Realm() //clear realm data
 		let results = realm.objects(CachedFoodItem.self)
 		XCTAssert(results.count == 1)
 		
 		//Test nutrient value
-		let cachedFoodItem = results.first! as! CachedFoodItem
+		print(String(describing: results))
+		let cachedFoodItem = results.first!
 		let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet)!
 		let amount = foodItemNutrient.getBaseAmount().getAmount()
 		XCTAssert(amount.isEqual(to: expectedSugarsTotal), String(amount))
@@ -198,6 +206,31 @@ class NutritionTrackerTests: XCTestCase {
 		//		XCTAssertNotNil(foodItemNutrient!)
 		//		XCTAssert(foodItemNutrient!.getBaseAmount().getAmount().isEqual(to: Float(expectedSugarsTotal)))
 		//TODO handle nutrient not found, using Nutrient.Nil
+	}
+	
+	func testSaveMeal() {
+		let ID = 45144608
+		let nutrientToGet = Nutrient.Sugars_total
+		let expectedSugarsTotal: Float = 80.49
+		let expectation = XCTestExpectation(description: "completion is called")
+		
+		
+		let meal = Meal()
+		meal.add(FoodItem(ID, "poop candy"))
+		MealBuilderViewController.testSaveMeal(meal)
+		wait(for: [expectation], timeout: 3)
+
+		let cachedFoodItem = Database5.getCachedFoodItem(ID)!
+		let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet)!
+		let amount = foodItemNutrient.getBaseAmount().getAmount()
+		XCTAssert(amount.isEqual(to: expectedSugarsTotal), String(amount))
+		XCTAssert(cachedFoodItem.getFoodId() == ID)
+		XCTAssert(cachedFoodItem.nutrients.count > 0)
+
+		let sugars = meal.getAmountOf(nutrientToGet)
+		XCTAssert(sugars.isEqual(to: expectedSugarsTotal))
+		print("sugars: \(sugars)")
+		
 	}
 	
 	

@@ -16,10 +16,11 @@ class Meal: FoodItemList {
 	
 	func clone() -> Meal {
 		let meal = Meal()
-		for foodItem in meal.getFoodItems() {
+		for foodItem in self.getFoodItems() {
 			meal.add(foodItem)
 		}
-		//TODO copy date
+		//TODO clone date
+		//TODO clone portions
 		return meal
 	}
 	

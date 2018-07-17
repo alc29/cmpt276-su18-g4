@@ -144,12 +144,16 @@ class FoodReportV1 {
 							nutrients.append(foodItemNutrient)
 						}
 					}
-					let cachedFoodItem = CachedFoodItem(foodId, nutrients)
+					//let cachedFoodItem = CachedFoodItem(foodId, nutrients)
 					//Database5.cacheFoodItem(cachedFoodItem)
-					DispatchQueue.main.async {
-						let realm = try! Realm()
-						try! realm.write {
-							realm.add(cachedFoodItem)
+					
+					//TODO consider adding CachedFoodItem to foodReport, and saving cached items elsewhere
+					DispatchQueue(label: "background").async {
+						autoreleasepool {
+							let realm = try! Realm()
+							try! realm.write {
+								let cachedFoodItem = realm.create(CachedFoodItem.self, value: ["foodId": foodId, "nutrients" : nutrients])
+							}
 						}
 					}
 				}
@@ -196,12 +200,14 @@ class FoodReportV1 {
 						nutrients.append(foodItemNutrient)
 					}
 				}
-				let cachedFoodItem = CachedFoodItem(foodId, nutrients)
+				//let cachedFoodItem = CachedFoodItem(foodId, nutrients)
 				//Database5.cacheFoodItem(cachedFoodItem)
-				DispatchQueue.main.async {
-					let realm = try! Realm()
-					try! realm.write {
-						realm.add(cachedFoodItem)
+				DispatchQueue(label: "background").async {
+					autoreleasepool {
+						let realm = try! Realm()
+						try! realm.write {
+							let cachedFoodItem = realm.create(CachedFoodItem.self, value: ["foodId": foodId, "nutrients" : nutrients])
+						}
 					}
 				}
 			}

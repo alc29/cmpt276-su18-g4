@@ -8,6 +8,7 @@
 //	Class for interacting with the usda database via browser queries.
 //
 // 	TODO: test handling of nil values & failures.
+//	TODO rename class
 
 import Foundation
 import RealmSwift
@@ -29,7 +30,6 @@ class Database5 {
 	// Request a food reportV1, whcih returns & caches nutrient info about 1 specific food.
 	static func requestFoodReportV1(_ foodItem: FoodItem, _ completion: @escaping FoodReportCompletionV1, _ debug: Bool = false) {
 		do {
-			
 			//let foodId = foodItem.getFoodId()
 			//prefix foodId with zeroes: string representing ndbno must be at least 5 digits.
 			let foodIdStr = Util.getProperFoodIdStr(foodItem.getFoodId())
@@ -62,6 +62,7 @@ class Database5 {
 		} catch let error {
 			print("requestFoodReportV1 error caught:")
 			print(error)
+			completion(nil)
 		}
 		
 		
@@ -151,15 +152,36 @@ class Database5 {
 	}
 	
 	//TODO 2nd try
-	static func getCachedFoodItem(_ foodItemId: Int) -> CachedFoodItem? {
-		let realm = try! Realm()
-		let results = realm.objects(CachedFoodItem.self)
-		for item in results {
-			if item.getFoodId() == foodItemId {
-				return item
+	static func getCachedFoodItem(_ foodId: Int) -> CachedFoodItem? {
+		var cachedItem = CachedFoodItem()
+		do {
+			DispatchQueue(label: "background").async {
+				autoreleasepool {
+					let realm = try! Realm()
+					//realm.refresh()
+					var done = false
+					let results = realm.objects(CachedFoodItem.self)
+					for item in results {
+						if item.getFoodId() == foodId && !done {
+//							print("cached item's id: \(item.getFoodId())")
+//							//return item
+//							for nutrient in item.nutrients {
+//								//cachedItem.nutrients.append(nutrient.clone())
+//								cachedItem.nutrients.append(FoodItemNutrient())
+//								print("appending")
+//							}
+							done = true
+							cachedItem = item
+						}
+					}
+				}
 			}
+		} catch let error {
+			print(error)
 		}
-		return nil
+		
+		//print("getCachedFoodItem returning nil")
+		return cachedItem
 	}
 	
 	private static func makeUrlRequestFromString(_ urlStr: String) -> URLRequest? {

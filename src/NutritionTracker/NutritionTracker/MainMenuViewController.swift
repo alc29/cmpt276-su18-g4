@@ -18,13 +18,16 @@ class MainMenuViewController: UIViewController {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		debug()
+		//debug()
 	}
 	
 	private func debug() {
-		let realm = try! Realm()
-		let meals = realm.objects(Meal.self) //(get all meals for testing)
-		print("num meals: \(meals.count)")
+		DispatchQueue.main.async {
+			let realm = try! Realm()
+			let meals = realm.objects(Meal.self) //(get all meals for testing)
+			print("num meals: \(meals.count)")
+		}
+		
 	}
 	
 	// MARK: Button actions

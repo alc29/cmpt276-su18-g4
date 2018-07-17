@@ -88,7 +88,6 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		foodSearchView.foodDetailViewController = foodDetailView
         
         let visionController = storyboard.instantiateViewController(withIdentifier: "VisionView") as! ImageClassificationViewController
-        //visionController.mealBuilder = self
         visionController.searchViewController = foodSearchView
         
         self.navigationController?.pushViewController(visionController, animated: true)
@@ -113,41 +112,57 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		self.resetMeal()
 		self.displayMealSavedAlert()
 		
-		//TODO cache nutrient info for each food item.
-		
+		//get & cache nutrient info for each food item.
 		for foodItem in mealCopy.getFoodItems() {
 			let completion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
 				print("completion for: \(foodItem.getFoodId())")
 			}
 			
-			//TODO request food report v1 & cache info.
+			// request food report v1 & cache info.
 			Database5.requestFoodReportV1(foodItem, completion)
 		}
 		
-		DispatchQueue.main.async {
-		//DispatchQueue(label: "background").async {
-			let realm = try! Realm()
-			try! realm.write {
-				realm.add(mealCopy)
+		DispatchQueue(label: "background").async {
+			autoreleasepool {
+				let realm = try! Realm()
+				try! realm.write {
+					//realm.add(mealCopy)
+					let newMeal = realm.create(Meal.self)
+					for foodItem in mealCopy.getFoodItems() {
+						newMeal.add(foodItem)
+					}
+				}
 			}
 		}
+	}
+	
+	public static func testSaveMeal(_ meal: Meal, _ debug: Bool = false) {
+		let mealCopy = meal.clone()
+//		self.resetMeal()
+//		self.displayMealSavedAlert()
 		
+		//get & cache nutrient info for each food item.
+		for foodItem in mealCopy.getFoodItems() {
+			let completion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
+				print("completion for: \(foodItem.getFoodId())")
+			}
+			
+			// request food report v1 & cache info.
+			Database5.requestFoodReportV1(foodItem, completion)
+		}
 		
-		//TODO
-//		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
-//			guard let report = report else {
-//				print("MealBuilder: nil report received.")
-//				return
-//			}
-//
-//			//save meal to realm
-//			let realm = try! Realm()
-//			try!realm.write {
-//				realm.add(mealCopy)
-//				print("meal saved")
-//			}
-//		}
-//		Database5.requestFoodReportV2(mealCopy, completion, false)
+		DispatchQueue(label: "background").async {
+			autoreleasepool {
+				let realm = try! Realm()
+				try! realm.write {
+					//realm.add(mealCopy)
+					let newMeal = realm.create(Meal.self)
+					for foodItem in mealCopy.getFoodItems() {
+						newMeal.add(foodItem)
+					}
+				}
+			}
+		}
 	}
 	
 	func displayMealSavedAlert() {
