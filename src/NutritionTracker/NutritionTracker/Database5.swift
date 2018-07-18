@@ -25,7 +25,7 @@ class Database5 {
 	typealias FoodItemNutrientCompletion = (_ foodItemNutrient: FoodItemNutrient) -> Void
 	typealias FoodItemsCompletion = (_ foodItems: [FoodItem]) -> Void
 	typealias CachedFoodItemCompletion = (_ cachedFoodItem: CachedFoodItem?) -> Void
-	typealias CachedFoodItemsCompletion = (_ cachedFoodItems: [CachedFooditem]) -> Void
+	typealias CachedFoodItemsCompletion = (_ cachedFoodItems: [CachedFoodItem]) -> Void
 	typealias MealsCompletion = (_ meals: [Meal]) -> Void
 	
 	// Request a food reportV1, whcih returns & caches nutrient info about 1 specific food.
@@ -218,8 +218,7 @@ class Database5 {
 			}
 		} catch let error {
 			print(error)
-			print(error)
-			completion(nil)
+			completion([CachedFoodItem]())
 		}
 	}
 	
