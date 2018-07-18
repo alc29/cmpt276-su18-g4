@@ -8,6 +8,7 @@
 //	Class for interacting with the usda database via browser queries.
 //
 // 	TODO: test handling of nil values & failures.
+//	TODO rename class
 
 import Foundation
 import RealmSwift
@@ -22,14 +23,14 @@ class Database5 {
 	typealias FoodReportCompletionV1 = (_ report: FoodReportV1?) -> Void
 	typealias SearchResultCompletion = (_ foodItems: [FoodItem]) -> Void
 	typealias FoodItemNutrientCompletion = (_ foodItemNutrient: FoodItemNutrient) -> Void
-	typealias AmountPerCompletion = (_ amountPer: AmountPer) -> Void
 	typealias FoodItemsCompletion = (_ foodItems: [FoodItem]) -> Void
-	typealias MealCompletion = (_ meal: Meal?) -> Void
-
+	typealias CachedFoodItemCompletion = (_ cachedFoodItem: CachedFoodItem?) -> Void
+	typealias CachedFoodItemsCompletion = (_ cachedFoodItems: [CachedFooditem]) -> Void
+	typealias MealsCompletion = (_ meals: [Meal]) -> Void
+	
 	// Request a food reportV1, whcih returns & caches nutrient info about 1 specific food.
 	static func requestFoodReportV1(_ foodItem: FoodItem, _ completion: @escaping FoodReportCompletionV1, _ debug: Bool = false) {
 		do {
-			
 			//let foodId = foodItem.getFoodId()
 			//prefix foodId with zeroes: string representing ndbno must be at least 5 digits.
 			let foodIdStr = Util.getProperFoodIdStr(foodItem.getFoodId())
@@ -62,8 +63,10 @@ class Database5 {
 		} catch let error {
 			print("requestFoodReportV1 error caught:")
 			print(error)
+			completion(nil)
 		}
 		
+		//NOTE: do not add nil completion here.
 		
 	} //end request
 
@@ -140,7 +143,7 @@ class Database5 {
 			guard let dataList = data.list else { return foodItems }
 			guard let dataListItem = dataList.item else { return foodItems }
 			for i in dataListItem {
-				let temp = FoodItem(Int(i!.ndbno!), i!.name!)
+				let temp = FoodItem(Int(i!.ndbno!)!, i!.name!)
 				foodItems.append(temp)
 			}
 		} catch let jsonErr {
@@ -150,16 +153,93 @@ class Database5 {
 		return foodItems
 	}
 	
-	//TODO 2nd try
-	static func getCachedFoodItem(_ foodItemId: Int) -> CachedFoodItem? {
-		let realm = try! Realm()
-		let results = realm.objects(CachedFoodItem.self)
-		for item in results {
-			if item.getFoodId() == foodItemId {
-				return item
+	
+	static func getCachedFoodItem(_ foodId: Int, _ completion: @escaping CachedFoodItemCompletion,_ debug: Bool = false) {
+		var cachedItem: CachedFoodItem? = nil
+		var success = false
+		
+		do {
+			DispatchQueue(label: "Database5.getCachedFoodItem").async {
+			//DispatchQueue.main.async {
+				autoreleasepool {
+					let realm = try! Realm()
+					let results = realm.objects(CachedFoodItem.self)
+					if results.count == 0 {
+						print("0 CachedFoodItem's in realm.")
+						//completion(nil) //TODO ???
+					}
+					for item in results {
+						if item.getFoodId() == foodId && !success {
+							var nutrients = [FoodItemNutrient]()
+							nutrients.append(contentsOf: item.nutrients)
+							
+							success = true
+							cachedItem = CachedFoodItem(foodId, nutrients)
+							if debug { print("getCachedFoodItem successful, foodId: \(foodId)") }
+							completion(cachedItem)
+							return
+						}
+					}
+					
+				}
+			}
+		} catch let error {
+			print(error)
+			if debug { print("getCachedFoodItem unsuccessful, foodId: \(foodId)") }
+			completion(nil)
+		}
+	}
+	
+	//TODO
+	//NOTE: assume wanted items have previously been cached.
+	static func getCachedFoodItems(_ foodItems: [FoodItem], _ completion: @escaping CachedFoodItemsCompletion) {
+		do {
+			DispatchQueue(label: "Database5.getCachedFoodItem").async {
+				//DispatchQueue.main.async {
+				autoreleasepool {
+					let realm = try! Realm()
+					let results = realm.objects(CachedFoodItem.self)
+					var cachedFoodItems = [CachedFoodItem]()
+					
+					for item in results { //for each CachedFoodItem in realm
+						let foodId = item.getFoodId()
+						if item.getFoodId() == foodId {
+							var nutrients = [FoodItemNutrient]()
+							nutrients.append(contentsOf: item.nutrients)
+							
+							let cachedFoodItem = CachedFoodItem(foodId, nutrients)
+							cachedFoodItems.append(cachedFoodItem)
+							return
+						}
+					}
+					completion(cachedFoodItems)
+				} //end autoreleasepool
+				
+			}
+		} catch let error {
+			print(error)
+			print(error)
+			completion(nil)
+		}
+	}
+	
+	
+	//get saved meals from realm.
+	//TODO add date start/end range for sorting meals.
+	static func getSavedMeals(_ completion: @escaping MealsCompletion) {
+		DispatchQueue(label: "Database5.getSavedMeal").async {
+			autoreleasepool {
+				let realm = try! Realm()
+				//let results = realm.objects(Meal.self).sorted(byKeyPath: "date", ascending: true)
+				let results = realm.objects(Meal.self)
+				
+				var meals = [Meal]()
+				for meal in results {
+					meals.append(meal.clone())
+				}
+				completion(meals)
 			}
 		}
-		return nil
 	}
 	
 	private static func makeUrlRequestFromString(_ urlStr: String) -> URLRequest? {
@@ -169,16 +249,8 @@ class Database5 {
 		return URLRequest(url: url)
 	}
 	
-//save a food item that also contains nutrient information.
-//	static func cacheFoodItem(_ cachedFoodItem: CachedFoodItem) {
-//		DispatchQueue.main.async {
-//			let realm = try! Realm()
-//			try! realm.write {
-//				realm.add(cachedFoodItem)
-//			}
-//		}
-//	}
 
+	
 	
 	// MARK: Method graveyard
 	

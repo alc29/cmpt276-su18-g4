@@ -21,17 +21,9 @@ class CachedFoodItem: Object {
 		self.nutrients.append(objectsIn: nutrients)
 	}
 	
-//	func addFoodItemNutrient(_ foodItemNutrient: FoodItemNutrient) {
-//		//TODO handle duplicates
-//		if foodItemNutrient.getNutrientId() <= 0 {
-//			print("warning: id of foodItemNutrient is: \(foodItemNutrient.getNutrientId())")
-//		}
-//		nutrients.append(foodItemNutrient)
-//	}
-	
 	func getFoodItemNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {
 		for n in nutrients {
-			if n.getNutrient().getId() == nutrient.getId() {
+			if n.getNutrientId() == nutrient.getId() {
 				return n
 			}
 		}

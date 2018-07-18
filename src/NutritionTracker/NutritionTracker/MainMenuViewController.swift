@@ -18,13 +18,17 @@ class MainMenuViewController: UIViewController {
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		debug()
+		super.viewWillAppear(animated)
+		//debug()
 	}
 	
 	private func debug() {
-		let realm = try! Realm()
-		let meals = realm.objects(Meal.self) //(get all meals for testing)
-		print("num meals: \(meals.count)")
+		DispatchQueue(label: "MainMeunVC").async {
+			let realm = try! Realm()
+			let meals = realm.objects(Meal.self) //(get all meals for testing)
+			print("num meals: \(meals.count)")
+		}
+		
 	}
 	
 	// MARK: Button actions
@@ -43,25 +47,4 @@ class MainMenuViewController: UIViewController {
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
 	
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-	
-	
-	//Testing - pass a foodItem to the next view.
-	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//		if (segue.identifier == "MainMenuToGraph") {
-//			let vc:GraphViewController = segue.destination as! GraphViewController
-//			//test passing a food item to the graph
-//			let foodItem = FoodItem(12345, "Noodles")
-//			vc.receiveTestFoodItem(foodItem: foodItem)
-//		}
-	}
-
 }

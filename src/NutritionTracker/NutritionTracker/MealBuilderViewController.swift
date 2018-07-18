@@ -22,6 +22,9 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	var mealSavedAlertPopup:UIView?
 	var mealSavedAlertLabel:UILabel = UILabel(frame: CGRect(x:100, y:400, width:200, height:50))
 
+	typealias CachedFoodItemCompletion = (_ cachedFoodItem: CachedFoodItem?) -> Void
+	typealias BoolCompletion = (_ success: Bool) -> Void
+	
 	// MARK: - VC Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +44,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		mealTableView.register(MealBuilderTableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
 
 		//TEST
-		meal.add(FoodItem(45144608, "Poop candy"))
-//		meal.add(FoodItem(354654, "gdsdgs"))
+		meal.add(FoodItem(45144608, "Poop candy", 0, "g"))
 		asyncReloadData()
 		
 		saveMealButton.isEnabled = meal.count() > 0
@@ -88,66 +90,80 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		foodSearchView.foodDetailViewController = foodDetailView
         
         let visionController = storyboard.instantiateViewController(withIdentifier: "VisionView") as! ImageClassificationViewController
-        //visionController.mealBuilder = self
         visionController.searchViewController = foodSearchView
         
         self.navigationController?.pushViewController(visionController, animated: true)
     }
 	
 	@IBAction func saveMealButtonPressed(_ sender: UIButton) {
-		
 		//TODO present portions screen; set amounts for each food item in the meal.
 		
 		//TODO meal date defaults to current day; add option button to set date.
+		let emptyCompletion: (Bool) -> Void = { (success: Bool) -> Void in
+		}
 		
-		saveMeal(self.meal)
+		saveMeal(self.meal, emptyCompletion)
 		saveMealButton.isEnabled = false
 	}
 	
+	//func emptyBoolCompletion(_ bool: Bool) {}
 	
 	// MARK: - Functions
 	
 	// Save new Meal to list of user's meals
-	func saveMeal(_ meal: Meal, _ debug: Bool = false) {
+	func saveMeal(_ meal: Meal, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
 		let mealCopy = meal.clone()
 		self.resetMeal()
 		self.displayMealSavedAlert()
 		
-		//TODO cache nutrient info for each food item.
-		
-		for foodItem in mealCopy.getFoodItems() {
-			let completion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
-				print("completion for: \(foodItem.getFoodId())")
-			}
-			
-			//TODO request food report v1 & cache info.
-			Database5.requestFoodReportV1(foodItem, completion)
-		}
-		
-		DispatchQueue.main.async {
-		//DispatchQueue(label: "background").async {
-			let realm = try! Realm()
-			try! realm.write {
-				realm.add(mealCopy)
+		//TODO clone meal to save to realm.
+		saveMealToRealm(mealCopy, completion)
+	}
+	
+	func saveMealToRealm(_ meal: Meal, _ completion: @escaping BoolCompletion) {
+		DispatchQueue(label: "MealBuilderVC.saveMealToRealm").async {
+			autoreleasepool {
+				let realm = try! Realm()
+				try! realm.write {
+					realm.add(meal)
+					completion(true)
+				}
 			}
 		}
-		
-		
-		//TODO
-//		let completion: (FoodReportV2?) -> Void = { (report: FoodReportV2?) -> Void in
-//			guard let report = report else {
-//				print("MealBuilder: nil report received.")
-//				return
-//			}
-//
-//			//save meal to realm
-//			let realm = try! Realm()
-//			try!realm.write {
-//				realm.add(mealCopy)
-//				print("meal saved")
-//			}
-//		}
-//		Database5.requestFoodReportV2(mealCopy, completion, false)
+	}
+	
+	
+	func cacheFoodItem(_ foodItem: FoodItem, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
+		//get & cache nutrient info for each food item.
+
+		let reportCompletion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
+			if debug {print("completion for: \(foodItem.getFoodId())")}
+			//TODO saved cahced food item from report
+			if let toCache = report?.toCache {
+				
+				let success = self.saveCachedFoodItemToRealm(toCache, completion)
+				//completion(success)
+				
+			} else {
+				if debug {print("could not cache item.")}
+				//completion(false)
+			}
+		}
+		Database5.requestFoodReportV1(foodItem, reportCompletion, debug)
+	}
+	
+	func saveCachedFoodItemToRealm(_ toCache: CachedFoodItem, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
+		if debug {print("caching food item: \(toCache.getFoodId())")}
+		DispatchQueue(label: "MealBuilderVC.saveCachedFoodItemToRealm").async {
+			autoreleasepool {
+				let realm = try! Realm()
+				try! realm.write {
+					realm.add(toCache)
+					completion(true)
+					if debug {print("cached food item successfully saved")}
+				}
+			}
+		}
 	}
 	
 	func displayMealSavedAlert() {
@@ -186,8 +202,8 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 	
 	func asyncReloadData() {
-		DispatchQueue.main.async {
-			self.mealTableView.reloadData()
+		DispatchQueue(label: "MealBuilderVC.reloadData").async {
+			self.mealTableView?.reloadData()
 		}
 	}
 	

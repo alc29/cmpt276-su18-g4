@@ -19,7 +19,7 @@ class GraphViewController: UIViewController {
 	@IBOutlet weak var graph: LineChartView! //ref to view in the storyboard
 	var graphSettings = GraphSettings() //if no settings found, use default settings & save
 	//let DEFAULT_TAGS = [Nutrient.Caffeine, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from user settings
-	let DEFAULT_TAGS = [Nutrient.Carbohydrate] //TODO load tags from user settings
+	let DEFAULT_TAGS = [Nutrient.Sugars_total] //TODO load tags from user settings
 
 	
     override func viewDidLoad() {
@@ -31,6 +31,10 @@ class GraphViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		//TODO add flag for if graph needs to be reloaded.
 		reloadGraphData()
+	}
+	
+	func reloadGraphData(_ meals: [Meal], cachedFoodItems: [CachedFoodItem]) {
+		//TODO call Database5.
 	}
 	
 	// load meals to graph, & other graph settings. graph settings will change what should be displayed on the graph
@@ -49,16 +53,11 @@ class GraphViewController: UIViewController {
 				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
 				//determine the amount of the nutrient in the meal
 
-//				for foodItem in meal.getFoodItems() {
-//					let nutrientItemAmount = nutrientReport.getFoodItemNutrient()
-//				}
-				//let nutrientAmount = getAmountOfNutrientInMeal(tag, meal)
-
 				//create point on the graph & add to array
-//				let entry = ChartDataEntry(x: Double(dayOfMonth!), y: Double(nutrientAmount.getAmount()))
-//				let x = dayOfMonth`
-				let y = Double(meal.getAmountOf(nutrient))
-				let entry = ChartDataEntry(x: 0, y: y)
+//				let x = dayOfMonth
+				let y = meal.getAmountOf(nutrient)
+				let entry = ChartDataEntry(x: 0, y: Double(y))
+				print("y entry: \(y)")
 				lineEntries.append(entry)
 			}
 			//create new line plot

@@ -86,6 +86,7 @@ class FoodReportV1 {
 	//MARK: Properties
 //	var jFoods = [Result.JFood]()
 	var result: Any?
+	var toCache: CachedFoodItem?
 
 //	static func jNutrientToFoodItemNutrient(_ jNutrient: FoodReportV2.Result.JFood.JNutrient) -> FoodItemNutrient? {
 //		guard let nutrient_id = jNutrient.nutrient_id else { print("no nutrient_id found."); return nil }
@@ -106,55 +107,47 @@ class FoodReportV1 {
 	static func nonLegacyDecoder(_ jsonData: Data, _ debug: Bool = false) -> FoodReportV1? {
 		do {
 			let result = try JSONDecoder().decode(FoodReportV1.Result.self, from: jsonData)
-			if let report = result.report {
+			
+			let foodReportV1 = FoodReportV1()
+			foodReportV1.result = result
+			
+			// get nutrients from jFood, convert to FoodItemNutrient; add to food item
+			if let report = result.report,
+				let jFood = report.food,
+				let ndbno = jFood.ndbno,
+				let foodId = Int(ndbno) {
 				
-				let foodReportV1 = FoodReportV1()
-				foodReportV1.result = result
+				//let cachedFoodItem = CachedFoodItem(foodId)
+				var nutrients = [FoodItemNutrient]()
 				
-				// get nutrients from jFood, convert to FoodItemNutrient; add to food item
-				if let report = result.report,
-					let jFood = report.food,
-					let ndbno = jFood.ndbno,
-					let foodId = Int(ndbno) {
-					
-					//let cachedFoodItem = CachedFoodItem(foodId)
-					var nutrients = [FoodItemNutrient]()
-					
-					if let jNutrients = jFood.nutrients {
-						for jNutrient in jNutrients {
-							guard let jNutrient = jNutrient, let nutrient_id = jNutrient.nutrient_id else { continue }
-							
-							//TODO delegate nutrientId getter to another function; refactor this block
-							let nutrientId = Int(nutrient_id)
-							let nutrient = Nutrient.get(id: nutrientId!)
-							
-							//TODO handle nil values; move definitions into the guard let statement
-							let amountValue = jNutrient.value
-							let amountUnit = Unit.get(jNutrient.unit!)!
-							//print("jNutrient unit: \(jNutrient.unit)")
-							//let amountUnit = Unit.GRAM //TODO get unit from jNutrient
-							
-							let amount = Amount(Float(amountValue!)!, amountUnit) //TODO
-							let per = Amount(100, Unit.GRAM) //TODO
-							let amountPer = AmountPer(amount: amount, per: per)
-							
-							let foodItemNutrient = FoodItemNutrient(nutrient, amountPer)
-							//add foodItemNutrient to cache
-							//cachedFoodItem.addFoodItemNutrient(foodItemNutrient)
-							nutrients.append(foodItemNutrient)
-						}
-					}
-					let cachedFoodItem = CachedFoodItem(foodId, nutrients)
-					//Database5.cacheFoodItem(cachedFoodItem)
-					DispatchQueue.main.async {
-						let realm = try! Realm()
-						try! realm.write {
-							realm.add(cachedFoodItem)
-						}
+				if let jNutrients = jFood.nutrients {
+					for jNutrient in jNutrients {
+						guard let jNutrient = jNutrient, let nutrient_id = jNutrient.nutrient_id else { continue }
+						
+						//TODO delegate nutrientId getter to another function; refactor this block
+						let nutrientId = Int(nutrient_id)!
+						let nutrient = Nutrient.get(id: nutrientId)
+						
+						//TODO handle nil values; move definitions into the guard let statement
+						let amountValue = jNutrient.value!
+						let amountUnit = Unit.get(jNutrient.unit!)!
+						
+						let amount = Float(amountValue)!
+						let unit = "g"
+						let perAmount = Float(100)
+						let perUnit = "g"
+						
+						let foodItemNutrient = FoodItemNutrient(nutrientId, amount, unit, perAmount, perUnit)
+						nutrients.append(foodItemNutrient)
 					}
 				}
-				return foodReportV1
+				
+				foodReportV1.toCache = CachedFoodItem(foodId, nutrients)
+			} else if debug {
+				print("could not attache cache")
 			}
+			return foodReportV1
+			
 		} catch let error {
 			print(error)
 		}
@@ -175,52 +168,40 @@ class FoodReportV1 {
 				let jFood = report.food,
 				let ndbno = jFood.ndbno,
 				let foodId = Int(ndbno) {
-				//let foodItem = FoodItem(foodId, foodName)
-				//let cachedFoodItem = CachedFoodItem(foodId)
 				var nutrients = [FoodItemNutrient]()
 				
 				if let jNutrients = jFood.nutrients {
 					for jNutrient in jNutrients {
 						guard let jNutrient = jNutrient, let nutrient_id = jNutrient.nutrient_id else { continue }
 						
-						let nutrient = Nutrient.get(id: Int(nutrient_id))
+						let amount = jNutrient.value!
+						let unit = "g"
+						let perAmount = Float(100)
+						let perUnit = "g"
 						
-						let amount = Amount() //TODO
-						let per = Amount(100, Unit.GRAM) //TODO
-						let amountPer = AmountPer(amount: amount, per: per)
-						
-						let foodItemNutrient = FoodItemNutrient(nutrient, amountPer)
-						//foodItem.addNutrient(foodItemNutrient)
-						//add foodItemNutrient to cache
-						//cachedFoodItem.addFoodItemNutrient(foodItemNutrient)
+						let foodItemNutrient = FoodItemNutrient(nutrient_id, amount, unit, perAmount, perUnit)
 						nutrients.append(foodItemNutrient)
 					}
 				}
-				let cachedFoodItem = CachedFoodItem(foodId, nutrients)
-				//Database5.cacheFoodItem(cachedFoodItem)
-				DispatchQueue.main.async {
-					let realm = try! Realm()
-					try! realm.write {
-						realm.add(cachedFoodItem)
-					}
-				}
+				
+				foodReportV1.toCache = CachedFoodItem(foodId, nutrients)
+			} else if debug {
+				print("legacy: could not attach cache. ")
 			}
-			if debug {print("legacy decode; returning foodReportV1")}
-			return foodReportV1
 			
+			return foodReportV1
 			
 		} catch let error {
 			print(error)
 		}
-		if debug {print("returning nil")}
 		
+		if debug {print("returning nil")}
 		return nil
 	}
 	
-	//TODO split into two functions
-	
+	//TODO refactor
 	static func cacheFromJsonData(_ jsonData: Data, _ debug: Bool = false) -> FoodReportV1? {
-		//structs for determining which json parsing function to use
+		//structs
 		struct LegacyType: Decodable {
 			let report: Report?
 			
