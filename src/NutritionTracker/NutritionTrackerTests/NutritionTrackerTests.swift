@@ -147,7 +147,7 @@ class NutritionTrackerTests: XCTestCase {
 		let mealsCompletionInvoked = XCTestExpectation()
 		let mealsCompletion: ([Meal]) -> Void = { (meals: [Meal]) -> Void in
 			XCTAssert(meals.count == 1)
-			let foodItems = meals.first!.getFoodItems()
+			let foodItems = meals.first!.getFoodItems() //TODO sometimes fails
 			XCTAssert(foodItems.count == 2)
 
 			let poopCandy = foodItems[0]
@@ -159,7 +159,7 @@ class NutritionTrackerTests: XCTestCase {
 		}
 		
 		Database5.getSavedMeals(mealsCompletion)
-		wait(for: [mealsCompletionInvoked], timeout: 5)
+		wait(for: [mealsCompletionInvoked], timeout: 10)
 	}
 	
 	func testCacheFoodItem() {
@@ -197,13 +197,12 @@ class NutritionTrackerTests: XCTestCase {
 		wait(for: [expectation], timeout: 5)
 	}
 	
-	
-	
 
 	//TODO test for multiple food items
 	//TODO handle invalid food ids (error json message)
 	func testGetCacheFoodItems() {
 		//NOTE adding unresolved expectations & waits introduces Realm exception - realm from incorrect thread
+		//TODO use a loop
 		let f1 = FoodItem(11165, "coriander")
 		let f2 = FoodItem(05150, "goose")
 		let f3 = FoodItem(05305, "turkey")
@@ -239,12 +238,7 @@ class NutritionTrackerTests: XCTestCase {
 			getF1Completes.fulfill()
 
 			guard let cachedFoodItem = cachedFoodItem else { XCTAssert(false); return } //TODO sometimes failes
-			
-//			guard let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet) else { XCTAssert(false); return }
-//			let amount = foodItemNutrient.getAmount()
-			//XCTAssert(amount.isEqual(to: expectedSugarsTotal), String(amount))
-			//XCTAssert(cachedFoodItem.getFoodId() == ID)
-			//XCTAssert(cachedFoodItem.nutrients.count > 0)
+			//TODO test other food items
 		}
 
 		Database5.getCachedFoodItem(f1.getFoodId(), getCachedCompletion, false) //test f1, coriander

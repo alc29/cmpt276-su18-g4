@@ -18,69 +18,134 @@ class GraphViewController: UIViewController {
 	//MARK: Properties
 	@IBOutlet weak var graph: LineChartView! //ref to view in the storyboard
 	var graphSettings = GraphSettings() //if no settings found, use default settings & save
-	//let DEFAULT_TAGS = [Nutrient.Caffeine, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from user settings
-	let DEFAULT_TAGS = [Nutrient.Sugars_total] //TODO load tags from user settings
-
+	let DEFAULT_TAGS = [Nutrient.Sugars_total, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from user settings
 	
-    override func viewDidLoad() {
-        super.viewDidLoad()
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		// For formatting the x-axis
+		let xAxis = graph.xAxis
+		xAxis.labelPosition = .bottom
+		xAxis.granularity = 1
+		xAxis.labelCount = 3
+		// This function takes in the x value from, for example: let entry = ChartDataEntry(x: 1, y: 5)
+		// and converts it into a date value. 1 = Jan 1, 365 = Dec 25, 366 = Jan 1
+		// Years have been turned off, but can be re-enabled from -> Formatters: DayAxisValueFormatter.swift line: 33
+		xAxis.valueFormatter = DayAxisValueFormatter(chart: graph)
+		
+		// For formatting the left y-axis labels
+		let leftAxisFormatter = NumberFormatter()
+		leftAxisFormatter.minimumFractionDigits = 0
+		leftAxisFormatter.maximumFractionDigits = 1
+		leftAxisFormatter.negativeSuffix = " g"
+		leftAxisFormatter.positiveSuffix = " g"
+		
+		let leftAxis = graph.leftAxis
+		leftAxis.labelFont = .systemFont(ofSize: 10)
+		leftAxis.labelCount = 5
+		leftAxis.valueFormatter = DefaultAxisValueFormatter(formatter: leftAxisFormatter)
+		leftAxis.labelPosition = .outsideChart
+		leftAxis.spaceTop = 0.15
+		leftAxis.axisMinimum = 0 // FIXME: HUH?? this replaces startAtZero = YES
+		
+		// Turns off the right y-axis labels
+		let rightAxis = graph.rightAxis
+		rightAxis.enabled = false
+		
+		// Animation upon opening
+		graph.animate(xAxisDuration: 1)
 		
 		reloadGraphData()
-    }
+	}
 	
 	override func viewWillAppear(_ animated: Bool) {
-		//TODO add flag for if graph needs to be reloaded.
+		super.viewWillAppear(animated)
 		reloadGraphData()
 	}
 	
-	func reloadGraphData(_ meals: [Meal], cachedFoodItems: [CachedFoodItem]) {
-		//TODO call Database5.
+	func reloadGraphData() {
+		//TODO get meals to display
+		DispatchQueue.main.async {
+			autoreleasepool {
+				let realm = try! Realm()
+				
+				//TODO get all meals, or filter by date & range
+				let mealResults = realm.objects(Meal.self)
+				var meals = [Meal]()
+				meals.append(contentsOf: mealResults)
+
+				//TODO get cachedFoodItems for reloadData. get all, or filter by desired foodId's
+				let cachedFoodItemResults = realm.objects(CachedFoodItem.self)
+				var cachedFoodItems = [CachedFoodItem]()
+				cachedFoodItems.append(contentsOf: cachedFoodItemResults)
+				
+				self.reloadGraphData(meals, cachedFoodItems)
+			}
+		}
+		
+
+	}
+			
+	func getFoodItem(_ foodId: Int, _ cachedFoodItems: [CachedFoodItem]) -> CachedFoodItem? {
+		for cached in cachedFoodItems {
+			if cached.getFoodId() == foodId {
+				return cached
+			}
+		}
+		print("returned nil")
+		return nil
 	}
 	
-	// load meals to graph, & other graph settings. graph settings will change what should be displayed on the graph
-	func reloadGraphData() {
+	func reloadGraphData(_ meals: [Meal], _ cachedFoodItems: [CachedFoodItem]) {
 		let data = LineChartData() //This is the object that will be added to the chart
 		let date = graphSettings.getDate() //use date to determine which meals to
-
+		
 		//construct graph data from saved meals, filtered by tags.
-		let realm = try! Realm()
-		let meals = realm.objects(Meal.self) //(get all meals for testing)
-		//TODO only select meals within a certain range
-		for nutrient in DEFAULT_TAGS { //for each nutrient tag
-			var lineEntries = [ChartDataEntry]() //array for saving data to be plotted on a line.
-			for meal in meals { //for each meal
-				//determine date of meal
-				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
-				//determine the amount of the nutrient in the meal
-
-				//create point on the graph & add to array
-//				let x = dayOfMonth
-				let y = meal.getAmountOf(nutrient)
-				let entry = ChartDataEntry(x: 0, y: Double(y))
-				print("y entry: \(y)")
+		for tag in self.DEFAULT_TAGS { //for each nutrient tag
+			for meal in meals {
+				var lineEntries = [ChartDataEntry]()
+				
+				var sum: Float = Float(0) //totol amount of nutrient
+				for foodItem in meal.getFoodItems() { //TODO
+					if let cached = self.getFoodItem(foodItem.getFoodId(), cachedFoodItems),
+					let foodItemNutrient = cached.getFoodItemNutrient(tag)
+					{
+						let amount = foodItemNutrient.getAmount()
+						sum = sum + amount // TODO scale by amount of food item
+					}
+				}
+				
+				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())!
+				let entry = ChartDataEntry(x: Double(dayOfMonth), y: Double(sum))
 				lineEntries.append(entry)
+				
+				
+				let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
+				//set line color
+				let colour:UIColor = randColor()
+				line.setColor(colour)
+				line.setCircleColor(colour)
+				line.circleRadius = 4
+				//line.drawCirclesEnabled = false
+				data.addDataSet(line)
+
 			}
-			//create new line plot
-			let line = LineChartDataSet(values: lineEntries, label: "\(nutrient.name)")
 
-			//TODO set random line color
-			data.addDataSet(line)
 		}
-
+		
 		// Set the date of the graph
 		let dateFormatter = DateFormatter()
 		//dateFormatter.setLocalizedDateFormatFromTemplate(graphSettings.dateFormat)
 		let dateStr = dateFormatter.string(from: date)
-
+		
 		graph.data = data
 		graph.notifyDataSetChanged()
 		graph.chartDescription?.text = dateStr
+
+		//TODO graph needs reload?
 	}
+
 	
-
-
-	// MARK: Graph
-
 	//AKN: https://stackoverflow.com/questions/25050309/swift-random-float-between-0-and-1
 	func randColor() -> UIColor {
 		let r = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
@@ -88,16 +153,7 @@ class GraphViewController: UIViewController {
 		let b = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
 		return UIColor(red: r, green: g, blue: b, alpha: 1.0)
 	}
-
-
-    /*
-    // MARK: - Navigation
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
+	
 	
 }
 

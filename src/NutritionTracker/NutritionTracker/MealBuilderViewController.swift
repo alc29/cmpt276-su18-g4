@@ -99,10 +99,17 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		//TODO present portions screen; set amounts for each food item in the meal.
 		
 		//TODO meal date defaults to current day; add option button to set date.
-		let emptyCompletion: (Bool) -> Void = { (success: Bool) -> Void in
-		}
 		
-		saveMeal(self.meal, emptyCompletion)
+		let mealCopy = self.meal.clone()
+		let emptyCompletion: (Bool) -> Void = { (success: Bool) -> Void in } //TODO refactor duplicate
+		
+		saveMeal(mealCopy, emptyCompletion)
+		self.resetMeal()
+		self.displayMealSavedAlert()
+		for foodItem in mealCopy.getFoodItems() {
+			cacheFoodItem(foodItem, emptyCompletion)
+		}
+
 		saveMealButton.isEnabled = false
 	}
 	
@@ -113,8 +120,6 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	// Save new Meal to list of user's meals
 	func saveMeal(_ meal: Meal, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
 		let mealCopy = meal.clone()
-		self.resetMeal()
-		self.displayMealSavedAlert()
 		
 		//TODO clone meal to save to realm.
 		saveMealToRealm(mealCopy, completion)
@@ -134,6 +139,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	
 	//MARK: save & cache singular food items
 	func cacheFoodItem(_ foodItem: FoodItem, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
+		print("cachingFoodItem")
 		//get & cache nutrient info for each food item.
 
 		let reportCompletion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
@@ -232,7 +238,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 	
 	func asyncReloadData() {
-		DispatchQueue(label: "MealBuilderVC.reloadData").async {
+		DispatchQueue.main.async {
 			self.mealTableView?.reloadData()
 		}
 	}

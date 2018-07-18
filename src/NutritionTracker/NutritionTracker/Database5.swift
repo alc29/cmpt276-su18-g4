@@ -153,8 +153,6 @@ class Database5 {
 	}
 	
 	
-	// MARK: save & cache individual food items
-	
 	//NOTE: must pass valid foodId
 	//TODO handle invalid foodId's. implement isValidFoodId(), complete(nil) for invalid id's.
 	static func getCachedFoodItem(_ foodId: Int, _ completion: @escaping CachedFoodItemCompletion,_ debug: Bool = false) {
@@ -193,9 +191,8 @@ class Database5 {
 		}
 	}
 	
-	//MARK: save & cache multiple food items
-	//TODO implement & test, if desired
 	
+	//TODO implement & test, if desired
 	//NOTE: assume wanted items have previously been cached.
 //	static func getCachedFoodItems(_ foodItems: [FoodItem], _ completion: @escaping CachedFoodItemsCompletion) {
 //		do {
@@ -214,7 +211,6 @@ class Database5 {
 //
 //							let cachedFoodItem = CachedFoodItem(foodId, nutrients)
 //							cachedFoodItems.append(cachedFoodItem)
-//							return
 //						}
 //					}
 //					completion(cachedFoodItems)
@@ -230,21 +226,21 @@ class Database5 {
 	
 	//get saved meals from realm.
 	//TODO add date start/end range for sorting meals.
-//	static func getSavedMeals(_ completion: @escaping MealsCompletion) {
-//		DispatchQueue(label: "Database5.getSavedMeal").async {
-//			autoreleasepool {
-//				let realm = try! Realm()
-//				//let results = realm.objects(Meal.self).sorted(byKeyPath: "date", ascending: true)
-//				let results = realm.objects(Meal.self)
-//
-//				var meals = [Meal]()
-//				for meal in results {
-//					meals.append(meal.clone())
-//				}
-//				completion(meals)
-//			}
-//		}
-//	}
+	static func getSavedMeals(_ completion: @escaping MealsCompletion) {
+		DispatchQueue(label: "Database5.getSavedMeal").async {
+			autoreleasepool {
+				let realm = try! Realm()
+				//let results = realm.objects(Meal.self).sorted(byKeyPath: "date", ascending: true)
+				let results = realm.objects(Meal.self)
+
+				var meals = [Meal]()
+				for meal in results {
+					meals.append(meal.clone())
+				}
+				completion(meals)
+			}
+		}
+	}
 	
 	//MARK: helper methods
 	private static func makeUrlRequestFromString(_ urlStr: String) -> URLRequest? {
