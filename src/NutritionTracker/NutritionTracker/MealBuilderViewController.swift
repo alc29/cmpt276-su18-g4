@@ -132,7 +132,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		}
 	}
 	
-	
+	//MARK: save & cache singular food items
 	func cacheFoodItem(_ foodItem: FoodItem, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
 		//get & cache nutrient info for each food item.
 
@@ -141,12 +141,10 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 			//TODO saved cahced food item from report
 			if let toCache = report?.toCache {
 				
-				let success = self.saveCachedFoodItemToRealm(toCache, completion)
-				//completion(success)
+				self.saveCachedFoodItemToRealm(toCache, completion)
 				
 			} else {
 				if debug {print("could not cache item.")}
-				//completion(false)
 			}
 		}
 		Database5.requestFoodReportV1(foodItem, reportCompletion, debug)
@@ -165,6 +163,38 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 			}
 		}
 	}
+	
+	//MARK: save & cache multiple food items
+//	func cacheFoodItems(_ foodItems: [FoodItem], _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
+//		//get & cache nutrient info for each food item.
+//
+//		let reportCompletion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
+//			if debug {print("completion for: \(foodItem.getFoodId())")}
+//			//TODO saved cahced food item from report
+//			if let toCache = report?.toCache {
+//
+//				self.saveCachedFoodItemsToRealm(toCache, completion)
+//
+//			} else {
+//				if debug {print("could not cache item.")}
+//			}
+//		}
+//		Database5.requestFoodReportV1(foodItem, reportCompletion, debug)
+//	}
+//	func saveCachedFoodItemsToRealm(_ toCache: CachedFoodItem, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
+//		if debug {print("caching food item: \(toCache.getFoodId())")}
+//		DispatchQueue(label: "MealBuilderVC.saveCachedFoodItemToRealm").async {
+//			autoreleasepool {
+//				let realm = try! Realm()
+//				try! realm.write {
+//					realm.add(toCache)
+//					completion(true)
+//					if debug {print("cached food item successfully saved")}
+//				}
+//			}
+//		}
+//	}
+	
 	
 	func displayMealSavedAlert() {
 		mealSavedAlertLabel.isHidden = false

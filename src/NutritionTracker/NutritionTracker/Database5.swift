@@ -93,8 +93,7 @@ class Database5 {
 	}
 	
 	// Returns an array of food items from a given food group.
-	//TODO refactor; similar to search()
-	//TODO consider passing food group instead
+	// TODO completion for handling errors
 	static func foodGroupSearch(_ foodGroupId: String, _ completion: @escaping FoodItemsCompletion, _ max: Int = 50) {
 
 		//TODO if not valid food group id, complete(nil)
@@ -154,6 +153,10 @@ class Database5 {
 	}
 	
 	
+	// MARK: save & cache individual food items
+	
+	//NOTE: must pass valid foodId
+	//TODO handle invalid foodId's. implement isValidFoodId(), complete(nil) for invalid id's.
 	static func getCachedFoodItem(_ foodId: Int, _ completion: @escaping CachedFoodItemCompletion,_ debug: Bool = false) {
 		var cachedItem: CachedFoodItem? = nil
 		var success = false
@@ -190,57 +193,60 @@ class Database5 {
 		}
 	}
 	
-	//TODO
+	//MARK: save & cache multiple food items
+	//TODO implement & test, if desired
+	
 	//NOTE: assume wanted items have previously been cached.
-	static func getCachedFoodItems(_ foodItems: [FoodItem], _ completion: @escaping CachedFoodItemsCompletion) {
-		do {
-			DispatchQueue(label: "Database5.getCachedFoodItem").async {
-				//DispatchQueue.main.async {
-				autoreleasepool {
-					let realm = try! Realm()
-					let results = realm.objects(CachedFoodItem.self)
-					var cachedFoodItems = [CachedFoodItem]()
-					
-					for item in results { //for each CachedFoodItem in realm
-						let foodId = item.getFoodId()
-						if item.getFoodId() == foodId {
-							var nutrients = [FoodItemNutrient]()
-							nutrients.append(contentsOf: item.nutrients)
-							
-							let cachedFoodItem = CachedFoodItem(foodId, nutrients)
-							cachedFoodItems.append(cachedFoodItem)
-							return
-						}
-					}
-					completion(cachedFoodItems)
-				} //end autoreleasepool
-				
-			}
-		} catch let error {
-			print(error)
-			completion([CachedFoodItem]())
-		}
-	}
+//	static func getCachedFoodItems(_ foodItems: [FoodItem], _ completion: @escaping CachedFoodItemsCompletion) {
+//		do {
+//			DispatchQueue(label: "Database5.getCachedFoodItem").async {
+//				//DispatchQueue.main.async {
+//				autoreleasepool {
+//					let realm = try! Realm()
+//					let results = realm.objects(CachedFoodItem.self)
+//					var cachedFoodItems = [CachedFoodItem]()
+//
+//					for item in results { //for each CachedFoodItem in realm
+//						let foodId = item.getFoodId()
+//						if item.getFoodId() == foodId {
+//							var nutrients = [FoodItemNutrient]()
+//							nutrients.append(contentsOf: item.nutrients)
+//
+//							let cachedFoodItem = CachedFoodItem(foodId, nutrients)
+//							cachedFoodItems.append(cachedFoodItem)
+//							return
+//						}
+//					}
+//					completion(cachedFoodItems)
+//				} //end autoreleasepool
+//
+//			}
+//		} catch let error {
+//			print(error)
+//			completion([CachedFoodItem]())
+//		}
+//	}
 	
 	
 	//get saved meals from realm.
 	//TODO add date start/end range for sorting meals.
-	static func getSavedMeals(_ completion: @escaping MealsCompletion) {
-		DispatchQueue(label: "Database5.getSavedMeal").async {
-			autoreleasepool {
-				let realm = try! Realm()
-				//let results = realm.objects(Meal.self).sorted(byKeyPath: "date", ascending: true)
-				let results = realm.objects(Meal.self)
-				
-				var meals = [Meal]()
-				for meal in results {
-					meals.append(meal.clone())
-				}
-				completion(meals)
-			}
-		}
-	}
+//	static func getSavedMeals(_ completion: @escaping MealsCompletion) {
+//		DispatchQueue(label: "Database5.getSavedMeal").async {
+//			autoreleasepool {
+//				let realm = try! Realm()
+//				//let results = realm.objects(Meal.self).sorted(byKeyPath: "date", ascending: true)
+//				let results = realm.objects(Meal.self)
+//
+//				var meals = [Meal]()
+//				for meal in results {
+//					meals.append(meal.clone())
+//				}
+//				completion(meals)
+//			}
+//		}
+//	}
 	
+	//MARK: helper methods
 	private static func makeUrlRequestFromString(_ urlStr: String) -> URLRequest? {
 		guard let url = URL(string: urlStr) else {
 			print("error creating url: \(urlStr)"); return nil

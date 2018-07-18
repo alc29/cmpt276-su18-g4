@@ -37,10 +37,9 @@ class FoodReportV1 {
 		}
 		struct JMeasure: Decodable {
 			let label: String?
-			//let eqv: Int?
 			let eqv: Float?
 			let eunit: String?
-			let qty: Int?
+			//let qty: Int? //TODO
 			let value: String? //gram equivalent value of the measure
 		}
 	}
@@ -73,10 +72,9 @@ class FoodReportV1 {
 		}
 		struct JMeasure: Decodable {
 			let label: String?
-			//let eqv: Int?
 			let eqv: Float?
 			let eunit: String?
-			let qty: Int?
+			//let qty: Int? //TODO
 			let value: Float? //gram equivalent value of the measure
 		}
 		
