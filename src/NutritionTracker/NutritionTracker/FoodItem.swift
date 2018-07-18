@@ -23,7 +23,6 @@ class FoodItem: Object {
 	@objc private dynamic var name = "uninitialized"
 	@objc private dynamic var amount: Float = Float(0)
 	@objc private dynamic var unit: String = ""
-	//var nutrients = List<FoodItemNutrient>()
 	
 	//Note: optional initializer FoodItem() works, but should be avoided.
 	convenience init(_ foodId: Int, _ name: String, _ amount: Float = Float(0), _ unit: String = "g") {
@@ -35,41 +34,14 @@ class FoodItem: Object {
 	}
 	
 	// MARK: Setters
-	//TODO
-//	func setAmount(_ amount: Float, unit: Unit = Unit.GRAM) {
-//		self.amount!.setAmount(amount)
-//		self.amount!.setUnit(unit)
-//	}
 	
 	//TODO consider moving to Database
 	// return the specified amount of nutrient contained in this food.
 	func getAmountOf(_ nutrient: Nutrient) -> Float {
 		//get nutrient amount info from cached food item in realm.
-
 		
-		//TODO
-		//if let foodItemNutrient = getNutrient(nutrient) {
-//		if let cached = Database5.getCachedFoodItem(self.foodId), let foodItemNutrient = cached.getFoodItemNutrient(nutrient) {
-//			let amount = foodItemNutrient.getBaseAmount()
-//			//let per = foodItemNutrient.getAmountPer()
-//			return amount.getAmount()
-//		}
-//
-//		//need request? or perform cache check first, before calling this method.
-//		print("cached food item not found: \(foodId)")
 		return Float(0)
 	}
-	
-	//TODO remove
-	//retreive nutrient info from cache.
-	//TODO if nil, retrieve from database & cache; calling class must call a second time.
-//	func getNutrient(_ nutrient: Nutrient) -> FoodItemNutrient? {
-//		if let cachedFoodItem = Database5.getCachedFoodItem(self.foodId),
-//			let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrient) {
-//			return foodItemNutrient
-//		}
-//		return nil
-//	}
 
 	// MARK: Getters
 	func getFoodId() -> Int { return foodId }

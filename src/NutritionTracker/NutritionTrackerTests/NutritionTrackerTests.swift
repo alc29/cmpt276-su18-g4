@@ -127,66 +127,78 @@ class NutritionTrackerTests: XCTestCase {
 	
 	
 	
-	// MARK: - FoodDataCache Tests
-	
+	// MARK: - Persistence Tests
 
-	//TODO
-//	func testSaveMeal() {
-//		let ID = 45144608
-//		let nutrientToGet = Nutrient.Sugars_total
-//		let expectedSugarsTotal: Float = 80.49
-//		NOTE introduces Realm exception - realm from incorrect thread
-//
-//		let meal = Meal()
-//		meal.add(FoodItem(ID, "poop candy"))
-//		MealBuilderViewController().saveMeal(meal, true) // TODO use completion for testing cachedFoodItem
-//
-//		let sugars = meal.getAmountOf(nutrientToGet)
-//		XCTAssert(sugars.isEqual(to: expectedSugarsTotal)) //TODO test for diff food amounts
-//		print("sugars: \(sugars)")
-//	}
+	func testSaveMeal() {
+		let meal = Meal()
+		let poopId = 45144608
+		meal.add(FoodItem(poopId, "poop candy"))
+		meal.add(FoodItem(2, "second"))
+		let expectation = XCTestExpectation(description: "completion completes")
+		let completion: (Bool) -> Void = { (success: Bool) -> Void in
+			expectation.fulfill()
+			XCTAssert(success)
+		}
+		
+		MealBuilderViewController().saveMeal(meal, completion, false) // TODO use completion for testing cachedFoodItem
+		wait(for: [expectation], timeout: 3)
+		
+		let mealsCompletionInvoked = XCTestExpectation()
+		let mealsCompletion: ([Meal]) -> Void = { (meals: [Meal]) -> Void in
+			XCTAssert(meals.count == 1)
+			let foodItems = meals.first!.getFoodItems()
+			XCTAssert(foodItems.count == 2)
+
+			let poopCandy = foodItems[0]
+			let second = foodItems[1]
+			XCTAssert(poopCandy.getFoodId() == poopId)
+			XCTAssert(second.getFoodId() == 2)
+			
+			mealsCompletionInvoked.fulfill()
+		}
+		
+		Database5.getSavedMeals(mealsCompletion)
+		wait(for: [mealsCompletionInvoked], timeout: 5)
+	}
 	
 	func testCacheFoodItem() {
 		let ID = 45144608
 		let nutrientToGet = Nutrient.Sugars_total
 		let expectedSugarsTotal: Float = 80.49
-		//NOTE introduces Realm exception - realm from incorrect thread
+		//NOTE adding unresolved expectations & waits introduces Realm exception - realm from incorrect thread
+
 		
 		//test successful cache
 		let expectation = XCTestExpectation(description: "cacheFoodItem completes")
-		let completion: (CachedFoodItem?) -> Void = { (cachedFoodItem: CachedFoodItem?) -> Void in
+		let completion: (Bool) -> Void = { (success: Bool) -> Void in
 			expectation.fulfill()
-
-			print(String(describing: cachedFoodItem))
-			
-			if let cachedFoodItem = cachedFoodItem, let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet) {
-				let amount = foodItemNutrient.getAmount()
-				XCTAssert(amount.isEqual(to: expectedSugarsTotal), String(amount))
-				XCTAssert(cachedFoodItem.getFoodId() == ID)
-				XCTAssert(cachedFoodItem.nutrients.count > 0)
-
-			} else {
-				XCTAssert(false)
-			}
+			XCTAssert(success)
 		}
-
-		MealBuilderViewController().cacheFoodItem(FoodItem(ID, "poop candy"), completion, true)
-		wait(for: [expectation], timeout: 3)
-
-		//test getting cached item
-		let getCachedFoodItemExpectation = XCTestExpectation(description: "getCachedFoodItem completes")
-		let getCachedCompletion: (CachedFoodItem?) -> Void = { (cachedFoodItem: CachedFoodItem?) -> Void in
-			getCachedFoodItemExpectation.fulfill()
-		}
-
-		Database5.getCachedFoodItem(ID, getCachedCompletion, true)
+		MealBuilderViewController().cacheFoodItem(FoodItem(ID, "poop candy"), completion, false)
 		wait(for: [expectation], timeout: 3)
 
 		
+		//test getting cached item
+		let getCachedFoodItemExpectation = XCTestExpectation(description: "getCachedFoodItem completes")
+		
+		let getCachedCompletion: (CachedFoodItem?) -> Void = { (cachedFoodItem: CachedFoodItem?) -> Void in
+			getCachedFoodItemExpectation.fulfill()
+			
+			guard let cachedFoodItem = cachedFoodItem else { XCTAssert(false); return } //TODO sometimes failes
+			guard let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet) else { XCTAssert(false); return }
+			let amount = foodItemNutrient.getAmount()
+			XCTAssert(amount.isEqual(to: expectedSugarsTotal), String(amount))
+			XCTAssert(cachedFoodItem.getFoodId() == ID)
+			XCTAssert(cachedFoodItem.nutrients.count > 0)
+		}
+		
+		Database5.getCachedFoodItem(ID, getCachedCompletion, false)
+		wait(for: [expectation], timeout: 5)
 	}
+	
 
 	//TODO test for multiple food items
-//	func testCacheFoodItems() {
+//	func testGetCacheFoodItems() {
 //
 //	}
 	

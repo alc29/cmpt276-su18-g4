@@ -33,6 +33,10 @@ class GraphViewController: UIViewController {
 		reloadGraphData()
 	}
 	
+	func reloadGraphData(_ meals: [Meal], cachedFoodItems: [CachedFoodItem]) {
+		//TODO call Database5.
+	}
+	
 	// load meals to graph, & other graph settings. graph settings will change what should be displayed on the graph
 	func reloadGraphData() {
 		let data = LineChartData() //This is the object that will be added to the chart
@@ -46,8 +50,7 @@ class GraphViewController: UIViewController {
 			var lineEntries = [ChartDataEntry]() //array for saving data to be plotted on a line.
 			for meal in meals { //for each meal
 				//determine date of meal
-				//let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
-				let dayOfMonth = 0 //TODO
+				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())
 				//determine the amount of the nutrient in the meal
 
 				//create point on the graph & add to array
