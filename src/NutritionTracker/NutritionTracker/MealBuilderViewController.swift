@@ -104,29 +104,13 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	
 	
 	// MARK: - Functions
-	typealias BoolCompletion = (_ success: Bool) -> Void
+	//typealias BoolCompletion = (_ success: Bool) -> Void
 	
 	// Save new Meal to list of user's meals
 	func saveMeal(_ meal: Meal, _ debug: Bool = false) {
 		let mealCopy = meal.clone()
 		self.resetMeal()
 		self.displayMealSavedAlert()
-		
-		//get & cache nutrient info for each food item.
-		for foodItem in mealCopy.getFoodItems() {
-			let completion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
-				print("completion for: \(foodItem.getFoodId())")
-				//TODO saved cahced food item from report
-				if let toCache = report?.toCache {
-					self.saveCachedFoodItemToRealm(toCache)
-				} else if debug {
-					print("could not retrieve cached item.")
-				}
-			}
-			
-			// request food report v1 & cache info.
-			Database5.requestFoodReportV1(foodItem, completion)
-		}
 		
 		//TODO clone meal to save to realm.
 		saveMealToRealm(mealCopy)
@@ -145,8 +129,43 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		}
 		return success
 	}
+	
+	typealias CachedFoodItemCompletion = (_ cachedFoodItem: CachedFoodItem?) -> Void
+
+	func cacheFoodItem(_ foodItem: FoodItem, _ completion: @escaping CachedFoodItemCompletion, _ debug: Bool = false) {
+		//get & cache nutrient info for each food item.
+
+		let reportCompletion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
+			print("completion for: \(foodItem.getFoodId())")
+			//TODO saved cahced food item from report
+			if let toCache = report?.toCache {
+				let success = self.saveCachedFoodItemToRealm(toCache)
+				completion(toCache)
+			} else if debug {
+				print("could not cache item.")
+				completion(nil)
+			}
+			
+		}
+		Database5.requestFoodReportV1(foodItem, reportCompletion, debug)
+
+	}
+	
 	func saveCachedFoodItemToRealm(_ toCache: CachedFoodItem) -> Bool {
-		return false
+		print("caching food item: \(toCache.getFoodId())")
+		var success = false
+		DispatchQueue(label: "MealBuilderVC.saveCachedFoodItemToRealm").async {
+			autoreleasepool {
+				let realm = try! Realm()
+				try! realm.write {
+					realm.add(toCache)
+					success = true
+					print("cached food item successfully saved")
+				}
+			}
+		}
+		print("saveCachedFoodItemToRealm: \(success)")
+		return success
 	}
 	
 	func displayMealSavedAlert() {

@@ -24,7 +24,9 @@ class Database5 {
 	typealias SearchResultCompletion = (_ foodItems: [FoodItem]) -> Void
 	typealias FoodItemNutrientCompletion = (_ foodItemNutrient: FoodItemNutrient) -> Void
 	typealias FoodItemsCompletion = (_ foodItems: [FoodItem]) -> Void
+	typealias CachedFoodItemCompletion = (_ cachedFoodItem: CachedFoodItem?) -> Void
 
+	
 	// Request a food reportV1, whcih returns & caches nutrient info about 1 specific food.
 	static func requestFoodReportV1(_ foodItem: FoodItem, _ completion: @escaping FoodReportCompletionV1, _ debug: Bool = false) {
 		do {
@@ -63,6 +65,7 @@ class Database5 {
 			completion(nil)
 		}
 		
+		//NOTE: do not add nil completion here.
 		
 	} //end request
 
@@ -149,38 +152,47 @@ class Database5 {
 		return foodItems
 	}
 	
-	//TODO 2nd try
-	static func getCachedFoodItem(_ foodId: Int) -> CachedFoodItem? {
-		var cachedItem = CachedFoodItem()
+	
+	static func getCachedFoodItem(_ foodId: Int, _ completion: @escaping CachedFoodItemCompletion,_ debug: Bool = false) {
+		var cachedItem: CachedFoodItem? = nil
+		var success = false
+		
 		do {
 			//DispatchQueue(label: "Database5.getCachedFoodItem").async {
 			DispatchQueue.main.async {
 				autoreleasepool {
 					let realm = try! Realm()
 					//realm.refresh()
-					var done = false
 					let results = realm.objects(CachedFoodItem.self)
+					if results.count == 0 && debug {
+						print("0 CachedFoodItem's in realm.")
+						completion(nil)
+					}
 					for item in results {
-						if item.getFoodId() == foodId && !done {
-//							print("cached item's id: \(item.getFoodId())")
-//							//return item
-//							for nutrient in item.nutrients {
-//								//cachedItem.nutrients.append(nutrient.clone())
-//								cachedItem.nutrients.append(FoodItemNutrient())
-//								print("appending")
-//							}
-							done = true
-							cachedItem = item
+						if item.getFoodId() == foodId && !success {
+							var nutrients = [FoodItemNutrient]()
+							for foodItemNutrient in item.nutrients {
+								nutrients.append(foodItemNutrient.clone())
+								print("appending")
+							}
+							success = true
+							cachedItem = CachedFoodItem(foodId, nutrients)
+							completion(cachedItem)
 						}
 					}
+					completion(nil)
 				}
 			}
 		} catch let error {
 			print(error)
+			completion(nil)
 		}
 		
-		//print("getCachedFoodItem returning nil")
-		return cachedItem
+		if debug && success {
+			print("getCachedFoodItem successful, foodId: \(foodId)")
+		} else if debug {
+			print("getCachedFoodItem unsuccessful, foodId: \(foodId)")
+		}
 	}
 	
 	private static func makeUrlRequestFromString(_ urlStr: String) -> URLRequest? {
@@ -189,17 +201,6 @@ class Database5 {
 		}
 		return URLRequest(url: url)
 	}
-	
-//save a food item that also contains nutrient information.
-//	static func cacheFoodItem(_ cachedFoodItem: CachedFoodItem) {
-//		DispatchQueue.main.async {
-//			let realm = try! Realm()
-//			try! realm.write {
-//				realm.add(cachedFoodItem)
-//			}
-//		}
-//	}
-
 	
 	// MARK: Method graveyard
 	

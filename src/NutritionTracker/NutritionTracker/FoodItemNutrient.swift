@@ -27,6 +27,10 @@ class FoodItemNutrient: Object {
 		self.perUnit = perUnit
 	}
 	
+	func clone() -> FoodItemNutrient {
+		return FoodItemNutrient(nutrientId, amount, unit, perAmount, perUnit)
+	}
+	
 	// MARK: Setters
 	//TODO
 //	func setNutrient(_ nutrient: Nutrient) {
