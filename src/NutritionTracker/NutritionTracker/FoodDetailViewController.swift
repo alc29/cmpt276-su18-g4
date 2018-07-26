@@ -25,7 +25,7 @@ class FoodDetailViewController: UIViewController {
 //	var foodItem: FoodItem? {
 //		didSet { configureView() }
 //	}
-	var foodItem = FoodItem(0, "default food item")
+	var foodItem = FoodItem(0, "default food item", 0, "g")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,7 +46,6 @@ class FoodDetailViewController: UIViewController {
     }
 
 	@objc func addButtonPressed(sender: UIBarButtonItem) {
-		print("add button pressed from FoodDetail")
 		foodSelector?.addFood(foodItem: foodItem)
 	}
 
@@ -72,7 +71,7 @@ class FoodDetailViewController: UIViewController {
 //		var entries = [BarChartDataEntry]()
 //		let completion = handleJsonData
 //		for nut in nutrientsToDisplay {
-////			Database5.sharedInstance.getAmountPerOf(nut, foodItem!.getFoodId(), completion)
+////			Database5.getAmountPerOf(nut, foodItem!.getFoodId(), completion)
 //			//TODO uncomment
 //			let amountPer = Database5.sharedInstance.getAmountPerOf(nutrient: nut, foodId: foodItem!.getFoodId())
 ////			if let amountPer = Database5.sharedInstance.getAmountPerOf(nut, foodItem!.getFoodId()) {

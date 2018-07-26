@@ -12,26 +12,39 @@ import RealmSwift
 
 class FoodItemNutrient: Object {
 	// MARK: Properties
-	private var nutrient = Nutrient.Nil
-	private var amountPer = AmountPer()
+	@objc private dynamic var nutrientId: Int = -1
+	@objc private dynamic var amount: Float = Float(-1)
+	@objc private dynamic var unit: String = "uninitialized"
+	@objc private dynamic var perAmount: Float = Float(-1)
+	@objc private dynamic var perUnit: String = "g"
 	
-	convenience init(_ nutrient: Nutrient, _ amountPer: AmountPer) {
+	convenience init(_ nutrientId: Int, _ amount: Float, _ unit: String, _ perAmount: Float, _ perUnit: String) {
 		self.init()
-		self.nutrient = nutrient
-		self.amountPer = amountPer
+		self.nutrientId = nutrientId
+		self.amount = amount
+		self.unit = unit
+		self.perAmount = perAmount
+		self.perUnit = perUnit
+	}
+	
+	func clone() -> FoodItemNutrient {
+		return FoodItemNutrient(nutrientId, amount, unit, perAmount, perUnit)
 	}
 	
 	// MARK: Setters
-	func setNutrient(_ nutrient: Nutrient) {
-		self.nutrient = nutrient
-	}
-	func setBaseAmount(_ amount: Float) {
-		amountPer.setBaseAmount(amount)
-	}
+	//TODO
+//	func setNutrient(_ nutrient: Nutrient) {
+//		self.nutrient! = nutrient
+//	}
+//	func setBaseAmount(_ amount: Float) {
+//		amountPer!.setBaseAmount(amount)
+//	}
 	
 	// MARK: Getters
-	func getNutrient() -> Nutrient { return nutrient }
-	func getName() -> String { return nutrient.name; }
-	func getAmountPer() -> AmountPer { return amountPer}
-	func getNutrientId() -> Int { return nutrient.nutrientId }
+	func getNutrientId() -> Int { return nutrientId}
+	func getAmount() -> Float { return amount }
+	func getUnit() -> String { return unit }
+	func getPerAmount() -> Float { return perAmount }
+	func getPerUnit() -> String { return perUnit }
+	
 }

@@ -13,14 +13,14 @@ import RealmSwift
 class Meal: FoodItemList {
 	// MARK: Properties
 	@objc dynamic var date = Date() //default to current date
-	@objc dynamic var foodReportV2: FoodReportV2? = FoodReportV2()
 	
 	func clone() -> Meal {
 		let meal = Meal()
-		for foodItem in meal.getFoodItems() {
+		for foodItem in self.getFoodItems() {
 			meal.add(foodItem)
 		}
-		//TODO copy date
+		//TODO clone date
+		//TODO clone portions
 		return meal
 	}
 	
@@ -31,21 +31,17 @@ class Meal: FoodItemList {
 		}
 	}
 	
-	//Mark: Getters
+	// Mark: Getters
 	func getDate() -> Date {
 		return date
 	}
 	
-//	func addNutrientReport(_ report: NutrientReport) {
-//		self.nutrientReport!.update(report)
-//	}
-	
-//	func addFoodReportV2(_ report: FoodReportV2) {
-//		self.foodReportV2.update(report)
-//	}
-	
-	//replaces the current food report.
-	func setFoodReportV2(_ report: FoodReportV2) {
-		self.foodReportV2 = report
+	func getAmountOf(_ nutrient: Nutrient) -> Float {
+		var sum: Float = 0.0
+		for f in getFoodItems() {
+			sum = sum + f.getAmountOf(nutrient)
+		}
+		return sum
 	}
+	
 }

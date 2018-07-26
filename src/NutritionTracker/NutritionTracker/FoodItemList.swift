@@ -22,6 +22,7 @@ class FoodItemList: Object {
 	
 	// Add a fooditem to this list
 	func add(_ foodItem: FoodItem) {
+		//TODO check for duplicates
 		list.append(foodItem)
 	}
 
@@ -50,6 +51,16 @@ class FoodItemList: Object {
 			return list[index];
 		}
 		return nil;
+	}
+	
+	//return the food item with the corresponding id
+	func get(id: Int) -> FoodItem? {
+		for foodItem in list {
+			if foodItem.getFoodId() == id {
+				return foodItem
+			}
+		}
+		return nil
 	}
 	
 	// return a list of all the food items.

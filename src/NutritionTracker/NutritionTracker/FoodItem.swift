@@ -21,31 +21,33 @@ class FoodItem: Object {
 	@objc private dynamic var id = UUID().uuidString
 	@objc private dynamic var foodId = -1
 	@objc private dynamic var name = "uninitialized"
-	@objc private dynamic var amount: Amount? = Amount()
-	
+	@objc private dynamic var amount: Float = Float(0)
+	@objc private dynamic var unit: String = ""
 	
 	//Note: optional initializer FoodItem() works, but should be avoided.
-	convenience init(_ foodId: Int?, _ name: String?) {
+	convenience init(_ foodId: Int, _ name: String, _ amount: Float = Float(0), _ unit: String = "g") {
 		self.init()
-		
-		if (foodId != nil) {
-			self.foodId = foodId!
-		}
-		if (name != nil) {
-			self.name = name!
-		}
+		self.foodId = foodId
+		self.name = name
+		self.amount = amount
+		self.unit = unit
 	}
 	
 	// MARK: Setters
-	func setAmount(_ amount: Float, unit: Unit = Unit.Microgram) {
-		self.amount!.setAmount(amount)
-		self.amount!.setUnit(unit)
+	
+	//TODO consider moving to Database
+	// return the specified amount of nutrient contained in this food.
+	func getAmountOf(_ nutrient: Nutrient) -> Float {
+		//get nutrient amount info from cached food item in realm.
+		
+		return Float(0)
 	}
 
 	// MARK: Getters
 	func getFoodId() -> Int { return foodId }
 	func getName() -> String { return name }
-	func getAmount() -> Amount { return amount! }
+	func getAmount() -> Float { return amount }
+	func getUnit() -> String { return unit }
 	
 	//return the pid
 	override static func primaryKey() -> String? {

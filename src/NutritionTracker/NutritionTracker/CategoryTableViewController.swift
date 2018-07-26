@@ -15,10 +15,35 @@ import UIKit
 
 class CategoryTableViewController: UITableViewController {
 	// MARK: Properties
-	private let defaultFoodGroups = [FoodGroup.Dairy_and_Egg_Products,
-									 FoodGroup.Snacks,
-									 FoodGroup.Beverages,
-									 FoodGroup.Vegetables]
+	
+	//TODO add more food groups from FoodGroup
+	private let defaultFoodGroups = [
+			FoodGroup.Dairy_and_Egg_Products,
+			FoodGroup.American_Indian_Alaska_Native_Foods,
+			FoodGroup.Baby_Foods,
+			FoodGroup.Baked_Products,
+			FoodGroup.Beef_Products,
+			FoodGroup.Beverages,
+			FoodGroup.Breakfast_Cereals,
+			FoodGroup.Cereal_Grains_and_Pasta,
+			FoodGroup.Fast_Foods,
+			FoodGroup.Fats_and_Oils,
+			FoodGroup.Finfish_and_Shellfish_Products,
+			FoodGroup.Fruits_and_Fruit_Juices,
+			FoodGroup.Lamb_Veal_and_Game_Products,
+			FoodGroup.Legumes_and_Legume_Products,
+			FoodGroup.Meals_Entrees_and_Side_Dishes,
+			FoodGroup.Nut_and_Seed_Products,
+			FoodGroup.Pork_Products,
+			FoodGroup.Poultry_Products,
+			FoodGroup.Restaurant_Foods,
+			FoodGroup.Sausages_and_Luncheon_Meats,
+			FoodGroup.Snacks,
+			FoodGroup.Soups_Sauces_and_Gravies,
+			FoodGroup.Spices_and_Herbs,
+			FoodGroup.Sweets,
+			FoodGroup.Vegetables
+		]
 	var foodGroups = [FoodGroup]()
 	
     override func viewDidLoad() {
@@ -48,18 +73,21 @@ class CategoryTableViewController: UITableViewController {
 	// Called when a cell is tapped. dipslay a table view of the list of foods
 	// corresponding to the food group that was tapped.
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		//let foodGroupId = foodGroups[indexPath.row].getIdStr()
-		//Database5.sharedInstance.getFoodItemsFrom(foodGroupId, handleFoodGroupItemsQuery)
-		//TODO get food items from food group
-		
+	
+		// get food items from food group form database
 		if let indexPath = tableView.indexPathForSelectedRow {
+			let foodGroupId = foodGroups[indexPath.row].getIdStr()
+			let completion: ([FoodItem]?) -> Void = { (foodItems: [FoodItem]?) -> Void in
+
+				DispatchQueue.main.async {
+					let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoodListTableViewController") as! FoodListTableViewController
+					vc.foodItems = foodItems!
+					self.navigationController?.pushViewController(vc, animated: true)
+				}
+				
+			}
 			
-			//present sample food items in the food group
-			var foodItems = [FoodItem]()
-			foodItems.append(FoodItem(123, "afasfsa"))
-			let vc = FoodListTableViewController()
-			vc.foodItems = foodItems
-			self.navigationController?.pushViewController(vc, animated: true)
+			Database5.foodGroupSearch(foodGroupId, completion)
 		}
 	}
 	
@@ -70,7 +98,7 @@ class CategoryTableViewController: UITableViewController {
 		return cell
 	}
 	
-	
+	//TODO remove
 //	func handleFoodGroupItemsQuery(_ data: Data?) {
 //		if (data != nil) {
 //			let foodItemResults = Database5.sharedInstance.jsonToFoodItems(data!)
