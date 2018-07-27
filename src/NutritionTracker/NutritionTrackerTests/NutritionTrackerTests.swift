@@ -167,7 +167,6 @@ class NutritionTrackerTests: XCTestCase {
 		MealBuilderViewController().saveMeal(meal, completion, false) // TODO use completion for testing cachedFoodItem
 		wait(for: [expectation], timeout: 3)
 		
-		
 	}
 	
 	func testCacheFoodItem() {
@@ -184,7 +183,7 @@ class NutritionTrackerTests: XCTestCase {
 			
 			let getCachedCompletion: (CachedFoodItem?) -> Void = { (cachedFoodItem: CachedFoodItem?) -> Void in
 				
-				guard let cachedFoodItem = cachedFoodItem else { XCTAssert(false); return } 
+				guard let cachedFoodItem = cachedFoodItem else { XCTAssert(false); return }
 				guard let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet) else { XCTAssert(false); return }
 				let amount = foodItemNutrient.getAmount()
 				XCTAssert(amount.isEqual(to: expectedSugarsTotal), String(amount))
@@ -215,37 +214,48 @@ class NutritionTrackerTests: XCTestCase {
 		let ex2 = XCTestExpectation()
 		let ex3 = XCTestExpectation()
 		let c1: (Bool) -> Void = { (success: Bool) -> Void in
-			ex1.fulfill();
 			XCTAssert(success);
+			ex1.fulfill();
 		}
 		let c2: (Bool) -> Void = { (success: Bool) -> Void in
-			ex2.fulfill();
 			XCTAssert(success);
+			ex2.fulfill();
 		}
 		let c3: (Bool) -> Void = { (success: Bool) -> Void in
-			ex3.fulfill();
 			XCTAssert(success);
+			ex3.fulfill();
 		}
 		MealBuilderViewController().cacheFoodItem(f1, c1, false)
 		MealBuilderViewController().cacheFoodItem(f2, c2, false)
 		MealBuilderViewController().cacheFoodItem(f3, c3, false)
-		wait(for: [ex1], timeout: 10)
-		wait(for: [ex2], timeout: 10)
-		wait(for: [ex3], timeout: 10)
+		wait(for: [ex1, ex2, ex3], timeout: 10)
 		
 		
 		//test getting cached item
 		let getF1Completes = XCTestExpectation(description: "getCachedFoodItem completes")
-
+		
 		let getCachedCompletion: (CachedFoodItem?) -> Void = { (cachedFoodItem: CachedFoodItem?) -> Void in
-			getF1Completes.fulfill()
-
-			guard let cachedFoodItem = cachedFoodItem else { XCTAssert(false); return } //TODO sometimes failes
+			guard let cachedFoodItem = cachedFoodItem else { XCTAssert(false); return } //TODO sometimes fails
+			XCTAssertNotNil(cachedFoodItem)
 			//TODO test other food items
+			getF1Completes.fulfill()
 		}
 
 		Database5.getCachedFoodItem(f1.getFoodId(), getCachedCompletion, false) //test f1, coriander
 		wait(for: [getF1Completes], timeout: 5)
+	}
+	
+	func test_getUnsavedCachedFoodItem() {
+		let f1 = FoodItem(11165, "coriander")
+		let expectation = XCTestExpectation(description: "completion completes")
+		
+		let completion: (CachedFoodItem?) -> Void = { (cachedFoodItem: CachedFoodItem?) -> Void in
+			XCTAssertNotNil(cachedFoodItem!)
+			expectation.fulfill()
+		}
+		
+		Database5.getUnsavedCachedFoodItem(f1.getFoodId(), completion, false)
+		wait(for: [expectation], timeout: 10)
 	}
 	
 	//TODO test / handle duplicate food item caching
