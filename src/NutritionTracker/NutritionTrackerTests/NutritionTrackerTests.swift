@@ -133,33 +133,41 @@ class NutritionTrackerTests: XCTestCase {
 	func testSaveMeal() {
 		let meal = Meal()
 		let poopId = 45144608
+		let carrotId = 11683
 		meal.add(FoodItem(poopId, "poop candy"))
-		meal.add(FoodItem(2, "second"))
-		let expectation = XCTestExpectation(description: "completion completes")
+		meal.add(FoodItem(carrotId, "carrot, dehydrated"))
+		let expectation = XCTestExpectation(description: "nested completion completes")
+		
 		let completion: (Bool) -> Void = { (success: Bool) -> Void in
-			expectation.fulfill()
 			XCTAssert(success)
+			
+			
+			//nested completion
+			let mealsCompletionInvoked = XCTestExpectation()
+			let mealsCompletion: ([Meal]) -> Void = { (meals: [Meal]) -> Void in
+				XCTAssert(meals.count == 1, "\(meals.count)")
+				XCTAssertNotNil(meals.first!)
+				XCTAssert(meals.first!.getFoodItems().count == 2)
+				let foodItems = meals.first!.getFoodItems()
+				XCTAssert(foodItems.count == 2)
+				
+				let poopCandy = foodItems[0]
+				let second = foodItems[1]
+				XCTAssert(poopCandy.getFoodId() == poopId)
+				XCTAssert(second.getFoodId() == carrotId)
+				
+				mealsCompletionInvoked.fulfill()
+				expectation.fulfill()
+			}
+			
+			Database5.getSavedMeals(mealsCompletion)
+			self.wait(for: [mealsCompletionInvoked], timeout: 10)
 		}
 		
 		MealBuilderViewController().saveMeal(meal, completion, false) // TODO use completion for testing cachedFoodItem
 		wait(for: [expectation], timeout: 3)
 		
-		let mealsCompletionInvoked = XCTestExpectation()
-		let mealsCompletion: ([Meal]) -> Void = { (meals: [Meal]) -> Void in
-			XCTAssert(meals.count == 1)
-			let foodItems = meals.first!.getFoodItems() //TODO sometimes fails
-			XCTAssert(foodItems.count == 2)
-
-			let poopCandy = foodItems[0]
-			let second = foodItems[1]
-			XCTAssert(poopCandy.getFoodId() == poopId)
-			XCTAssert(second.getFoodId() == 2)
-			
-			mealsCompletionInvoked.fulfill()
-		}
 		
-		Database5.getSavedMeals(mealsCompletion)
-		wait(for: [mealsCompletionInvoked], timeout: 10)
 	}
 	
 	func testCacheFoodItem() {
@@ -172,31 +180,24 @@ class NutritionTrackerTests: XCTestCase {
 		//test successful cache
 		let expectation = XCTestExpectation(description: "cacheFoodItem completes")
 		let completion: (Bool) -> Void = { (success: Bool) -> Void in
-			expectation.fulfill()
 			XCTAssert(success)
+			
+			let getCachedCompletion: (CachedFoodItem?) -> Void = { (cachedFoodItem: CachedFoodItem?) -> Void in
+				
+				guard let cachedFoodItem = cachedFoodItem else { XCTAssert(false); return } 
+				guard let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet) else { XCTAssert(false); return }
+				let amount = foodItemNutrient.getAmount()
+				XCTAssert(amount.isEqual(to: expectedSugarsTotal), String(amount))
+				XCTAssert(cachedFoodItem.getFoodId() == ID)
+				XCTAssert(cachedFoodItem.nutrients.count > 0)
+				expectation.fulfill()
+
+			}
+			Database5.getCachedFoodItem(ID, getCachedCompletion, false) //callback gets passed here. the callback gets called later on by this function.
+
 		}
 		MealBuilderViewController().cacheFoodItem(FoodItem(ID, "poop candy"), completion, false)
-		wait(for: [expectation], timeout: 3)
-
-		
-		
-		let getCachedFoodItemExpectation = XCTestExpectation(description: "getCachedFoodItem completes")
-		
-		//callback that is passed to Database5
-		let getCachedCompletion: (CachedFoodItem?) -> Void = { (cachedFoodItem: CachedFoodItem?) -> Void in
-			getCachedFoodItemExpectation.fulfill()
-			
-			guard let cachedFoodItem = cachedFoodItem else { XCTAssert(false); return } //TODO sometimes failes
-			guard let foodItemNutrient = cachedFoodItem.getFoodItemNutrient(nutrientToGet) else { XCTAssert(false); return }
-			let amount = foodItemNutrient.getAmount()
-			XCTAssert(amount.isEqual(to: expectedSugarsTotal), String(amount))
-			XCTAssert(cachedFoodItem.getFoodId() == ID)
-			XCTAssert(cachedFoodItem.nutrients.count > 0)
-		}
-		
-		Database5.getCachedFoodItem(ID, getCachedCompletion, false) //callback gets passed here. the callback gets called later on by this function.
-		wait(for: [expectation], timeout: 5)
-		
+		wait(for: [expectation], timeout: 10)
 	}
 	
 
