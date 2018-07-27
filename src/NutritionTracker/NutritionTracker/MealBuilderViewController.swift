@@ -13,24 +13,35 @@ protocol FoodSelector {
 	func addFood(foodItem: FoodItem)
 }
 
+/*
+LEFT OFF HERE
+move saveMeal functionality to other view
+on save meal, return to meal builder; display mealSaved alert
+*/
+
 class MealBuilderViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, FoodSelector {
 	// MARK: Properties
 	@IBOutlet weak var mealTableView: UITableView!
 	@IBOutlet weak var saveMealButton: UIButton!
-	//var mealTableViewCells = [FoodItemTableViewCell]()
 	var meal = Meal()
+	static var testInit = true;
+
+
 	var mealSavedAlertPopup:UIView?
 	var mealSavedAlertLabel:UILabel = UILabel(frame: CGRect(x:100, y:400, width:200, height:50))
 
 	typealias CachedFoodItemCompletion = (_ cachedFoodItem: CachedFoodItem?) -> Void
 	typealias BoolCompletion = (_ success: Bool) -> Void
 	
+	
+	
 	// MARK: - VC Methods
     override func viewDidLoad() {
         super.viewDidLoad()
 		 //TODO center label
 		mealSavedAlertLabel.text = "Meal Saved"
-		mealSavedAlertLabel.isHidden = true
+		//mealSavedAlertLabel.isHidden = true
+		mealSavedAlertLabel.alpha = 0
 		mealSavedAlertLabel.isUserInteractionEnabled = false
 		mealSavedAlertLabel.backgroundColor = UIColor.black
 		mealSavedAlertLabel.textColor = UIColor.white
@@ -43,10 +54,13 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		mealTableView.dataSource = self
 		mealTableView.register(MealBuilderTableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
 
-		//TEST
-		meal.add(FoodItem(45144608, "Poop candy", 0, "g"))
+		//TEST TODO remove
+		if MealBuilderViewController.testInit {
+			meal.add(FoodItem(45144608, "Poop candy", 0, "g"))
+			meal.add(FoodItem(11683, "Carot"))
+			MealBuilderViewController.testInit = false;
+		}
 		asyncReloadData()
-		
 		saveMealButton.isEnabled = meal.count() > 0
 	}
 	
@@ -66,7 +80,6 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 	
 	@IBAction func foodSearchButtonPressed(_ sender: UIButton) {
-		
 		let storyboard = UIStoryboard(name: "Main", bundle: nil)
 		let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
 		let vc = storyboard.instantiateViewController(withIdentifier: "FoodSearchView") as! FoodSearchViewController
@@ -95,36 +108,43 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
         self.navigationController?.pushViewController(visionController, animated: true)
     }
 	
+	// MARK: - Meal Saving
+	
+	//TODO present NewMealSettingsVC before saving meal.
 	@IBAction func saveMealButtonPressed(_ sender: UIButton) {
-		//TODO present portions screen; set amounts for each food item in the meal.
-		
-		//TODO meal date defaults to current day; add option button to set date.
-		
+		//TODO present new meal settings
+		let storyboard = UIStoryboard(name: "Main", bundle: nil)
+		let newMealSettingsViewController = storyboard.instantiateViewController(withIdentifier: "NewMealSettingsVC") as! NewMealSettingsViewController
+		newMealSettingsViewController.meal = self.meal
+		newMealSettingsViewController.mealBuilder = self
+		self.navigationController?.pushViewController(newMealSettingsViewController, animated:true)
+	}
+	
+	//called from NewMealSettingsViewController
+	func onReturnFromSavedMeal() {
 		let mealCopy = self.meal.clone()
-		let emptyCompletion: (Bool) -> Void = { (success: Bool) -> Void in } //TODO refactor duplicate
+		let emptyCompletion: (Bool) -> Void = { (success: Bool) -> Void in }
 		
 		saveMeal(mealCopy, emptyCompletion)
-		self.resetMeal()
-		self.displayMealSavedAlert()
+		
 		for foodItem in mealCopy.getFoodItems() {
 			cacheFoodItem(foodItem, emptyCompletion)
 		}
-
+		
 		saveMealButton.isEnabled = false
+		self.resetMeal()
+		self.displayMealSavedAlert()
 	}
-	
-	//func emptyBoolCompletion(_ bool: Bool) {}
-	
-	// MARK: - Functions
-	
+
+
 	// Save new Meal to list of user's meals
 	func saveMeal(_ meal: Meal, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
 		let mealCopy = meal.clone()
-		
+
 		//TODO clone meal to save to realm.
 		saveMealToRealm(mealCopy, completion)
 	}
-	
+
 	func saveMealToRealm(_ meal: Meal, _ completion: @escaping BoolCompletion) {
 		DispatchQueue(label: "MealBuilderVC.saveMealToRealm").async {
 			autoreleasepool {
@@ -136,26 +156,25 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 			}
 		}
 	}
-	
+
 	//MARK: save & cache singular food items
 	func cacheFoodItem(_ foodItem: FoodItem, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
-		print("cachingFoodItem")
+		
 		//get & cache nutrient info for each food item.
-
 		let reportCompletion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
 			if debug {print("completion for: \(foodItem.getFoodId())")}
 			//TODO saved cahced food item from report
 			if let toCache = report?.toCache {
-				
+
 				self.saveCachedFoodItemToRealm(toCache, completion)
-				
+
 			} else {
 				if debug {print("could not cache item.")}
 			}
 		}
 		Database5.requestFoodReportV1(foodItem, reportCompletion, debug)
 	}
-	
+
 	func saveCachedFoodItemToRealm(_ toCache: CachedFoodItem, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
 		if debug {print("caching food item: \(toCache.getFoodId())")}
 		DispatchQueue(label: "MealBuilderVC.saveCachedFoodItemToRealm").async {
@@ -170,48 +189,16 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		}
 	}
 	
-	//MARK: save & cache multiple food items
-//	func cacheFoodItems(_ foodItems: [FoodItem], _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
-//		//get & cache nutrient info for each food item.
-//
-//		let reportCompletion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
-//			if debug {print("completion for: \(foodItem.getFoodId())")}
-//			//TODO saved cahced food item from report
-//			if let toCache = report?.toCache {
-//
-//				self.saveCachedFoodItemsToRealm(toCache, completion)
-//
-//			} else {
-//				if debug {print("could not cache item.")}
-//			}
-//		}
-//		Database5.requestFoodReportV1(foodItem, reportCompletion, debug)
-//	}
-//	func saveCachedFoodItemsToRealm(_ toCache: CachedFoodItem, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
-//		if debug {print("caching food item: \(toCache.getFoodId())")}
-//		DispatchQueue(label: "MealBuilderVC.saveCachedFoodItemToRealm").async {
-//			autoreleasepool {
-//				let realm = try! Realm()
-//				try! realm.write {
-//					realm.add(toCache)
-//					completion(true)
-//					if debug {print("cached food item successfully saved")}
-//				}
-//			}
-//		}
-//	}
-	
 	
 	func displayMealSavedAlert() {
 		mealSavedAlertLabel.isHidden = false
 		mealSavedAlertLabel.alpha = 0.5
-		UIView.animate(withDuration: 1.0, animations: { () -> Void in
+		UIView.animate(withDuration: 2.0, animations: { () -> Void in
 			self.mealSavedAlertLabel.alpha = 0
-			self.mealSavedAlertLabel.isHidden = true
 		})
 	}
 	
-	//replace current meal with new instance
+	//reset with new empty meal
 	func resetMeal() {
 		self.meal = Meal()
 		asyncReloadData()
@@ -223,18 +210,10 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		saveMealButton.isEnabled = true
 	}
 	
-	//TODO add button in UITableViewCell to remove food item.
 	func removeFromMeal(_ index: Int) {
 		meal.remove(index)
 		asyncReloadData()
 		saveMealButton.isEnabled = meal.count() > 0
-	}
-	
-	func openSearchFoodItemSelector() {
-		//add SearchViewController to stack
-	}
-	func openCatalogFoodItemSelector() {
-		//add CatalogViewController to stack
 	}
 	
 	func asyncReloadData() {
@@ -245,7 +224,6 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	
 	// MARK: - FoodSelector protocol
 	func addFood(foodItem: FoodItem) {
-		print("food selector: food added.")
 		addToMeal(foodItem)
 	}
 	
@@ -264,7 +242,6 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		let foodItem = meal.getFoodItems()[indexPath.row]
 		
 		var cell: UITableViewCell
-		//MealFoodItemCell
 		if let reuseCell = tableView.dequeueReusableCell(withIdentifier: "MealFoodItemCell", for: indexPath) as UITableViewCell! {
 		//if let reuseCell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as UITableViewCell! {
 			cell = reuseCell
@@ -272,7 +249,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 			cell = MealBuilderTableViewCell(foodItem)
 		}
 
-		cell.textLabel!.text = foodItem.getName()
+		cell.textLabel!.text = foodItem.getName() //TODO move to cell initializer
 		return cell
 	}
 	
@@ -285,12 +262,6 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	}
 	
 	// MARK: - Table View Swiping gestures
-//	func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-//		if editingStyle == .delete {
-//			removeFromMeal(indexPath.row)
-//		}
-//	}
-	
 	func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
 		let action = UIContextualAction(style: .destructive, title: "Delete", handler: { (ac:UIContextualAction, view:UIView, success:(Bool) -> Void) in
 			self.removeFromMeal(indexPath.row)
@@ -306,27 +277,5 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		//action.backgroundColor = .red
 		return UISwipeActionsConfiguration(actions: [action])
 	}
-
-	
-	/*
-	func insertRow
-	func deleteRow(_ indexPath: IndexPath) {
-	mealTableView.beginUpdates()
-	//mealTableView.insertRows(at: [IndexPath], with: UITableViewRowAnimation.automatic)
-	//mealTableView.deleteRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
-	mealTableView.endUpdates()
-	mealTableView.reloadData()
-	}
-	*/
-	
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

@@ -16,8 +16,6 @@ class FoodItemList: Object {
 	@objc private dynamic var name = "Untitled List"
 	private let list = List<FoodItem>()
 	
-	//TODO getters & setters for name
-	
 	// MARK: Public methods
 	
 	// Add a fooditem to this list

@@ -179,9 +179,10 @@ class NutritionTrackerTests: XCTestCase {
 		wait(for: [expectation], timeout: 3)
 
 		
-		//test getting cached item
+		
 		let getCachedFoodItemExpectation = XCTestExpectation(description: "getCachedFoodItem completes")
 		
+		//callback that is passed to Database5
 		let getCachedCompletion: (CachedFoodItem?) -> Void = { (cachedFoodItem: CachedFoodItem?) -> Void in
 			getCachedFoodItemExpectation.fulfill()
 			
@@ -193,8 +194,9 @@ class NutritionTrackerTests: XCTestCase {
 			XCTAssert(cachedFoodItem.nutrients.count > 0)
 		}
 		
-		Database5.getCachedFoodItem(ID, getCachedCompletion, false)
+		Database5.getCachedFoodItem(ID, getCachedCompletion, false) //callback gets passed here. the callback gets called later on by this function.
 		wait(for: [expectation], timeout: 5)
+		
 	}
 	
 
