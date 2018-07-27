@@ -5,7 +5,8 @@
 //  Created by alc29 on 2018-06-29.
 //  Copyright © 2018 alc29. All rights reserved.
 //
-//	Represents a mutable list of FoodItem's
+//	Represents a mutable set of FoodItem's
+//	Duplicates not allowed.
 
 import Foundation
 import RealmSwift
@@ -20,8 +21,9 @@ class FoodItemList: Object {
 	
 	// Add a fooditem to this list
 	func add(_ foodItem: FoodItem) {
-		//TODO check for duplicates
-		list.append(foodItem)
+		if !contains(foodItem.getFoodId()) {
+			list.append(foodItem)
+		}
 	}
 
 	// Remove the food item at the specified index.
@@ -64,6 +66,15 @@ class FoodItemList: Object {
 	// return a list of all the food items.
 	func getFoodItems() -> List<FoodItem> {
 		return list
+	}
+	
+	func contains(_ foodId: Int) -> Bool {
+		for food in list {
+			if food.getFoodId() == foodId {
+				return true
+			}
+		}
+		return false
 	}
 	
 	// return the primery id key

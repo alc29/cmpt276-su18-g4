@@ -151,10 +151,12 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 				let realm = try! Realm()
 				try! realm.write {
 					realm.add(meal)
-					completion(true)
 				}
 			}
+			completion(true)
+
 		}
+
 	}
 
 	//MARK: save & cache singular food items
@@ -163,15 +165,16 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		//get & cache nutrient info for each food item.
 		let reportCompletion: (FoodReportV1?) -> Void = { (report: FoodReportV1?) -> Void in
 			if debug {print("completion for: \(foodItem.getFoodId())")}
-			//TODO saved cahced food item from report
+			
+			// saved cahced food item from report
 			if let toCache = report?.toCache {
-
 				self.saveCachedFoodItemToRealm(toCache, completion)
 
 			} else {
 				if debug {print("could not cache item.")}
 			}
 		}
+		
 		Database5.requestFoodReportV1(foodItem, reportCompletion, debug)
 	}
 
@@ -180,6 +183,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		DispatchQueue(label: "MealBuilderVC.saveCachedFoodItemToRealm").async {
 			autoreleasepool {
 				let realm = try! Realm()
+				//TODO check for duplicates
 				try! realm.write {
 					realm.add(toCache)
 					completion(true)

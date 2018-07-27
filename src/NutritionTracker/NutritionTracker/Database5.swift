@@ -50,7 +50,7 @@ class Database5 {
 				}
 				//if debug { self.printJsonData(data) }
 				
-				if let report = FoodReportV1.cacheFromJsonData(data, debug) {
+				if let report = FoodReportV1.fromJsonData(data, debug) {
 					if debug { print("foodreport v1 completion successful.") }
 					completion(report)
 				} else {
@@ -166,6 +166,8 @@ class Database5 {
 					let results = realm.objects(CachedFoodItem.self)
 					if results.count == 0 {
 						print("0 CachedFoodItem's in realm.")
+						completion(nil)
+						return
 					}
 					for item in results {
 						if item.getFoodId() == foodId && !success {

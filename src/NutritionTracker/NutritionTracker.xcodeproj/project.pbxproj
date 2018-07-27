@@ -16,6 +16,7 @@
 		0A24AB4F20FF0BC5002B10E1 /* DayAxisValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A24AB4B20FF0BC5002B10E1 /* DayAxisValueFormatter.swift */; };
 		0A31499220F8041100EFBB96 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A31499020F8041000EFBB96 /* LICENSE.txt */; };
 		0A31499320F8041100EFBB96 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0A31499120F8041100EFBB96 /* README.md */; };
+		0A37A10B210BA0D2005218C5 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A37A10A210BA0D2005218C5 /* Measure.swift */; };
 		0A68B77320FAE9C000C1FB0A /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A68B77220FAE9C000C1FB0A /* Util.swift */; };
 		0A68B77520FB13B200C1FB0A /* FoodReportV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A68B77420FB13B200C1FB0A /* FoodReportV1.swift */; };
 		0A6D41FD20E5C06100C3430A /* CachedFoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D41FC20E5C06100C3430A /* CachedFoodItem.swift */; };
@@ -73,6 +74,7 @@
 		0A24AB4B20FF0BC5002B10E1 /* DayAxisValueFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayAxisValueFormatter.swift; sourceTree = "<group>"; };
 		0A31499020F8041000EFBB96 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		0A31499120F8041100EFBB96 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		0A37A10A210BA0D2005218C5 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		0A68B77220FAE9C000C1FB0A /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		0A68B77420FB13B200C1FB0A /* FoodReportV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodReportV1.swift; sourceTree = "<group>"; };
 		0A6D41FC20E5C06100C3430A /* CachedFoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedFoodItem.swift; sourceTree = "<group>"; };
@@ -177,6 +179,7 @@
 				0A219E8C20E72F64005965A9 /* Amount.swift */,
 				0AC9B19620E86EC800334127 /* AmountPer.swift */,
 				0AC9B19420E8667100334127 /* Nutrient.swift */,
+				0A37A10A210BA0D2005218C5 /* Measure.swift */,
 				0ABBED7920EA0AD700D7BD6A /* FoodGroup.swift */,
 				0AA0632620E591A900CCE2FD /* FoodItem.swift */,
 				0A6D41FC20E5C06100C3430A /* CachedFoodItem.swift */,
@@ -509,6 +512,7 @@
 				0A219E8F20E73832005965A9 /* Unit.swift in Sources */,
 				0A8F559320E0912C00B9E793 /* GraphViewController.swift in Sources */,
 				0A72CB7E20F1C6B100DB9DAC /* MealBuilderTableViewCell.swift in Sources */,
+				0A37A10B210BA0D2005218C5 /* Measure.swift in Sources */,
 				0A68B77520FB13B200C1FB0A /* FoodReportV1.swift in Sources */,
 				0A24AB4C20FF0BC5002B10E1 /* DateValueFormatter.swift in Sources */,
 				0A24AB4E20FF0BC5002B10E1 /* IntAxisValueFormatter.swift in Sources */,

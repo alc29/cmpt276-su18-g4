@@ -173,8 +173,6 @@ class NutritionTrackerTests: XCTestCase {
 		let ID = 45144608
 		let nutrientToGet = Nutrient.Sugars_total
 		let expectedSugarsTotal: Float = 80.49
-		//NOTE adding unresolved expectations & waits introduces Realm exception - realm from incorrect thread
-
 		
 		//test successful cache
 		let expectation = XCTestExpectation(description: "cacheFoodItem completes")
@@ -196,7 +194,7 @@ class NutritionTrackerTests: XCTestCase {
 
 		}
 		MealBuilderViewController().cacheFoodItem(FoodItem(ID, "poop candy"), completion, false)
-		wait(for: [expectation], timeout: 10)
+		wait(for: [expectation], timeout: 10) //TODO sometimes fails
 	}
 	
 
