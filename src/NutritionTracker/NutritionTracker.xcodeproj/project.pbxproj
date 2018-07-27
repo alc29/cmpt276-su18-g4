@@ -16,6 +16,7 @@
 		0A24AB4F20FF0BC5002B10E1 /* DayAxisValueFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A24AB4B20FF0BC5002B10E1 /* DayAxisValueFormatter.swift */; };
 		0A31499220F8041100EFBB96 /* LICENSE.txt in Resources */ = {isa = PBXBuildFile; fileRef = 0A31499020F8041000EFBB96 /* LICENSE.txt */; };
 		0A31499320F8041100EFBB96 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 0A31499120F8041100EFBB96 /* README.md */; };
+		0A37A10B210BA0D2005218C5 /* Measure.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A37A10A210BA0D2005218C5 /* Measure.swift */; };
 		0A68B77320FAE9C000C1FB0A /* Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A68B77220FAE9C000C1FB0A /* Util.swift */; };
 		0A68B77520FB13B200C1FB0A /* FoodReportV1.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A68B77420FB13B200C1FB0A /* FoodReportV1.swift */; };
 		0A6D41FD20E5C06100C3430A /* CachedFoodItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6D41FC20E5C06100C3430A /* CachedFoodItem.swift */; };
@@ -43,6 +44,8 @@
 		0AC9B18F20E8176100334127 /* Meal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC9B18E20E8176100334127 /* Meal.swift */; };
 		0AC9B19520E8667100334127 /* Nutrient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC9B19420E8667100334127 /* Nutrient.swift */; };
 		0AC9B19720E86EC800334127 /* AmountPer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC9B19620E86EC800334127 /* AmountPer.swift */; };
+		0AD518DD2107E05800907F97 /* NewMealSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD518DC2107E05800907F97 /* NewMealSettingsViewController.swift */; };
+		0AD518DF2107EA3700907F97 /* FoodItemPortionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD518DE2107EA3700907F97 /* FoodItemPortionTableViewCell.swift */; };
 		0AF7C8DD20FC3E2F00A39D9B /* NutrientReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF7C8DC20FC3E2F00A39D9B /* NutrientReport.swift */; };
 		218BD0C6C8F6E2E803970CB0 /* Pods_NutritionTrackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE46B28277FD915070F9577 /* Pods_NutritionTrackerTests.framework */; };
 		6033730220F6F30400A3D81B /* ImageClassificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033730120F6F30400A3D81B /* ImageClassificationViewController.swift */; };
@@ -71,6 +74,7 @@
 		0A24AB4B20FF0BC5002B10E1 /* DayAxisValueFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DayAxisValueFormatter.swift; sourceTree = "<group>"; };
 		0A31499020F8041000EFBB96 /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		0A31499120F8041100EFBB96 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		0A37A10A210BA0D2005218C5 /* Measure.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Measure.swift; sourceTree = "<group>"; };
 		0A68B77220FAE9C000C1FB0A /* Util.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Util.swift; sourceTree = "<group>"; };
 		0A68B77420FB13B200C1FB0A /* FoodReportV1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodReportV1.swift; sourceTree = "<group>"; };
 		0A6D41FC20E5C06100C3430A /* CachedFoodItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedFoodItem.swift; sourceTree = "<group>"; };
@@ -102,6 +106,8 @@
 		0AC9B18E20E8176100334127 /* Meal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meal.swift; sourceTree = "<group>"; };
 		0AC9B19420E8667100334127 /* Nutrient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nutrient.swift; sourceTree = "<group>"; };
 		0AC9B19620E86EC800334127 /* AmountPer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmountPer.swift; sourceTree = "<group>"; };
+		0AD518DC2107E05800907F97 /* NewMealSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMealSettingsViewController.swift; sourceTree = "<group>"; };
+		0AD518DE2107EA3700907F97 /* FoodItemPortionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemPortionTableViewCell.swift; sourceTree = "<group>"; };
 		0AE46B28277FD915070F9577 /* Pods_NutritionTrackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NutritionTrackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AF7C8DC20FC3E2F00A39D9B /* NutrientReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutrientReport.swift; sourceTree = "<group>"; };
 		0DBB13ACDCD907908D258AD1 /* Pods-NutritionTracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NutritionTracker.release.xcconfig"; path = "Pods/Target Support Files/Pods-NutritionTracker/Pods-NutritionTracker.release.xcconfig"; sourceTree = "<group>"; };
@@ -173,6 +179,7 @@
 				0A219E8C20E72F64005965A9 /* Amount.swift */,
 				0AC9B19620E86EC800334127 /* AmountPer.swift */,
 				0AC9B19420E8667100334127 /* Nutrient.swift */,
+				0A37A10A210BA0D2005218C5 /* Measure.swift */,
 				0ABBED7920EA0AD700D7BD6A /* FoodGroup.swift */,
 				0AA0632620E591A900CCE2FD /* FoodItem.swift */,
 				0A6D41FC20E5C06100C3430A /* CachedFoodItem.swift */,
@@ -203,6 +210,8 @@
 			children = (
 				0AB4DBC520E7F9BB00BD052F /* MealBuilderViewController.swift */,
 				0A72CB7D20F1C6B100DB9DAC /* MealBuilderTableViewCell.swift */,
+				0AD518DC2107E05800907F97 /* NewMealSettingsViewController.swift */,
+				0AD518DE2107EA3700907F97 /* FoodItemPortionTableViewCell.swift */,
 			);
 			name = MealBuilder;
 			sourceTree = "<group>";
@@ -488,6 +497,7 @@
 				0AB4DBC620E7F9BB00BD052F /* MealBuilderViewController.swift in Sources */,
 				0AC0717B20E9ED6800FD9657 /* FoodItemNutrient.swift in Sources */,
 				0A72CB7620EF24F500DB9DAC /* Database5.swift in Sources */,
+				0AD518DD2107E05800907F97 /* NewMealSettingsViewController.swift in Sources */,
 				0ABBED7A20EA0AD700D7BD6A /* FoodGroup.swift in Sources */,
 				0ABBED7E20EAB4A600D7BD6A /* FoodDetailViewController.swift in Sources */,
 				0A68B77320FAE9C000C1FB0A /* Util.swift in Sources */,
@@ -502,12 +512,14 @@
 				0A219E8F20E73832005965A9 /* Unit.swift in Sources */,
 				0A8F559320E0912C00B9E793 /* GraphViewController.swift in Sources */,
 				0A72CB7E20F1C6B100DB9DAC /* MealBuilderTableViewCell.swift in Sources */,
+				0A37A10B210BA0D2005218C5 /* Measure.swift in Sources */,
 				0A68B77520FB13B200C1FB0A /* FoodReportV1.swift in Sources */,
 				0A24AB4C20FF0BC5002B10E1 /* DateValueFormatter.swift in Sources */,
 				0A24AB4E20FF0BC5002B10E1 /* IntAxisValueFormatter.swift in Sources */,
 				0ABBED7C20EAB25A00D7BD6A /* FoodSearchViewController.swift in Sources */,
 				0A8F558F20E08A9700B9E793 /* LoginViewController.swift in Sources */,
 				0A7B87D620E07E3E00B45D5C /* EntryViewController.swift in Sources */,
+				0AD518DF2107EA3700907F97 /* FoodItemPortionTableViewCell.swift in Sources */,
 				0A7B87D420E07E3E00B45D5C /* AppDelegate.swift in Sources */,
 				0AB4DBC920E8073C00BD052F /* CategoryTableViewController.swift in Sources */,
 				0A1471F820EB331400731F8D /* FoodListTableViewController.swift in Sources */,

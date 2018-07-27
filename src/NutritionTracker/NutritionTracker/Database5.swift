@@ -50,7 +50,7 @@ class Database5 {
 				}
 				//if debug { self.printJsonData(data) }
 				
-				if let report = FoodReportV1.cacheFromJsonData(data, debug) {
+				if let report = FoodReportV1.fromJsonData(data, debug) {
 					if debug { print("foodreport v1 completion successful.") }
 					completion(report)
 				} else {
@@ -161,13 +161,13 @@ class Database5 {
 		
 		do {
 			DispatchQueue(label: "Database5.getCachedFoodItem").async {
-			//DispatchQueue.main.async {
 				autoreleasepool {
 					let realm = try! Realm()
 					let results = realm.objects(CachedFoodItem.self)
 					if results.count == 0 {
 						print("0 CachedFoodItem's in realm.")
-						//completion(nil) //TODO ???
+						completion(nil)
+						return
 					}
 					for item in results {
 						if item.getFoodId() == foodId && !success {
@@ -191,37 +191,18 @@ class Database5 {
 		}
 	}
 	
-	
-	//TODO implement & test, if desired
-	//NOTE: assume wanted items have previously been cached.
-//	static func getCachedFoodItems(_ foodItems: [FoodItem], _ completion: @escaping CachedFoodItemsCompletion) {
-//		do {
-//			DispatchQueue(label: "Database5.getCachedFoodItem").async {
-//				//DispatchQueue.main.async {
-//				autoreleasepool {
-//					let realm = try! Realm()
-//					let results = realm.objects(CachedFoodItem.self)
-//					var cachedFoodItems = [CachedFoodItem]()
-//
-//					for item in results { //for each CachedFoodItem in realm
-//						let foodId = item.getFoodId()
-//						if item.getFoodId() == foodId {
-//							var nutrients = [FoodItemNutrient]()
-//							nutrients.append(contentsOf: item.nutrients)
-//
-//							let cachedFoodItem = CachedFoodItem(foodId, nutrients)
-//							cachedFoodItems.append(cachedFoodItem)
-//						}
-//					}
-//					completion(cachedFoodItems)
-//				} //end autoreleasepool
-//
-//			}
-//		} catch let error {
-//			print(error)
-//			completion([CachedFoodItem]())
-//		}
-//	}
+	// return a CachedFoodItem that hasn't been cached yet
+	static func getUnsavedCachedFoodItem(_ foodId: Int, _ completion: @escaping CachedFoodItemCompletion,_ debug: Bool = false) {
+		let foodReportCompletion: (FoodReportV1?) -> Void = { (foodReport: FoodReportV1?) -> Void in
+			if let report = foodReport {
+				completion(report.toCache)
+			} else {
+				completion(nil)
+			}
+		}
+
+		Database5.requestFoodReportV1(FoodItem(foodId, ""), foodReportCompletion, debug)
+	}
 	
 	
 	//get saved meals from realm.

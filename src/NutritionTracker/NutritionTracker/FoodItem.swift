@@ -34,20 +34,29 @@ class FoodItem: Object {
 	}
 	
 	// MARK: Setters
-	
-	//TODO consider moving to Database
-	// return the specified amount of nutrient contained in this food.
-	func getAmountOf(_ nutrient: Nutrient) -> Float {
-		//get nutrient amount info from cached food item in realm.
-		
-		return Float(0)
+	func setAmount(_ amount: Float) {
+		self.amount = amount
 	}
+	
+	func setUnit(_ unit: String) {
+		//TODO check for valid unit?
+		self.unit = unit;
+	}
+	
+//	//TODO consider moving to Database
+//	// return the specified amount of nutrient contained in this food.
+//	func getAmountOf(_ nutrient: Nutrient) -> Float {
+//		//get nutrient amount info from cached food item in realm.
+//
+//		return Float(0)
+//	}
 
 	// MARK: Getters
 	func getFoodId() -> Int { return foodId }
 	func getName() -> String { return name }
 	func getAmount() -> Float { return amount }
 	func getUnit() -> String { return unit }
+	
 	
 	//return the pid
 	override static func primaryKey() -> String? {

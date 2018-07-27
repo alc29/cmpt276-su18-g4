@@ -40,6 +40,7 @@ class FoodReportV1 {
 			let eqv: Float?
 			let eunit: String?
 			//let qty: Int? //TODO
+			let qty: Float?
 			let value: String? //gram equivalent value of the measure
 		}
 	}
@@ -75,6 +76,7 @@ class FoodReportV1 {
 			let eqv: Float?
 			let eunit: String?
 			//let qty: Int? //TODO
+			let qty: Float?
 			let value: Float? //gram equivalent value of the measure
 		}
 		
@@ -85,20 +87,6 @@ class FoodReportV1 {
 //	var jFoods = [Result.JFood]()
 	var result: Any?
 	var toCache: CachedFoodItem?
-
-//	static func jNutrientToFoodItemNutrient(_ jNutrient: FoodReportV2.Result.JFood.JNutrient) -> FoodItemNutrient? {
-//		guard let nutrient_id = jNutrient.nutrient_id else { print("no nutrient_id found."); return nil }
-//
-//		let nutrientId = Int(nutrient_id) //string to int
-//		let nutrient = Nutrient.get(id: nutrientId!)
-//		//let baseAmount = Amount(Float(jNutrient.value!)!, Unit.get(jNutrient.unit!)!) //TODO
-//		let baseAmount = Amount()
-//		let ratioAmount = Amount(100.0, Unit.Gram) //TODO
-//		let amountPer = AmountPer(amount: baseAmount, per: ratioAmount)
-//
-//		return FoodItemNutrient(nutrient, amountPer)
-//	}
-	
 	
 	//cache food items & nutrient data
 	
@@ -129,13 +117,31 @@ class FoodReportV1 {
 						//TODO handle nil values; move definitions into the guard let statement
 						let amountValue = jNutrient.value!
 						let amountUnit = Unit.get(jNutrient.unit!)!
-						
 						let amount = Float(amountValue)!
 						let unit = "g"
 						let perAmount = Float(100)
 						let perUnit = "g"
 						
 						let foodItemNutrient = FoodItemNutrient(nutrientId, amount, unit, perAmount, perUnit)
+						
+						//append each measure
+						if let jNutrientMeasures = jNutrient.measures {
+							for jMeasure in jNutrientMeasures {
+								if let jMeasure = jMeasure {
+									//TODO
+									let m_label = jMeasure.label!
+									let m_eqv = jMeasure.eqv!
+									let m_eunit = jMeasure.eunit!
+									let m_qty = jMeasure.qty!
+									let m_value = jMeasure.value!
+									let measure = Measure(m_label, m_eqv, m_eunit, m_qty, Float(m_value)!)
+									foodItemNutrient.measures.append(measure)
+								}
+								
+							}
+						}
+						
+						// add nutrient
 						nutrients.append(foodItemNutrient)
 					}
 				}
@@ -178,6 +184,24 @@ class FoodReportV1 {
 						let perUnit = "g"
 						
 						let foodItemNutrient = FoodItemNutrient(nutrient_id, amount, unit, perAmount, perUnit)
+						//append each measure
+						if let jNutrientMeasures = jNutrient.measures {
+							for jMeasure in jNutrientMeasures {
+								if let jMeasure = jMeasure {
+									//TODO
+									let m_label = jMeasure.label!
+									let m_eqv = jMeasure.eqv!
+									let m_eunit = jMeasure.eunit!
+									let m_qty = jMeasure.qty!
+									let m_value = jMeasure.value!
+									let measure = Measure(m_label, m_eqv, m_eunit, m_qty, m_value)
+									foodItemNutrient.measures.append(measure)
+								}
+								
+							}
+						}
+						
+						// add nutrient
 						nutrients.append(foodItemNutrient)
 					}
 				}
@@ -198,7 +222,7 @@ class FoodReportV1 {
 	}
 	
 	//TODO refactor
-	static func cacheFromJsonData(_ jsonData: Data, _ debug: Bool = false) -> FoodReportV1? {
+	static func fromJsonData(_ jsonData: Data, _ debug: Bool = false) -> FoodReportV1? {
 		//structs
 		struct LegacyType: Decodable {
 			let report: Report?
@@ -238,7 +262,7 @@ class FoodReportV1 {
 		
 		if debug{ print("returning nil; never passed to decoder.") }
 		return nil
-	} //end cacheFromJsonData
+	}
 	
 	
 }
