@@ -17,7 +17,8 @@ class FoodItemNutrient: Object {
 	@objc private dynamic var unit: String = "uninitialized"
 	@objc private dynamic var perAmount: Float = Float(-1)
 	@objc private dynamic var perUnit: String = "g"
-	
+	let measures = List<Measure>()
+
 	convenience init(_ nutrientId: Int, _ amount: Float, _ unit: String, _ perAmount: Float, _ perUnit: String) {
 		self.init()
 		self.nutrientId = nutrientId

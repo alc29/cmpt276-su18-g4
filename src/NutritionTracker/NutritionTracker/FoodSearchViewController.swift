@@ -57,11 +57,6 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		//setup search footer
 		tableView.tableFooterView = searchFooter
 		
-		//fake list of results
-//		for i in 0..<10 {
-//			searchResults.append(FoodItem(i, "Food item \(i)"))
-//		}
-		
     }
 
 	override func viewWillAppear(_ animated: Bool) {

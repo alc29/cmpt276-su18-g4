@@ -82,8 +82,6 @@ class GraphViewController: UIViewController {
 				self.reloadGraphData(meals, cachedFoodItems)
 			}
 		}
-		
-
 	}
 			
 	func getFoodItem(_ foodId: Int, _ cachedFoodItems: [CachedFoodItem]) -> CachedFoodItem? {
@@ -92,7 +90,7 @@ class GraphViewController: UIViewController {
 				return cached
 			}
 		}
-		print("returned nil")
+		print("warning: GraphViewController::getFoodItem returned nil.")
 		return nil
 	}
 	
@@ -105,14 +103,17 @@ class GraphViewController: UIViewController {
 			for meal in meals {
 				var lineEntries = [ChartDataEntry]()
 				
+				//TODO conversion between units
 				var sum: Float = Float(0) //totol amount of nutrient
-				for foodItem in meal.getFoodItems() { //TODO
+				for foodItem in meal.getFoodItems() {
 					if let cached = self.getFoodItem(foodItem.getFoodId(), cachedFoodItems),
-					let foodItemNutrient = cached.getFoodItemNutrient(tag)
-					{
+					let foodItemNutrient = cached.getFoodItemNutrient(tag) {
+						//TODO 100g assumed
 						let amount = foodItemNutrient.getAmount()
-						sum = sum + amount // TODO scale by amount of food item
+						sum = sum + amount
 					}
+					// TODO factor in foodItem's unit
+					sum *= foodItem.getAmount()
 				}
 				
 				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())!
@@ -139,10 +140,8 @@ class GraphViewController: UIViewController {
 		let dateStr = dateFormatter.string(from: date)
 		
 		graph.data = data
-		graph.notifyDataSetChanged()
 		graph.chartDescription?.text = dateStr
-
-		//TODO graph needs reload?
+		graph.notifyDataSetChanged()
 	}
 
 	
