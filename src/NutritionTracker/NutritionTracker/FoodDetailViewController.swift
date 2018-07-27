@@ -47,6 +47,7 @@ class FoodDetailViewController: UIViewController {
 
 	@objc func addButtonPressed(sender: UIBarButtonItem) {
 		foodSelector?.addFood(foodItem: foodItem)
+		sender.isEnabled = false
 	}
 
 	func configureView() {
