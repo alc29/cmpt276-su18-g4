@@ -16,13 +16,37 @@ import Charts
 /** Controls graph behaviour & data **/
 class GraphViewController: UIViewController {
 	//MARK: Properties
-	@IBOutlet weak var graph: LineChartView! //ref to view in the storyboard
 	var graphSettings = GraphSettings() //if no settings found, use default settings & save
-	let DEFAULT_TAGS = [Nutrient.Sugars_total, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from user settings
+	let DEFAULT_TAGS = [Nutrient.Sugars_total, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from graph settings
+	var nutrientTags = [Nutrient]()
+	var nutrients = [Nutrient]()
+	var selected = [Bool]()
+	
+	@IBOutlet weak var graph: LineChartView! //ref to view in the storyboard
+	@IBOutlet weak var nutrientTable: UITableView!
+	
 	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		//todo load graphs settings from realm
+		for t in DEFAULT_TAGS {
+			nutrientTags.append(t)
+		}
+		
+		/* Nutrient Table */
+		for (id, nutrient) in Nutrient.dict {
+			if (id != -1 && id != -2) {
+				nutrients.append(nutrient)
+			}
+		}
+		selected = Array(repeating: false, count: nutrients.count)
+		nutrientTable.delegate = self
+		nutrientTable.dataSource = self
+		self.nutrientTable.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "NutrientCell")
+		
+
+		/* Graph */
 		// For formatting the x-axis
 		let xAxis = graph.xAxis
 		xAxis.labelPosition = .bottom
@@ -31,7 +55,7 @@ class GraphViewController: UIViewController {
 		// This function takes in the x value from, for example: let entry = ChartDataEntry(x: 1, y: 5)
 		// and converts it into a date value. 1 = Jan 1, 365 = Dec 25, 366 = Jan 1
 		// Years have been turned off, but can be re-enabled from -> Formatters: DayAxisValueFormatter.swift line: 33
-		//xAxis.valueFormatter = DayAxisValueFormatter(chart: graph)
+		xAxis.valueFormatter = DayAxisValueFormatter(chart: graph)
 		
 		// For formatting the left y-axis labels
 		let leftAxisFormatter = NumberFormatter()
@@ -73,9 +97,6 @@ class GraphViewController: UIViewController {
 				let mealResults = realm.objects(Meal.self)
 				var meals = [Meal]()
 				meals.append(contentsOf: mealResults)
-				for m in meals {
-					print(m.getDate())
-				}
 
 				//TODO get cachedFoodItems for reloadData. get all, or filter by desired foodId's
 				let cachedFoodItemResults = realm.objects(CachedFoodItem.self)
@@ -92,7 +113,7 @@ class GraphViewController: UIViewController {
 		let date = graphSettings.getDate() //use date to determine which meals to
 		
 		//construct graph data from saved meals, filtered by tags.
-		for tag in self.DEFAULT_TAGS { //for each nutrient tag
+		for tag in nutrientTags { //for each nutrient tag
 			for meal in meals {
 				var lineEntries = [ChartDataEntry]()
 				
@@ -112,7 +133,7 @@ class GraphViewController: UIViewController {
 				let entry = ChartDataEntry(x: Double(dayOfMonth), y: Double(sum))
 				lineEntries.append(entry)
 				
-				
+				//TODO init set of rand colors when this VC inits
 				let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
 				//set line color
 				let colour:UIColor = randColor()
@@ -142,7 +163,7 @@ class GraphViewController: UIViewController {
 				return cached
 			}
 		}
-		print("warning: GraphViewController::getFoodItem returned nil.")
+		//print("warning: GraphViewController::getFoodItem returned nil.")
 		return nil
 	}
 	
@@ -181,20 +202,86 @@ class GraphViewController: UIViewController {
 	
 }
 
+
+extension GraphViewController: UITableViewDelegate, UITableViewDataSource {
+	// MARK: - Table view data source
+	func numberOfSections(in tableView: UITableView) -> Int {
+		return 1
+	}
+	
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		return nutrients.count
+	}
+	
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "NutrientCell", for: indexPath)
+		cell.textLabel?.text = nutrients[indexPath.row].name
+		
+		//set checkmark if selected
+		if selected[indexPath.row] {
+			cell.accessoryType = .checkmark
+		} else {
+			cell.accessoryType = .none
+		}
+		
+		return cell
+	}
+	
+	func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+		return CGFloat(20.0)
+	}
+	func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+		return "Nutrients"
+	}
+	
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		
+		if let cell = tableView.cellForRow(at: indexPath) {
+			selected[indexPath.row] = !selected[indexPath.row] //toggle selection
+			cell.accessoryType = selected[indexPath.row] ? .checkmark : .none
+			
+			//update nutrient tags
+			setNutrient(nutrients[indexPath.row], selected[indexPath.row])
+		}
+		tableView.deselectRow(at: indexPath, animated: true)
+
+	}
+	
+	//TODO move out of extension
+	func setNutrient(_ nutrient: Nutrient, _ isSelected: Bool) {
+		if isSelected { //add
+			nutrientTags.append(nutrient)
+		} else { //remove
+			for (i, n) in nutrientTags.enumerated() {
+				if n.getId() == nutrient.getId() {
+					nutrients.remove(at: i)
+					return
+				}
+			}
+		}
+		reloadGraphData()
+	}
+}
+
+
 /** A class used for saving graph-related settings. */
 class GraphSettings: Object {
-	//MARK: Properties
+
 	@objc var selectedDate = Date() //the date the graph should display when first loading.
 	//@objc var dateFormat:
 	//var unit = Unit.Micrograms // The unit that the graph should be displayed in.
+
+	let tags = List<Nutrient>()
 	
-	//MARK: Getters
+	convenience init(_ defaultTags: [Nutrient]) {
+		self.init()
+		tags.append(objectsIn: defaultTags)
+	}
+	
+	
 	func getDate() -> Date {
 		return selectedDate
 	}
-	
-	//MARK: Setters
-	//TODO func setDate() {}
 	
 }
 

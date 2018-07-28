@@ -128,7 +128,6 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		
 		//saveMeal(mealCopy, emptyCompletion)
 		saveMeal(meal, emptyCompletion)
-		print(meal.getDate())
 		
 		for foodItem in meal.getFoodItems() {
 			cacheFoodItem(foodItem, emptyCompletion)
