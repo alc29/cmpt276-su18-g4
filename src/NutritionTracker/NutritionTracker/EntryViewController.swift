@@ -33,7 +33,6 @@ class EntryViewController: UIViewController {
 				realm.deleteAll()
 			}
 		}
-		
 	}
 
 	

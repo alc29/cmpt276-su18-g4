@@ -59,10 +59,12 @@ class ImageClassificationViewController: UIViewController {
 			if let searchViewController = searchViewController {
 				let identifiedFood = getFirstWord(identifiedFoodStr)
 				searchViewController.searchController.searchBar.text = identifiedFood
-				searchViewController.searchAndUpdateResults(identifiedFood)
+				
+				//searchViewController.searchAndUpdateResults(identifiedFood)
 				self.navigationController?.pushViewController(searchViewController, animated: true)
+				
 			}
-			
+			//sender.isEnabled = false //disable after clicking
 		}
     }
 	
@@ -129,7 +131,16 @@ class ImageClassificationViewController: UIViewController {
     }
     
     // MARK: - Photo Actions
-    
+	
+//	func camera() {
+//		if UIImagePickerController.isSourceTypeAvailable(.camera) {
+//			let myPickerController = UIImagePickerController()
+//			myPickerController.delegate = self
+//			myPickerController.sourceType = .camera
+//			self.present(myPickerController, animated: true, completion: nil)
+//		}
+//	}
+	
     @IBAction func takePicture() {
         // Show options for the source picker only if the camera is available.
         guard UIImagePickerController.isSourceTypeAvailable(.camera) else {

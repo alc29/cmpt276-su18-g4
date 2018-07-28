@@ -31,7 +31,7 @@ class GraphViewController: UIViewController {
 		// This function takes in the x value from, for example: let entry = ChartDataEntry(x: 1, y: 5)
 		// and converts it into a date value. 1 = Jan 1, 365 = Dec 25, 366 = Jan 1
 		// Years have been turned off, but can be re-enabled from -> Formatters: DayAxisValueFormatter.swift line: 33
-		xAxis.valueFormatter = DayAxisValueFormatter(chart: graph)
+		//xAxis.valueFormatter = DayAxisValueFormatter(chart: graph)
 		
 		// For formatting the left y-axis labels
 		let leftAxisFormatter = NumberFormatter()
@@ -73,6 +73,9 @@ class GraphViewController: UIViewController {
 				let mealResults = realm.objects(Meal.self)
 				var meals = [Meal]()
 				meals.append(contentsOf: mealResults)
+				for m in meals {
+					print(m.getDate())
+				}
 
 				//TODO get cachedFoodItems for reloadData. get all, or filter by desired foodId's
 				let cachedFoodItemResults = realm.objects(CachedFoodItem.self)
@@ -82,16 +85,6 @@ class GraphViewController: UIViewController {
 				self.reloadGraphData(meals, cachedFoodItems)
 			}
 		}
-	}
-			
-	func getFoodItem(_ foodId: Int, _ cachedFoodItems: [CachedFoodItem]) -> CachedFoodItem? {
-		for cached in cachedFoodItems {
-			if cached.getFoodId() == foodId {
-				return cached
-			}
-		}
-		print("warning: GraphViewController::getFoodItem returned nil.")
-		return nil
 	}
 	
 	func reloadGraphData(_ meals: [Meal], _ cachedFoodItems: [CachedFoodItem]) {
@@ -103,19 +96,18 @@ class GraphViewController: UIViewController {
 			for meal in meals {
 				var lineEntries = [ChartDataEntry]()
 				
-				//TODO conversion between units
+				//add the total amount of the "tag" nutrient contained in the meal
 				var sum: Float = Float(0) //totol amount of nutrient
 				for foodItem in meal.getFoodItems() {
 					if let cached = self.getFoodItem(foodItem.getFoodId(), cachedFoodItems),
 					let foodItemNutrient = cached.getFoodItemNutrient(tag) {
-						//TODO 100g assumed
-						let amount = foodItemNutrient.getAmount()
-						sum = sum + amount
+						let amount = getTotalAmountOf(foodItemNutrient, foodItem)
+						sum += amount
 					}
-					// TODO factor in foodItem's unit
-					sum *= foodItem.getAmount()
 				}
 				
+		
+				//TODO get correct date
 				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())!
 				let entry = ChartDataEntry(x: Double(dayOfMonth), y: Double(sum))
 				lineEntries.append(entry)
@@ -142,6 +134,39 @@ class GraphViewController: UIViewController {
 		graph.data = data
 		graph.chartDescription?.text = dateStr
 		graph.notifyDataSetChanged()
+	}
+	
+	func getFoodItem(_ foodId: Int, _ cachedFoodItems: [CachedFoodItem]) -> CachedFoodItem? {
+		for cached in cachedFoodItems {
+			if cached.getFoodId() == foodId {
+				return cached
+			}
+		}
+		print("warning: GraphViewController::getFoodItem returned nil.")
+		return nil
+	}
+	
+	//returns in per 1 g
+	func getTotalAmountOf(_ foodItemNutrient: FoodItemNutrient, _ foodItem: FoodItem) -> Float {
+		
+		//convert from per 100g to per 1g
+		let nutrientAmount = foodItemNutrient.getAmount() / 100
+
+		let foodAmount = foodItem.getAmount()
+		
+		let unit = foodItem.getUnit()
+		
+		//units should match those available in the UIPicker in FoodItemPortionTableViewCell
+		if unit == Unit.G.rawValue {
+			return nutrientAmount * foodAmount
+			
+		} else if (unit == Unit.MG.rawValue) {
+			return nutrientAmount * foodAmount / 1000
+			
+		}
+		
+		//TODO handle other units
+		return Float(0)
 	}
 
 	

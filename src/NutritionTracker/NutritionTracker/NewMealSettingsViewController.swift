@@ -12,9 +12,9 @@ import RealmSwift
 class NewMealSettingsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
 	@IBOutlet weak var mealTableView: UITableView!
-	@IBOutlet weak var dateSelector: UIDatePicker!
 	@IBOutlet weak var saveMealButton: UIButton!
-		
+	@IBOutlet weak var datePicker: UIDatePicker!
+	
 	var mealBuilder: MealBuilderViewController?
 	var meal = Meal()
 	
@@ -32,7 +32,10 @@ class NewMealSettingsViewController: UIViewController, UITableViewDataSource, UI
 	// return to MealBuilderViewController to save meal.
 	@IBAction func saveMealButtonPressed(_ sender: UIButton) {
 		self.navigationController?.popViewController(animated: true)
+		meal.setDate(datePicker.date)
 		mealBuilder?.onReturnFromSavedMeal()
+		
+		
 	}
 	
 	
