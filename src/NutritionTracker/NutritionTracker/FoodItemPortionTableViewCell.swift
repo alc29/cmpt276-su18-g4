@@ -55,6 +55,7 @@ class FoodItemPortionTableViewCell: UITableViewCell, UIPickerViewDelegate, UIPic
 		for i in 0...2 {
 			currentValue[i] = pickerData[i][0]
 		}
+		updateFoodItem()
 	}
 
 	// MARK: - UIPickerViewDataSource Delegate
@@ -83,7 +84,10 @@ class FoodItemPortionTableViewCell: UITableViewCell, UIPickerViewDelegate, UIPic
 	//update food item amount when row is selected
 	func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		currentValue[component] = pickerData[component][row]
-		
+		updateFoodItem()
+	}
+	
+	func updateFoodItem() {
 		let scale = Float(currentValue[SCALE])!
 		let mult = Float(currentValue[MULT])!
 		let unit = currentValue[UNIT]
@@ -91,9 +95,6 @@ class FoodItemPortionTableViewCell: UITableViewCell, UIPickerViewDelegate, UIPic
 		let amount = Float(mult * scale)
 		foodItem!.setAmount(amount)
 		foodItem!.setUnit(unit)
-		
-		//print(String(describing: currentValue))
-		print(String(describing:foodItem))
 	}
 	
 //	//uncomment to set row height
