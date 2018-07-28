@@ -46,7 +46,15 @@ class GraphViewController: UIViewController {
 		self.nutrientTable.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "NutrientCell")
 		
 
-		/* Graph */
+		formatGraph()
+		
+		reloadGraphData()
+	}
+	
+	func formatNutrientTable() {
+		
+	}
+	func formatGraph() {
 		// For formatting the x-axis
 		let xAxis = graph.xAxis
 		xAxis.labelPosition = .bottom
@@ -78,8 +86,6 @@ class GraphViewController: UIViewController {
 		
 		// Animation upon opening
 		graph.animate(xAxisDuration: 1)
-		
-		reloadGraphData()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -114,8 +120,9 @@ class GraphViewController: UIViewController {
 		
 		//construct graph data from saved meals, filtered by tags.
 		for tag in nutrientTags { //for each nutrient tag
+			var lineEntries = [ChartDataEntry]()
+
 			for meal in meals {
-				var lineEntries = [ChartDataEntry]()
 				
 				//add the total amount of the "tag" nutrient contained in the meal
 				var sum: Float = Float(0) //totol amount of nutrient
@@ -127,23 +134,20 @@ class GraphViewController: UIViewController {
 					}
 				}
 				
-		
-				//TODO get correct date
 				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())!
 				let entry = ChartDataEntry(x: Double(dayOfMonth), y: Double(sum))
 				lineEntries.append(entry)
-				
-				//TODO init set of rand colors when this VC inits
-				let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
-				//set line color
-				let colour:UIColor = randColor()
-				line.setColor(colour)
-				line.setCircleColor(colour)
-				line.circleRadius = 4
-				//line.drawCirclesEnabled = false
-				data.addDataSet(line)
-
 			}
+			
+			//TODO init set of rand colors when this VC inits
+			let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
+			//set line color
+			let colour:UIColor = randColor()
+			line.setColor(colour)
+			line.setCircleColor(colour)
+			line.circleRadius = 4
+			//line.drawCirclesEnabled = false
+			data.addDataSet(line)
 
 		}
 		
