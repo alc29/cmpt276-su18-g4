@@ -16,7 +16,7 @@ import Charts
 class GraphViewController: UIViewController {
 	//MARK: Properties
 	var graphSettings = GraphSettings() //if no settings found, use default settings & save
-	let DEFAULT_TAGS = [Nutrient.Sugars_total, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from graph settings
+	let DEFAULT_TAGS = [Nutrient.VitaminB6, Nutrient.Sugars_total, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from graph settings
 	var nutrientTags = [Nutrient]()
 	var nutrients = [Nutrient]()
 	var selected = [Bool]()
@@ -24,22 +24,31 @@ class GraphViewController: UIViewController {
 	@IBOutlet weak var graph: LineChartView! //ref to view in the storyboard
 	@IBOutlet weak var nutrientTable: UITableView!
 	
-	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		//todo load graphs settings from realm
+		//TODO only load defaults if nutrientTags is empty.
+		//TODO load nutrientTags from GraphSettings
 		for t in DEFAULT_TAGS {
 			nutrientTags.append(t)
 		}
 		
+		
 		/* Nutrient Table */
+		//add all existing nutrients to available tags
 		for (id, nutrient) in Nutrient.dict {
 			if (id != -1 && id != -2) {
 				nutrients.append(nutrient)
 			}
 		}
+		
+		//set selected table cells
 		selected = Array(repeating: false, count: nutrients.count)
+		for t in nutrientTags {
+			if let index = nutrients.index(of: t) {
+				selected[index] = true
+			}
+		}
 		nutrientTable.delegate = self
 		nutrientTable.dataSource = self
 		self.nutrientTable.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "NutrientCell")
@@ -78,7 +87,6 @@ class GraphViewController: UIViewController {
 		
 		// Animation upon opening
 		graph.animate(xAxisDuration: 1)
-		
 		reloadGraphData()
 	}
 	
@@ -244,9 +252,7 @@ class GraphViewController: UIViewController {
 		
 		//convert from per 100g to per 1g
 		let nutrientAmount = foodItemNutrient.getAmount() / 100
-		
 		let foodAmount = foodItem.getAmount()
-		
 		let unit = foodItem.getUnit()
 		
 		//units should match those available in the UIPicker in FoodItemPortionTableViewCell
@@ -318,19 +324,20 @@ extension GraphViewController: UITableViewDelegate, UITableViewDataSource {
 		
 	}
 	
-	//TODO move out of extension
 	func setNutrient(_ nutrient: Nutrient, _ isSelected: Bool) {
 		if isSelected { //add
 			nutrientTags.append(nutrient)
+			reloadGraphData()
 		} else { //remove
 			for (i, n) in nutrientTags.enumerated() {
+				//TODO use dictionary; map row to nutrientTag
 				if n.getId() == nutrient.getId() {
-					nutrients.remove(at: i)
+					nutrientTags.remove(at: i)
+					reloadGraphData()
 					return
 				}
 			}
 		}
-		reloadGraphData()
 	}
 }
 
