@@ -51,6 +51,7 @@ class GraphViewController: UIViewController {
 		xAxis.labelPosition = .bottom
 		xAxis.granularity = 1
 		xAxis.labelCount = 3
+		xAxis.setLabelCount(10, force: true)
 		// This function takes in the x value from, for example: let entry = ChartDataEntry(x: 1, y: 5)
 		// and converts it into a date value. 1 = Jan 1, 365 = Dec 25, 366 = Jan 1
 		// Years have been turned off, but can be re-enabled from -> Formatters: DayAxisValueFormatter.swift line: 33
@@ -84,6 +85,7 @@ class GraphViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		reloadGraphData()
+		graph.animate(xAxisDuration: 1)
 	}
 	
 	func reloadGraphData() {
@@ -107,50 +109,123 @@ class GraphViewController: UIViewController {
 		}
 	}
 	
-	func reloadGraphData(_ meals: [Meal], _ cachedFoodItems: [CachedFoodItem]) {
-		let data = LineChartData() //This is the object that will be added to the chart
-		let date = graphSettings.getDate() //use date to determine which meals to
+	func getDaysSinceYearStart(_ date: Date) -> Int {
+		if let daysSince = Calendar.current.ordinality(of: .day, in: .year, for: date) {
+			return daysSince
+		}
+		return -1
+	}
+	
+	//return array of meals that match the given date
+	func getMealsOn(_ date: Date, _ meals: [Meal]) -> [Meal] {
+		var mealsOnDate = [Meal]()
 		
-		//construct graph data from saved meals, filtered by tags.
-		for tag in nutrientTags { //for each nutrient tag
-			for meal in meals {
-				var lineEntries = [ChartDataEntry]()
+		for m in meals {
+			let result = Calendar.current.compare(m.getDate(), to: date, toGranularity: Calendar.Component.day)
+			if result == .orderedSame {
+				mealsOnDate.append(m)
+			}
+		}
+		return mealsOnDate
+	}
+	
+	func reloadGraphData(_ meals: [Meal], _ cachedFoodItems: [CachedFoodItem]) {
+		let date = graphSettings.getDate() //use date to determine which meals to display
+		let data = LineChartData() //This is the object that will be added to the chart
+
+		
+		// B
+		//set which days to get meals
+		let INTERVAL = 86400 //seconds in a day
+		let RANGE = 4 //date range to retrieve meals in (preceding & following)
+		var rangeOfDays = [Date]()
+
+		let startDate = date - Double(INTERVAL * RANGE)
+		for i in 0...(RANGE*2) {
+			rangeOfDays.append(startDate + Double(i * INTERVAL))
+		}
+		
+		//for each tag
+		//for each day in range
+			//get meals on that day
+				//get amount of nutrient from all meals on that day
+		for tag in nutrientTags {
+			var lineEntries = [ChartDataEntry]()
+			
+			for day in rangeOfDays {
 				
-				//add the total amount of the "tag" nutrient contained in the meal
+				//get total nutrients on this day
 				var sum: Float = Float(0)
-				for foodItem in meal.getFoodItems() {
-					if let cached = self.getFoodItem(foodItem.getFoodId(), cachedFoodItems),
-						let foodItemNutrient = cached.getFoodItemNutrient(tag) {
-						let amount = getTotalAmountOf(foodItemNutrient, foodItem)
-						sum += amount
+				let mealsThatDay = getMealsOn(day, meals)
+				for meal in mealsThatDay {
+					for foodItem in meal.getFoodItems() {
+						if let cached = self.getFoodItem(foodItem.getFoodId(), cachedFoodItems),
+							let foodItemNutrient = cached.getFoodItemNutrient(tag) {
+							let amount = getTotalAmountOf(foodItemNutrient, foodItem)
+							sum += amount
+						}
 					}
 				}
 				
 				//get days since jan 1
-				let days = Calendar.current.ordinality(of: .day, in: .year, for: meal.getDate())!
-				
+				//let days = Calendar.current.ordinality(of: .day, in: .year, for: meal.getDate())!
+				let days = Calendar.current.ordinality(of: .day, in: .year, for: day)!
+
 				let entry = ChartDataEntry(x: Double(days), y: Double(sum))
 				lineEntries.append(entry)
-				
-				let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
-				let colour:UIColor = randColor()
-				line.setColor(colour)
-				line.setCircleColor(colour)
-				line.circleRadius = 4
-				//line.drawCirclesEnabled = false
-				data.addDataSet(line)
-				
 			}
 			
+			let lineLabel = tag.name
+			let line = LineChartDataSet(values: lineEntries, label: lineLabel)
+			let colour:UIColor = randColor()
+			line.setColor(colour)
+			line.setCircleColor(colour)
+			line.circleRadius = 4
+			//line.drawCirclesEnabled = false
+			data.addDataSet(line)
 		}
+
+		// A
+		//construct graph data from saved meals, filtered by tags.
+//		for tag in nutrientTags { //for each nutrient tag
+//			for meal in meals {
+//				var lineEntries = [ChartDataEntry]()
+//
+//				//add the total amount of the "tag" nutrient contained in the meal
+//				var sum: Float = Float(0)
+//				for foodItem in meal.getFoodItems() {
+//					if let cached = self.getFoodItem(foodItem.getFoodId(), cachedFoodItems),
+//						let foodItemNutrient = cached.getFoodItemNutrient(tag) {
+//						let amount = getTotalAmountOf(foodItemNutrient, foodItem)
+//						sum += amount
+//					}
+//				}
+//
+//				//get days since jan 1
+//				let days = Calendar.current.ordinality(of: .day, in: .year, for: meal.getDate())!
+//
+//				let entry = ChartDataEntry(x: Double(days), y: Double(sum))
+//				lineEntries.append(entry)
+//
+//				let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
+//				let colour:UIColor = randColor()
+//				line.setColor(colour)
+//				line.setCircleColor(colour)
+//				line.circleRadius = 4
+//				//line.drawCirclesEnabled = false
+//				data.addDataSet(line)
+//
+//			}
+//
+//		}
 		
 		// Set the date of the graph
-		let dateFormatter = DateFormatter()
+//		let dateFormatter = DateFormatter()
 		//dateFormatter.setLocalizedDateFormatFromTemplate(graphSettings.dateFormat)
-		let dateStr = dateFormatter.string(from: date)
+//		let dateStr = dateFormatter.string(from: date)
 		
 		graph.data = data
-		graph.chartDescription?.text = dateStr
+//		graph.chartDescription?.text = dateStr
 		graph.notifyDataSetChanged()
 	}
 	
