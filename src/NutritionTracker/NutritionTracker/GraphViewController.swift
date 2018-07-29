@@ -117,7 +117,7 @@ class GraphViewController: UIViewController {
 				var lineEntries = [ChartDataEntry]()
 				
 				//add the total amount of the "tag" nutrient contained in the meal
-				var sum: Float = Float(0) //totol amount of nutrient
+				var sum: Float = Float(0)
 				for foodItem in meal.getFoodItems() {
 					if let cached = self.getFoodItem(foodItem.getFoodId(), cachedFoodItems),
 						let foodItemNutrient = cached.getFoodItemNutrient(tag) {
@@ -126,19 +126,13 @@ class GraphViewController: UIViewController {
 					}
 				}
 				
-				
-				//TODO get correct date
-				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())!
-				
-				let days = daysSinceYearStart(meal.getDate())
-				
+				//get days since jan 1
+				let days = Calendar.current.ordinality(of: .day, in: .year, for: meal.getDate())!
 				
 				let entry = ChartDataEntry(x: Double(days), y: Double(sum))
 				lineEntries.append(entry)
 				
-				//TODO init set of rand colors when this VC inits
 				let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
-				//set line color
 				let colour:UIColor = randColor()
 				line.setColor(colour)
 				line.setCircleColor(colour)
@@ -201,7 +195,6 @@ class GraphViewController: UIViewController {
 		let b = CGFloat(Float(arc4random()) / Float(UINT32_MAX))
 		return UIColor(red: r, green: g, blue: b, alpha: 1.0)
 	}
-	
 	
 }
 
@@ -266,18 +259,6 @@ extension GraphViewController: UITableViewDelegate, UITableViewDataSource {
 	}
 }
 
-func daysSinceYearStart(_ date: Date) -> Int {
-	let formatter = DateFormatter()
-	formatter.dateFormat = "yyyy/MM/dd HH:mm"
-	let someDateTime = formatter.date(from: "2018/01/01 00:00")
-	
-	let today = Date()
-	let interval = today.timeIntervalSince(someDateTime!)
-	
-	let int = Int(interval/(60*60*24))
-	
-	return int
-}
 
 
 /** A class used for saving graph-related settings. */
