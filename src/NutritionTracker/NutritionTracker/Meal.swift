@@ -19,15 +19,15 @@ class Meal: FoodItemList {
 		for foodItem in self.getFoodItems() {
 			meal.add(foodItem)
 		}
-		//TODO clone date
-		//TODO clone portions
+		
+		meal.setDate(self.date)
 		return meal
 	}
 	
 	// MARK: Setters
 	func setDate(_ date: Date?) {
-		if (date != nil) {
-			self.date = date!;
+		if let date = date {
+			self.date = date
 		}
 	}
 	
@@ -35,13 +35,5 @@ class Meal: FoodItemList {
 	func getDate() -> Date {
 		return date
 	}
-	
-//	func getAmountOf(_ nutrient: Nutrient) -> Float {
-//		var sum: Float = 0.0
-//		for f in getFoodItems() {
-//			sum = sum + f.getAmountOf(nutrient)
-//		}
-//		return sum
-//	}
 	
 }

@@ -55,11 +55,11 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		mealTableView.register(MealBuilderTableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
 
 		//TEST TODO remove
-		if MealBuilderViewController.testInit {
+//		if MealBuilderViewController.testInit {
 			meal.add(FoodItem(45144608, "Poop candy", 0, "g"))
 			meal.add(FoodItem(11683, "Carot"))
 			MealBuilderViewController.testInit = false;
-		}
+//		}
 		asyncReloadData()
 		saveMealButton.isEnabled = meal.count() > 0
 	}
@@ -95,7 +95,8 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
     @IBAction func visionButtonPressed(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
-        let addButton = UIBarButtonItem(title: "Add", style: .plain, target: foodDetailView, action: #selector(foodDetailView.addButtonPressed(sender:)))
+		
+		let addButton = UIBarButtonItem(title: "Add", style: .plain, target: foodDetailView, action: #selector(foodDetailView.addButtonPressed(sender:)))
         foodDetailView.navigationItem.rightBarButtonItem = addButton
         foodDetailView.foodSelector = self
 		
@@ -122,12 +123,13 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	
 	//called from NewMealSettingsViewController
 	func onReturnFromSavedMeal() {
-		let mealCopy = self.meal.clone()
+		//let mealCopy = self.meal.clone()
 		let emptyCompletion: (Bool) -> Void = { (success: Bool) -> Void in }
 		
-		saveMeal(mealCopy, emptyCompletion)
+		//saveMeal(mealCopy, emptyCompletion)
+		saveMeal(meal, emptyCompletion)
 		
-		for foodItem in mealCopy.getFoodItems() {
+		for foodItem in meal.getFoodItems() {
 			cacheFoodItem(foodItem, emptyCompletion)
 		}
 		
@@ -139,6 +141,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 
 	// Save new Meal to list of user's meals
 	func saveMeal(_ meal: Meal, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
+		
 		let mealCopy = meal.clone()
 
 		//TODO clone meal to save to realm.

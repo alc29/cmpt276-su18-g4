@@ -88,8 +88,8 @@ class FoodItemPortionTableViewCell: UITableViewCell, UIPickerViewDelegate, UIPic
 	}
 	
 	func updateFoodItem() {
-		let scale = Float(currentValue[SCALE])!
 		let mult = Float(currentValue[MULT])!
+		let scale = Float(currentValue[SCALE])!
 		let unit = currentValue[UNIT]
 		
 		let amount = Float(mult * scale)
