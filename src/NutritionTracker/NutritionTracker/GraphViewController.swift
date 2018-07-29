@@ -8,7 +8,6 @@
 // 	ViewController for the Graph. Displays a grpah of the user's saved meals.
 //	(TODO) The user may choose which nutrients they wish to have displayed in the grpah.
 //
-
 import UIKit
 import RealmSwift
 import Charts
@@ -45,16 +44,8 @@ class GraphViewController: UIViewController {
 		nutrientTable.dataSource = self
 		self.nutrientTable.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "NutrientCell")
 		
-
-		formatGraph()
 		
-		reloadGraphData()
-	}
-	
-	func formatNutrientTable() {
-		
-	}
-	func formatGraph() {
+		/* Graph */
 		// For formatting the x-axis
 		let xAxis = graph.xAxis
 		xAxis.labelPosition = .bottom
@@ -86,6 +77,8 @@ class GraphViewController: UIViewController {
 		
 		// Animation upon opening
 		graph.animate(xAxisDuration: 1)
+		
+		reloadGraphData()
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -103,7 +96,7 @@ class GraphViewController: UIViewController {
 				let mealResults = realm.objects(Meal.self)
 				var meals = [Meal]()
 				meals.append(contentsOf: mealResults)
-
+				
 				//TODO get cachedFoodItems for reloadData. get all, or filter by desired foodId's
 				let cachedFoodItemResults = realm.objects(CachedFoodItem.self)
 				var cachedFoodItems = [CachedFoodItem]()
@@ -120,35 +113,41 @@ class GraphViewController: UIViewController {
 		
 		//construct graph data from saved meals, filtered by tags.
 		for tag in nutrientTags { //for each nutrient tag
-			var lineEntries = [ChartDataEntry]()
-
 			for meal in meals {
+				var lineEntries = [ChartDataEntry]()
 				
 				//add the total amount of the "tag" nutrient contained in the meal
 				var sum: Float = Float(0) //totol amount of nutrient
 				for foodItem in meal.getFoodItems() {
 					if let cached = self.getFoodItem(foodItem.getFoodId(), cachedFoodItems),
-					let foodItemNutrient = cached.getFoodItemNutrient(tag) {
+						let foodItemNutrient = cached.getFoodItemNutrient(tag) {
 						let amount = getTotalAmountOf(foodItemNutrient, foodItem)
 						sum += amount
 					}
 				}
 				
+				
+				//TODO get correct date
 				let dayOfMonth = Calendar.current.ordinality(of: .day, in: .month, for: meal.getDate())!
-				let entry = ChartDataEntry(x: Double(dayOfMonth), y: Double(sum))
+				
+				let days = daysSinceYearStart(meal.getDate())
+				
+				
+				let entry = ChartDataEntry(x: Double(days), y: Double(sum))
 				lineEntries.append(entry)
+				
+				//TODO init set of rand colors when this VC inits
+				let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
+				//set line color
+				let colour:UIColor = randColor()
+				line.setColor(colour)
+				line.setCircleColor(colour)
+				line.circleRadius = 4
+				//line.drawCirclesEnabled = false
+				data.addDataSet(line)
+				
 			}
 			
-			//TODO init set of rand colors when this VC inits
-			let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
-			//set line color
-			let colour:UIColor = randColor()
-			line.setColor(colour)
-			line.setCircleColor(colour)
-			line.circleRadius = 4
-			//line.drawCirclesEnabled = false
-			data.addDataSet(line)
-
 		}
 		
 		// Set the date of the graph
@@ -176,7 +175,7 @@ class GraphViewController: UIViewController {
 		
 		//convert from per 100g to per 1g
 		let nutrientAmount = foodItemNutrient.getAmount() / 100
-
+		
 		let foodAmount = foodItem.getAmount()
 		
 		let unit = foodItem.getUnit()
@@ -193,7 +192,7 @@ class GraphViewController: UIViewController {
 		//TODO handle other units
 		return Float(0)
 	}
-
+	
 	
 	//AKN: https://stackoverflow.com/questions/25050309/swift-random-float-between-0-and-1
 	func randColor() -> UIColor {
@@ -248,7 +247,7 @@ extension GraphViewController: UITableViewDelegate, UITableViewDataSource {
 			setNutrient(nutrients[indexPath.row], selected[indexPath.row])
 		}
 		tableView.deselectRow(at: indexPath, animated: true)
-
+		
 	}
 	
 	//TODO move out of extension
@@ -267,14 +266,26 @@ extension GraphViewController: UITableViewDelegate, UITableViewDataSource {
 	}
 }
 
+func daysSinceYearStart(_ date: Date) -> Int {
+	let formatter = DateFormatter()
+	formatter.dateFormat = "yyyy/MM/dd HH:mm"
+	let someDateTime = formatter.date(from: "2018/01/01 00:00")
+	
+	let today = Date()
+	let interval = today.timeIntervalSince(someDateTime!)
+	
+	let int = Int(interval/(60*60*24))
+	
+	return int
+}
+
 
 /** A class used for saving graph-related settings. */
 class GraphSettings: Object {
-
+	
 	@objc var selectedDate = Date() //the date the graph should display when first loading.
 	//@objc var dateFormat:
 	//var unit = Unit.Micrograms // The unit that the graph should be displayed in.
-
 	let tags = List<Nutrient>()
 	
 	convenience init(_ defaultTags: [Nutrient]) {
@@ -288,4 +299,3 @@ class GraphSettings: Object {
 	}
 	
 }
-
