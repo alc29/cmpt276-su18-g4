@@ -24,6 +24,8 @@ class NewMealSettingsViewController: UIViewController, UITableViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
 
+		saveMealButton.backgroundColor = UIColor.white
+		
 		mealTableView.delegate = self
 		mealTableView.dataSource = self
 		mealTableView.register(FoodItemPortionTableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")

@@ -13,8 +13,14 @@ import RealmSwift
 
 class MainMenuViewController: UIViewController {
 	
-    override func viewDidLoad() {
+	@IBOutlet weak var buttonStack: UIStackView!
+	
+	override func viewDidLoad() {
         super.viewDidLoad()
+		for view in buttonStack.arrangedSubviews {
+			view.backgroundColor = UIColor.white
+		}
+		
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {

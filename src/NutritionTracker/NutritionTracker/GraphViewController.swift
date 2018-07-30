@@ -85,6 +85,8 @@ class GraphViewController: UIViewController {
 		let rightAxis = graph.rightAxis
 		rightAxis.enabled = false
 		
+		graph.backgroundColor = UIColor.white
+		
 		// Animation upon opening
 		graph.animate(xAxisDuration: 1)
 		reloadGraphData()
@@ -192,48 +194,14 @@ class GraphViewController: UIViewController {
 			//line.drawCirclesEnabled = false
 			data.addDataSet(line)
 		}
-
-		// A
-		//construct graph data from saved meals, filtered by tags.
-//		for tag in nutrientTags { //for each nutrient tag
-//			for meal in meals {
-//				var lineEntries = [ChartDataEntry]()
-//
-//				//add the total amount of the "tag" nutrient contained in the meal
-//				var sum: Float = Float(0)
-//				for foodItem in meal.getFoodItems() {
-//					if let cached = self.getFoodItem(foodItem.getFoodId(), cachedFoodItems),
-//						let foodItemNutrient = cached.getFoodItemNutrient(tag) {
-//						let amount = getTotalAmountOf(foodItemNutrient, foodItem)
-//						sum += amount
-//					}
-//				}
-//
-//				//get days since jan 1
-//				let days = Calendar.current.ordinality(of: .day, in: .year, for: meal.getDate())!
-//
-//				let entry = ChartDataEntry(x: Double(days), y: Double(sum))
-//				lineEntries.append(entry)
-//
-//				let line = LineChartDataSet(values: lineEntries, label: "\(tag.name)")
-//				let colour:UIColor = randColor()
-//				line.setColor(colour)
-//				line.setCircleColor(colour)
-//				line.circleRadius = 4
-//				//line.drawCirclesEnabled = false
-//				data.addDataSet(line)
-//
-//			}
-//
-//		}
 		
 		// Set the date of the graph
 //		let dateFormatter = DateFormatter()
 		//dateFormatter.setLocalizedDateFormatFromTemplate(graphSettings.dateFormat)
 //		let dateStr = dateFormatter.string(from: date)
-		
 		graph.data = data
 //		graph.chartDescription?.text = dateStr
+		graph.chartDescription?.text = ""
 		graph.notifyDataSetChanged()
 	}
 	

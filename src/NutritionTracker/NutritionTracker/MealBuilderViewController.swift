@@ -23,9 +23,9 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	// MARK: Properties
 	@IBOutlet weak var mealTableView: UITableView!
 	@IBOutlet weak var saveMealButton: UIButton!
+	@IBOutlet weak var buttonStack: UIStackView!
+	static var testInit = true; //TEST NOTE: set to true to add sample items
 	var meal = Meal()
-	static var testInit = true;
-
 
 	var mealSavedAlertPopup:UIView?
 	var mealSavedAlertLabel:UILabel = UILabel(frame: CGRect(x:100, y:400, width:200, height:50))
@@ -38,7 +38,13 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	// MARK: - VC Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-		 //TODO center label
+
+		//format buttons
+		for button in buttonStack.arrangedSubviews {
+			button.backgroundColor = UIColor.white
+		}
+		saveMealButton.backgroundColor = UIColor.white
+		
 		mealSavedAlertLabel.text = "Meal Saved"
 		//mealSavedAlertLabel.isHidden = true
 		mealSavedAlertLabel.alpha = 0
@@ -54,12 +60,12 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		mealTableView.dataSource = self
 		mealTableView.register(MealBuilderTableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
 
-		//TEST TODO remove
-//		if MealBuilderViewController.testInit {
+		// sample food items for testing
+		if MealBuilderViewController.testInit {
 			meal.add(FoodItem(45144608, "Poop candy", 0, "g"))
 			meal.add(FoodItem(11683, "Carot"))
 			MealBuilderViewController.testInit = false;
-//		}
+		}
 		asyncReloadData()
 		saveMealButton.isEnabled = meal.count() > 0
 	}
