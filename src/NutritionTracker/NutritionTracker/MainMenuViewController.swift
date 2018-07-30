@@ -47,4 +47,10 @@ class MainMenuViewController: UIViewController {
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
 	
+	@IBAction func visionButtonPressed(_ sender: UIButton) {
+		
+		let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "VisionView")
+		self.navigationController?.pushViewController(vc, animated: true)
+	}
+	
 }

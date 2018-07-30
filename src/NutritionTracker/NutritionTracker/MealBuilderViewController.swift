@@ -75,7 +75,20 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	//MARK: - Actions
 
 	@IBAction func catalogButtonPressed(_ sender: UIButton) {
+		let storyboard = UIStoryboard(name: "Main", bundle: nil)
 		let vc = CategoryTableViewController()
+		
+		let foodListTableVC = storyboard.instantiateViewController(withIdentifier: "FoodListTableViewController") as! FoodListTableViewController
+		
+		let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
+		let addButton = UIBarButtonItem(title: "Add", style: .plain, target: foodDetailView, action: #selector(foodDetailView.addButtonPressed(sender:)))
+		foodDetailView.navigationItem.rightBarButtonItem = addButton
+		foodDetailView.foodSelector = self
+		
+		foodListTableVC.foodDetailView = foodDetailView
+		
+		vc.foodListTableVC = foodListTableVC
+		
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
 	
