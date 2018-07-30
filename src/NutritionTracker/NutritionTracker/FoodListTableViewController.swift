@@ -14,8 +14,13 @@ Allow for the selection of a FoodItem from the table.
 import UIKit
 
 class FoodListTableViewController: UITableViewController {
-	//var foodItemList = FoodItemList()
-	var foodItems = [FoodItem]()
+	var foodItems = [FoodItem]() {
+		didSet {
+			DispatchQueue.main.async {
+				self.tableView.reloadData()
+			}
+		}
+	}
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +30,8 @@ class FoodListTableViewController: UITableViewController {
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
+		self.tableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: "Cell")
+
     }
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -46,6 +53,7 @@ class FoodListTableViewController: UITableViewController {
     }
 	
 	// Called when a cell is tapped. present FoodDetailView when a FoodItem cell is tapped
+	//TODO use custon foodDetailView if in MealBuilder
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if let indexPath = tableView.indexPathForSelectedRow {
 			let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -54,17 +62,19 @@ class FoodListTableViewController: UITableViewController {
 			foodDetailView.foodItem = foodItems[indexPath.row]
 			self.navigationController?.pushViewController(foodDetailView, animated: true)
 		}
-		
-
 	}
 
 	// Setup the cells
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		let cellToUse = UITableViewCell()
-		let foodItem = foodItems[indexPath.row]
-		cellToUse.textLabel!.text = foodItem.getName()
-		//cellToUse.detailTextLabel!.text = "todo FoodItem.getFoodGroup()"
-		return cellToUse
+//		let cellToUse = UITableViewCell()
+//		let foodItem = foodItems[indexPath.row]
+//		cellToUse.textLabel!.text = foodItem.getName()
+//		return cellToUse
+		
+		
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+		cell.textLabel!.text = foodItems[indexPath.row].getName()
+		return cell
     }
 	
 

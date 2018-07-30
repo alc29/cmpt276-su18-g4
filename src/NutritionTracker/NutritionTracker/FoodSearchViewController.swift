@@ -57,11 +57,6 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 		//setup search footer
 		tableView.tableFooterView = searchFooter
 		
-		//fake list of results
-//		for i in 0..<10 {
-//			searchResults.append(FoodItem(i, "Food item \(i)"))
-//		}
-		
     }
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -129,7 +124,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	
 	//MARK: - Search
 	func searchAndUpdateResults(_ searchTerm: String) {
-		Database5.sharedInstance.search(searchTerm, searchCompletion)
+		Database5.search(searchTerm, searchCompletion)
 	}
 	
 	func searchCompletion(_ foodItems: [FoodItem]) {
