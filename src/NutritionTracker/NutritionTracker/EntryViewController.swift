@@ -13,49 +13,20 @@ import RealmSwift
 
 class EntryViewController: UIViewController {
 
+	@IBOutlet weak var continueButton: UIButton!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		//Testing - clear all persistent data from the last test run.
-		clearRealmData()
-		//add fake meals for testing the app.
-		//addTestMeals()
-		
+		// if firebase id exists, continue to next view, else
+		continueButton.backgroundColor = UIColor.white
 	}
 	
-	//Testing - clear all persistent data
-	//(note: if migration required, must erase all content from device & restart.)
-	private func clearRealmData() {
-		//DispatchQueue.main.async {
-		DispatchQueue(label: "EntryVC").async {
-			let realm = try! Realm()
-			try! realm.write {
-				realm.deleteAll()
-			}
-		}
-	}
-
-	
-	//Testing - create and add test meals to display in graph
-	private func addTestMeals() {
-//		var daysToAdd = 1
-		
-//		let realm = try! Realm()
-//		try! realm.write {
-//			for _ in 0..<5 {
-//				let meal = Meal()
-//				for j in 0..<2 {
-//					let foodItem = FoodItem(j, "food item: \(j)")
-//					foodItem.setAmount(Float(arc4random_uniform(5)))
-//					meal.add(foodItem)
-//				}
-//				let nextDate = Calendar.current.date(byAdding: .day, value: daysToAdd, to: Date())
-//				daysToAdd += 1
-//				meal.setDate(nextDate)
-//				realm.add(meal)
-//			}
+//	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//		if segue.identifier == "entryToLoginSegue" {
+////			segue.destination
 //		}
-	}
-
+//	}
+	
 }
 
