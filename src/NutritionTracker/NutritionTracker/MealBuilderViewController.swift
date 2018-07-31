@@ -25,7 +25,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	@IBOutlet weak var mealTableView: UITableView!
 	@IBOutlet weak var saveMealButton: UIButton!
 	@IBOutlet weak var buttonStack: UIStackView!
-	static var testInit = true; //TEST NOTE: set to true to add sample items
+	static var testInit = false; //TEST NOTE: set to true to add sample items
 	var meal = Meal()
 
 	var mealSavedAlertPopup:UIView?
