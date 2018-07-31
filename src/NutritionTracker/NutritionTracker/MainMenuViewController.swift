@@ -12,8 +12,8 @@ import UIKit
 import RealmSwift
 
 class MainMenuViewController: UIViewController {
-	
 	@IBOutlet weak var buttonStack: UIStackView!
+	@IBOutlet weak var firebaseIdLabel: UILabel!
 	
 	override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,21 +21,17 @@ class MainMenuViewController: UIViewController {
 			view.backgroundColor = UIColor.white
 		}
 		
+		let realm = try! Realm()
+		let userInfo = realm.objects(UserInfo.self).first!
+		firebaseIdLabel.text = "firebase id: \(userInfo.firebaseId)"
+		
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		//debug()
 	}
 	
-	private func debug() {
-		DispatchQueue(label: "MainMeunVC").async {
-			let realm = try! Realm()
-			let meals = realm.objects(Meal.self) //(get all meals for testing)
-			print("num meals: \(meals.count)")
-		}
-		
-	}
+
 	
 	// MARK: Button actions
 	

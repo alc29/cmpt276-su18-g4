@@ -18,6 +18,9 @@ class FoodItemList: Object {
 	private let list = List<FoodItem>()
 	
 	// MARK: Public methods
+	func getId()->String {
+		return id
+	}
 	
 	// Add a fooditem to this list
 	func add(_ foodItem: FoodItem) {

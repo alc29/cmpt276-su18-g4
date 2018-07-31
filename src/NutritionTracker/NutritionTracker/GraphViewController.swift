@@ -104,15 +104,17 @@ class GraphViewController: UIViewController {
 			autoreleasepool {
 				let realm = try! Realm()
 				
-				//TODO get all meals, or filter by date & range
+				// get all meals, or filter by date & range
 				let mealResults = realm.objects(Meal.self)
 				var meals = [Meal]()
 				meals.append(contentsOf: mealResults)
 				
-				//TODO get cachedFoodItems for reloadData. get all, or filter by desired foodId's
+				// get cachedFoodItems for reloadData. get all, or filter by desired foodId's
 				let cachedFoodItemResults = realm.objects(CachedFoodItem.self)
 				var cachedFoodItems = [CachedFoodItem]()
 				cachedFoodItems.append(contentsOf: cachedFoodItemResults)
+				
+				// get saved GoalLines
 				
 				self.reloadGraphData(meals, cachedFoodItems)
 			}
