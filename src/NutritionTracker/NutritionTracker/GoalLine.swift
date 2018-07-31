@@ -49,8 +49,8 @@ class GoalLine: Object {
         if (amount == 0) { print("no amount"); return nil }
         
         // Create Line with default settings
-//        let gLine = ChartLimitLine(limit: Double(amount), label: name)
-		let gLine = ChartLimitLine(limit: 0.5, label: name)
+        let gLine = ChartLimitLine(limit: Double(amount), label: name)
+//		let gLine = ChartLimitLine(limit: 0.5, label: name)
         gLine.lineWidth = 4
         gLine.lineDashLengths = [5, 5]
         gLine.labelPosition = .rightTop
