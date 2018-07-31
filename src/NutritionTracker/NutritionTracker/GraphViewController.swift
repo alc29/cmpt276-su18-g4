@@ -115,8 +115,15 @@ class GraphViewController: UIViewController {
 				cachedFoodItems.append(contentsOf: cachedFoodItemResults)
 				
 				// get saved GoalLines
-				
-				self.reloadGraphData(meals, cachedFoodItems)
+				let goalResults = realm.objects(GoalLine.self)
+				var limitLines = [ChartLimitLine]()
+				for goal in goalResults {
+					if let line = goal.makeLine() {
+						limitLines.append(line)
+					}
+				}
+
+				self.reloadGraphData(meals, cachedFoodItems, limitLines)
 			}
 		}
 	}
@@ -141,10 +148,9 @@ class GraphViewController: UIViewController {
 		return mealsOnDate
 	}
 	
-	func reloadGraphData(_ meals: [Meal], _ cachedFoodItems: [CachedFoodItem]) {
+	func reloadGraphData(_ meals: [Meal], _ cachedFoodItems: [CachedFoodItem], _ limitLines: [ChartLimitLine]) {
 		let date = graphSettings.getDate() //use date to determine which meals to display
 		let data = LineChartData() //This is the object that will be added to the chart
-
 		
 		// B
 		//set which days to get meals
@@ -195,6 +201,11 @@ class GraphViewController: UIViewController {
 			line.circleRadius = 4
 			//line.drawCirclesEnabled = false
 			data.addDataSet(line)
+		}
+		
+		//add nutrient goal lines to graph
+		for limitLine in limitLines {
+			graph.leftAxis.addLimitLine(limitLine)
 		}
 		
 		// Set the date of the graph

@@ -36,6 +36,8 @@
 		0AB4DBC620E7F9BB00BD052F /* MealBuilderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB4DBC520E7F9BB00BD052F /* MealBuilderViewController.swift */; };
 		0AB4DBC920E8073C00BD052F /* CategoryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB4DBC820E8073C00BD052F /* CategoryTableViewController.swift */; };
 		0AB8EB67210FF54200D7C74A /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8EB66210FF54200D7C74A /* UserInfo.swift */; };
+		0AB8EB6B2110525F00D7C74A /* GoalLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8EB6A2110525F00D7C74A /* GoalLine.swift */; };
+		0AB8EB6D211052D500D7C74A /* GoalPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB8EB6C211052D500D7C74A /* GoalPickerViewController.swift */; };
 		0ABBED7A20EA0AD700D7BD6A /* FoodGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABBED7920EA0AD700D7BD6A /* FoodGroup.swift */; };
 		0ABBED7C20EAB25A00D7BD6A /* FoodSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABBED7B20EAB25A00D7BD6A /* FoodSearchViewController.swift */; };
 		0ABBED7E20EAB4A600D7BD6A /* FoodDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ABBED7D20EAB4A600D7BD6A /* FoodDetailViewController.swift */; };
@@ -98,6 +100,8 @@
 		0AB4DBC520E7F9BB00BD052F /* MealBuilderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MealBuilderViewController.swift; sourceTree = "<group>"; };
 		0AB4DBC820E8073C00BD052F /* CategoryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryTableViewController.swift; sourceTree = "<group>"; };
 		0AB8EB66210FF54200D7C74A /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		0AB8EB6A2110525F00D7C74A /* GoalLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoalLine.swift; sourceTree = "<group>"; };
+		0AB8EB6C211052D500D7C74A /* GoalPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoalPickerViewController.swift; sourceTree = "<group>"; };
 		0ABBED7920EA0AD700D7BD6A /* FoodGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodGroup.swift; sourceTree = "<group>"; };
 		0ABBED7B20EAB25A00D7BD6A /* FoodSearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodSearchViewController.swift; sourceTree = "<group>"; };
 		0ABBED7D20EAB4A600D7BD6A /* FoodDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodDetailViewController.swift; sourceTree = "<group>"; };
@@ -275,6 +279,8 @@
 			children = (
 				0A24AB4720FF0BAA002B10E1 /* Formatters */,
 				0A8F559220E0912C00B9E793 /* GraphViewController.swift */,
+				0AB8EB6A2110525F00D7C74A /* GoalLine.swift */,
+				0AB8EB6C211052D500D7C74A /* GoalPickerViewController.swift */,
 			);
 			name = Graph;
 			sourceTree = "<group>";
@@ -516,12 +522,14 @@
 				0A219E8F20E73832005965A9 /* Unit.swift in Sources */,
 				0A8F559320E0912C00B9E793 /* GraphViewController.swift in Sources */,
 				0A72CB7E20F1C6B100DB9DAC /* MealBuilderTableViewCell.swift in Sources */,
+				0AB8EB6D211052D500D7C74A /* GoalPickerViewController.swift in Sources */,
 				0A37A10B210BA0D2005218C5 /* Measure.swift in Sources */,
 				0A68B77520FB13B200C1FB0A /* FoodReportV1.swift in Sources */,
 				0A24AB4C20FF0BC5002B10E1 /* DateValueFormatter.swift in Sources */,
 				0A24AB4E20FF0BC5002B10E1 /* IntAxisValueFormatter.swift in Sources */,
 				0ABBED7C20EAB25A00D7BD6A /* FoodSearchViewController.swift in Sources */,
 				0A8F558F20E08A9700B9E793 /* LoginViewController.swift in Sources */,
+				0AB8EB6B2110525F00D7C74A /* GoalLine.swift in Sources */,
 				0A7B87D620E07E3E00B45D5C /* EntryViewController.swift in Sources */,
 				0AD518DF2107EA3700907F97 /* FoodItemPortionTableViewCell.swift in Sources */,
 				0A7B87D420E07E3E00B45D5C /* AppDelegate.swift in Sources */,
