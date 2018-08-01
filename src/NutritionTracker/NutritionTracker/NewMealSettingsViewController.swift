@@ -24,6 +24,8 @@ class NewMealSettingsViewController: UIViewController, UITableViewDataSource, UI
     override func viewDidLoad() {
         super.viewDidLoad()
 
+		self.navigationController!.popViewController(animated: true)
+		
 		saveMealButton.backgroundColor = UIColor.white
 		
 		mealTableView.delegate = self

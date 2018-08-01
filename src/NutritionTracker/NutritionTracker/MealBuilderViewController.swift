@@ -8,6 +8,7 @@
 
 import UIKit
 import RealmSwift
+import FirebaseDatabase
 
 protocol FoodSelector {
 	func addFood(foodItem: FoodItem)
@@ -24,7 +25,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	@IBOutlet weak var mealTableView: UITableView!
 	@IBOutlet weak var saveMealButton: UIButton!
 	@IBOutlet weak var buttonStack: UIStackView!
-	static var testInit = true; //TEST NOTE: set to true to add sample items
+	static var testInit = false; //TEST NOTE: set to true to add sample items
 	var meal = Meal()
 
 	var mealSavedAlertPopup:UIView?
@@ -161,9 +162,7 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 	// Save new Meal to list of user's meals
 	func saveMeal(_ meal: Meal, _ completion: @escaping BoolCompletion, _ debug: Bool = false) {
 		
-		let mealCopy = meal.clone()
-
-		//TODO clone meal to save to realm.
+		let mealCopy = meal.clone() //TODO remove clone?
 		saveMealToRealm(mealCopy, completion)
 	}
 
@@ -171,6 +170,19 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 		DispatchQueue(label: "MealBuilderVC.saveMealToRealm").async {
 			autoreleasepool {
 				let realm = try! Realm()
+				
+				//check for save to firebase
+				let results = realm.objects(UserInfo.self)
+				if results.count == 0 {
+					print("Warning: no UserInfo instance detected")
+				} else if results.count == 1 {
+					let userInfo = results.first!
+					if userInfo.isFirebaseEnabled {
+						self.saveMealToFirebase(meal, userInfo.firebaseId)
+					}
+				} else { print("Warning: multiple UserInfo instances found"); }
+
+				//save to realm
 				try! realm.write {
 					realm.add(meal)
 				}
@@ -178,7 +190,33 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 			completion(true)
 
 		}
-
+	}
+	
+	func saveMealToFirebase(_ meal: Meal, _ firebaseId: String) {
+		
+		
+		var foodItems = [[String: Any]]()
+		for foodItem in meal.getFoodItems() {
+			let foodName = foodItem.getName()
+			let foodId = foodItem.getFoodId()
+			let foodUnit = foodItem.getUnit()
+			let foodAmount = foodItem.getAmount()
+			
+			let jFoodItem = ["name": foodName,
+							 "id": foodId,
+							 "amount:": foodAmount,
+							 "unit": foodUnit] as [String : Any]
+			foodItems.append(jFoodItem)
+		}
+		
+		//TODO delegate firebase logic to a manager class
+		let ref = Database.database().reference()
+		let container = ref.child("Users")
+		let user = container.child(firebaseId)
+		let userMeals = user.child("/meals")
+		let newMealData = ["date": meal.getDate().description, "foodItems":foodItems] as [String : Any]
+		let newMeal = userMeals.child("\(meal.getId())")
+		newMeal.setValue(newMealData)
 	}
 
 	//MARK: save & cache singular food items
@@ -214,7 +252,6 @@ class MealBuilderViewController: UIViewController, UITableViewDataSource, UITabl
 			}
 		}
 	}
-	
 	
 	func displayMealSavedAlert() {
 		mealSavedAlertLabel.isHidden = false

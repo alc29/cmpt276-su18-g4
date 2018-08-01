@@ -29,6 +29,7 @@ class FoodDetailViewController: UIViewController {
 		super.viewDidLoad()
 		barGraphSetup()
 		reloadBarGraphData()
+		
 	}
 	
 	func reloadBarGraphData() {
@@ -148,6 +149,7 @@ class FoodDetailViewController: UIViewController {
 	
 	@objc func addButtonPressed(sender: UIBarButtonItem) {
 		foodSelector?.addFood(foodItem: foodItem)
+		sender.isEnabled = false
 	}
 	
 	//AKN: https://stackoverflow.com/questions/25050309/swift-random-float-between-0-and-1
