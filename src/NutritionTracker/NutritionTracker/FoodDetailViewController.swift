@@ -29,6 +29,7 @@ class FoodDetailViewController: UIViewController {
 		super.viewDidLoad()
 		barGraphSetup()
 		reloadBarGraphData()
+		
 	}
 	
 	func reloadBarGraphData() {
@@ -100,9 +101,9 @@ class FoodDetailViewController: UIViewController {
 	
 	// set graph appearance
 	func barGraphSetup() {
+
 		let xAxis = barGraph.xAxis
 		xAxis.enabled = false
-		
 		
 		let leftAxisFormatter = NumberFormatter()
 		leftAxisFormatter.minimumFractionDigits = 0
@@ -122,17 +123,23 @@ class FoodDetailViewController: UIViewController {
 		let rightAxis = barGraph.rightAxis
 		rightAxis.enabled = false
 		
-		let l = barGraph.legend
-		l.horizontalAlignment = .left
-		l.verticalAlignment = .bottom
-		l.orientation = .horizontal
-		l.drawInside = false
-		l.form = .circle
-		l.formSize = 9
-		l.font = UIFont(name: "HelveticaNeue-Light", size: 11)!
-		l.xEntrySpace = 4
+		
+		//TODO - bug - Legend sometimes throws index out of range:
+//		if direction == .leftToRight {
+//			posX += calculatedLabelSizes[i].width
+//		}
+//		let l = barGraph.legend
+//		l.horizontalAlignment = .left
+//		l.verticalAlignment = .bottom
+//		l.orientation = .horizontal
+//		l.drawInside = false
+//		l.form = .circle
+//		l.formSize = 9
+//		l.font = UIFont(name: "HelveticaNeue-Light", size: 11)!
+//		l.xEntrySpace = 4
 		
 		barGraph.chartDescription?.text = ""
+		barGraph.backgroundColor = UIColor.white
 		
 		barGraph.pinchZoomEnabled          = true
 		barGraph.drawGridBackgroundEnabled = true
@@ -142,6 +149,7 @@ class FoodDetailViewController: UIViewController {
 	
 	@objc func addButtonPressed(sender: UIBarButtonItem) {
 		foodSelector?.addFood(foodItem: foodItem)
+		sender.isEnabled = false
 	}
 	
 	//AKN: https://stackoverflow.com/questions/25050309/swift-random-float-between-0-and-1

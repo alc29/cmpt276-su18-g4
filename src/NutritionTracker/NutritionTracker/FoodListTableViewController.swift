@@ -14,6 +14,8 @@ Allow for the selection of a FoodItem from the table.
 import UIKit
 
 class FoodListTableViewController: UITableViewController {
+	var foodDetailView: FoodDetailViewController? = nil
+	
 	var foodItems = [FoodItem]() {
 		didSet {
 			DispatchQueue.main.async {
@@ -56,11 +58,15 @@ class FoodListTableViewController: UITableViewController {
 	//TODO use custon foodDetailView if in MealBuilder
 	override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 		if let indexPath = tableView.indexPathForSelectedRow {
-			let storyboard = UIStoryboard(name: "Main", bundle: nil)
-			//let foodDetailView = FoodDetailViewController()
-			let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
-			foodDetailView.foodItem = foodItems[indexPath.row]
-			self.navigationController?.pushViewController(foodDetailView, animated: true)
+			if self.foodDetailView != nil {
+				self.foodDetailView!.foodItem = foodItems[indexPath.row]
+				self.navigationController?.pushViewController(self.foodDetailView!, animated: true)
+			} else {
+				let storyboard = UIStoryboard(name: "Main", bundle: nil)
+				let foodDetailView = storyboard.instantiateViewController(withIdentifier: "FoodDetailView") as! FoodDetailViewController
+				foodDetailView.foodItem = foodItems[indexPath.row]
+				self.navigationController?.pushViewController(foodDetailView, animated: true)
+			}
 		}
 	}
 

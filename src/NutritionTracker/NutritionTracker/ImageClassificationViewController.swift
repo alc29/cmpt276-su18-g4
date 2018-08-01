@@ -55,6 +55,7 @@ class ImageClassificationViewController: UIViewController {
     //pass identified string to search view controller
     @IBAction func confirmButtonPressed(_ sender: UIButton) {
 		
+		//TODO make new searchViewController if nil
 		if !identifiedFoodStr.isEmpty {
 			if let searchViewController = searchViewController {
 				let identifiedFood = getFirstWord(identifiedFoodStr)

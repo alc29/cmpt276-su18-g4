@@ -12,24 +12,26 @@ import UIKit
 import RealmSwift
 
 class MainMenuViewController: UIViewController {
+	@IBOutlet weak var buttonStack: UIStackView!
+	@IBOutlet weak var firebaseIdLabel: UILabel!
 	
-    override func viewDidLoad() {
+	override func viewDidLoad() {
         super.viewDidLoad()
+		for view in buttonStack.arrangedSubviews {
+			view.backgroundColor = UIColor.white
+		}
+		
+		let realm = try! Realm()
+		let userInfo = realm.objects(UserInfo.self).first!
+		firebaseIdLabel.text = "firebase id: \(userInfo.firebaseId)"
+		
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		//debug()
 	}
 	
-	private func debug() {
-		DispatchQueue(label: "MainMeunVC").async {
-			let realm = try! Realm()
-			let meals = realm.objects(Meal.self) //(get all meals for testing)
-			print("num meals: \(meals.count)")
-		}
-		
-	}
+
 	
 	// MARK: Button actions
 	
@@ -44,6 +46,12 @@ class MainMenuViewController: UIViewController {
 		//let foodDetailView = FoodDetailViewController()
 		
 		let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoodSearchView")
+		self.navigationController?.pushViewController(vc, animated: true)
+	}
+	
+	@IBAction func visionButtonPressed(_ sender: UIButton) {
+		
+		let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "VisionView")
 		self.navigationController?.pushViewController(vc, animated: true)
 	}
 	

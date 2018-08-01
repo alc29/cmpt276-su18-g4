@@ -18,7 +18,8 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 	@IBOutlet weak var searchFooter: SearchFooterView!
 	
 	var foodDetailViewController: FoodDetailViewController? = nil
-	//var results = [FoodItem]()
+	let searchController = UISearchController(searchResultsController: nil)
+	
 	//var filteredResults = [FoodItem]()
 	var searchResults = [FoodItem]() {
 		didSet {
@@ -27,7 +28,7 @@ class FoodSearchViewController: UIViewController, UITableViewDataSource, UITable
 			}
 		}
 	}
-	let searchController = UISearchController(searchResultsController: nil)
+	
 	
 	//MARK: - View Setup
     override func viewDidLoad() {

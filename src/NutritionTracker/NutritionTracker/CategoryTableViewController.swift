@@ -15,6 +15,7 @@ import UIKit
 
 class CategoryTableViewController: UITableViewController {
 	// MARK: Properties
+	var foodListTableVC: FoodListTableViewController? = nil
 	
 	//TODO add more food groups from FoodGroup
 	private let defaultFoodGroups = [
@@ -80,9 +81,14 @@ class CategoryTableViewController: UITableViewController {
 			let completion: ([FoodItem]?) -> Void = { (foodItems: [FoodItem]?) -> Void in
 
 				DispatchQueue.main.async {
-					let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoodListTableViewController") as! FoodListTableViewController
-					vc.foodItems = foodItems!
-					self.navigationController?.pushViewController(vc, animated: true)
+					if self.foodListTableVC != nil {
+						self.foodListTableVC!.foodItems = foodItems!
+						self.navigationController?.pushViewController(self.foodListTableVC!, animated: true)
+					} else {
+						let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FoodListTableViewController") as! FoodListTableViewController
+						vc.foodItems = foodItems!
+						self.navigationController?.pushViewController(vc, animated: true)
+					}
 				}
 				
 			}
@@ -97,23 +103,6 @@ class CategoryTableViewController: UITableViewController {
 		cell.textLabel!.text = foodGroups[indexPath.row].name
 		return cell
 	}
-	
-	//TODO remove
-//	func handleFoodGroupItemsQuery(_ data: Data?) {
-//		if (data != nil) {
-//			let foodItemResults = Database5.sharedInstance.jsonToFoodItems(data!)
-//			let vc = FoodListTableViewController()
-//			vc.foodItems = foodItemResults
-//			self.navigationController!.pushViewController(vc, animated: true)
-////			DispatchQueue.main.async {
-////				self.tableView.reloadData()
-////			}
-//		}
-//	}
-	
-
-
-	
 	
 	
 	// MARK: Provided template methods

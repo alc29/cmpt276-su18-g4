@@ -8,7 +8,8 @@ target 'NutritionTracker' do
   # Pods for NutritionTracker
   pod "RealmSwift"
   pod "Charts"
-
+  pod "Firebase/Database"
+  
   target 'NutritionTrackerTests' do
     inherit! :search_paths
     # Pods for testing
