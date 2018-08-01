@@ -60,7 +60,7 @@ class GraphViewController: UIViewController {
 		xAxis.labelPosition = .bottom
 		xAxis.granularity = 1
 		xAxis.labelCount = 3
-		xAxis.setLabelCount(10, force: true)
+		xAxis.setLabelCount(5, force: true)
 		// This function takes in the x value from, for example: let entry = ChartDataEntry(x: 1, y: 5)
 		// and converts it into a date value. 1 = Jan 1, 365 = Dec 25, 366 = Jan 1
 		// Years have been turned off, but can be re-enabled from -> Formatters: DayAxisValueFormatter.swift line: 33

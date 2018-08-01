@@ -24,7 +24,7 @@ class FoodDetailViewController: UIViewController {
 	var graphSettings = GraphSettings() //if no settings found, use default settings & save
 	
 	//TODO load tags from user settings
-	let DEFAULT_TAGS = [Nutrient.Sugars_total, Nutrient.Calcium, Nutrient.Sodium]
+	let DEFAULT_TAGS = [Nutrient.Carbohydrate, Nutrient.Total_lipid, Nutrient.Protein]
 	
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)

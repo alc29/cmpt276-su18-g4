@@ -47,9 +47,9 @@
 		0AC9B19520E8667100334127 /* Nutrient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AC9B19420E8667100334127 /* Nutrient.swift */; };
 		0AD518DD2107E05800907F97 /* NewMealSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD518DC2107E05800907F97 /* NewMealSettingsViewController.swift */; };
 		0AD518DF2107EA3700907F97 /* FoodItemPortionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AD518DE2107EA3700907F97 /* FoodItemPortionTableViewCell.swift */; };
-		0ADC09CD210FEB1D0079F1ED /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0ADC09CC210FEB1D0079F1ED /* GoogleService-Info.plist */; };
 		0AF7C8DD20FC3E2F00A39D9B /* NutrientReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AF7C8DC20FC3E2F00A39D9B /* NutrientReport.swift */; };
 		218BD0C6C8F6E2E803970CB0 /* Pods_NutritionTrackerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AE46B28277FD915070F9577 /* Pods_NutritionTrackerTests.framework */; };
+		2ABB191A21117295009CE7A8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2ABB191921117295009CE7A8 /* GoogleService-Info.plist */; };
 		6033730220F6F30400A3D81B /* ImageClassificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033730120F6F30400A3D81B /* ImageClassificationViewController.swift */; };
 		6033730420F6F32800A3D81B /* CGImagePropertyOrientation+UIImageOrientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6033730320F6F32800A3D81B /* CGImagePropertyOrientation+UIImageOrientation.swift */; };
 		6033730620F6F4E600A3D81B /* MobileNet.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 6033730520F6F4E600A3D81B /* MobileNet.mlmodel */; };
@@ -111,11 +111,11 @@
 		0AC9B19420E8667100334127 /* Nutrient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nutrient.swift; sourceTree = "<group>"; };
 		0AD518DC2107E05800907F97 /* NewMealSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMealSettingsViewController.swift; sourceTree = "<group>"; };
 		0AD518DE2107EA3700907F97 /* FoodItemPortionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodItemPortionTableViewCell.swift; sourceTree = "<group>"; };
-		0ADC09CC210FEB1D0079F1ED /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0AE46B28277FD915070F9577 /* Pods_NutritionTrackerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_NutritionTrackerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0AF7C8DC20FC3E2F00A39D9B /* NutrientReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NutrientReport.swift; sourceTree = "<group>"; };
 		0DBB13ACDCD907908D258AD1 /* Pods-NutritionTracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NutritionTracker.release.xcconfig"; path = "Pods/Target Support Files/Pods-NutritionTracker/Pods-NutritionTracker.release.xcconfig"; sourceTree = "<group>"; };
 		1D0B227A653C469B32E39BA8 /* Pods-NutritionTrackerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-NutritionTrackerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-NutritionTrackerTests/Pods-NutritionTrackerTests.release.xcconfig"; sourceTree = "<group>"; };
+		2ABB191921117295009CE7A8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		6033730120F6F30400A3D81B /* ImageClassificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageClassificationViewController.swift; sourceTree = "<group>"; };
 		6033730320F6F32800A3D81B /* CGImagePropertyOrientation+UIImageOrientation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImagePropertyOrientation+UIImageOrientation.swift"; sourceTree = "<group>"; };
 		6033730520F6F4E600A3D81B /* MobileNet.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = MobileNet.mlmodel; sourceTree = "<group>"; };
@@ -250,8 +250,8 @@
 				0A31499820F806A900EFBB96 /* Vision */,
 				0A7B87DA20E07E3E00B45D5C /* Assets.xcassets */,
 				0A7B87DC20E07E3E00B45D5C /* LaunchScreen.storyboard */,
+				2ABB191921117295009CE7A8 /* GoogleService-Info.plist */,
 				0A7B87DF20E07E3E00B45D5C /* Info.plist */,
-				0ADC09CC210FEB1D0079F1ED /* GoogleService-Info.plist */,
 			);
 			path = NutritionTracker;
 			sourceTree = "<group>";
@@ -378,7 +378,7 @@
 				TargetAttributes = {
 					0A7B87CF20E07E3E00B45D5C = {
 						CreatedOnToolsVersion = 9.2;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 					0A7B87E320E07E3E00B45D5C = {
 						CreatedOnToolsVersion = 9.2;
@@ -416,7 +416,7 @@
 				0A31499320F8041100EFBB96 /* README.md in Resources */,
 				0A7B87DB20E07E3E00B45D5C /* Assets.xcassets in Resources */,
 				0A7B87D920E07E3E00B45D5C /* Main.storyboard in Resources */,
-				0ADC09CD210FEB1D0079F1ED /* GoogleService-Info.plist in Resources */,
+				2ABB191A21117295009CE7A8 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -690,8 +690,9 @@
 			baseConfigurationReference = E570123CF862A0145A1B3333 /* Pods-NutritionTracker.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JL8BJ6S669;
 				INFOPLIST_FILE = NutritionTracker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "cmpt276-su18-g4.NutritionTracker";
@@ -707,8 +708,9 @@
 			baseConfigurationReference = 0DBB13ACDCD907908D258AD1 /* Pods-NutritionTracker.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JL8BJ6S669;
 				INFOPLIST_FILE = NutritionTracker/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "cmpt276-su18-g4.NutritionTracker";
