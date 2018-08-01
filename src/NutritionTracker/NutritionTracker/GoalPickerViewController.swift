@@ -85,7 +85,7 @@ class GoalPickerViewController: UIViewController, UIPickerViewDelegate, UIPicker
     //called when picker is changed
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
 		currentValue[component] = pickerData[component][row]
-		currentNutrient = nutrients[component]
+		currentNutrient = nutrients[row]
     }
 	
 
