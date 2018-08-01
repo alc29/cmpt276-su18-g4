@@ -23,17 +23,22 @@ class FoodDetailViewController: UIViewController {
 	var foodItem = FoodItem(0, "default food item", 0, "g")
 	var graphSettings = GraphSettings() //if no settings found, use default settings & save
 	
-	let DEFAULT_TAGS = [Nutrient.Sugars_total, Nutrient.Calcium, Nutrient.Sodium] //TODO load tags from user settings
+	//TODO load tags from user settings
+	let DEFAULT_TAGS = [Nutrient.Sugars_total, Nutrient.Calcium, Nutrient.Sodium]
 	
+	override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		barGraphSetup()
+		reloadBarGraphData()
+	}
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		barGraphSetup()
 		reloadBarGraphData()
-		
 	}
 	
 	func reloadBarGraphData() {
-		print("reloading bar graph data..")
+		//print("reloading bar graph data..")
 		
 		// Sets label to food name
 		foodNameLabel!.text = foodItem.getName()
